@@ -261,12 +261,12 @@ body.dark .bot-badge-spiller { background-color: #1e2830; }
 
 .fst-pot-rim {
   stroke: var(--border-color);
-  fill: var(--bg-muted);
-  stroke-opacity: 0.6;
+  fill: var(--bg-card);
+  stroke-opacity: 0.5;
 }
 .fst-pot-soil {
   fill: var(--text-secondary);
-  fill-opacity: 0.1;
+  fill-opacity: 0.04;
 }
 .fst-pot-inner {
   stroke: var(--border-color);
@@ -274,25 +274,25 @@ body.dark .bot-badge-spiller { background-color: #1e2830; }
 }
 .fst-bed-rim {
   stroke: var(--border-color);
-  fill: var(--bg-muted);
-  stroke-opacity: 0.6;
+  fill: var(--bg-card);
+  stroke-opacity: 0.5;
 }
 .fst-bed-soil {
   fill: var(--text-secondary);
-  fill-opacity: 0.05;
+  fill-opacity: 0.03;
 }
 body.dark .fst-pot-rim, body.dark .fst-bed-rim { stroke-opacity: 0.4; }
 body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
 
 .fst-plant-circle {
-  fill: var(--bg-accent);
+  fill: var(--bg-card);
   stroke: var(--border-color);
-  stroke-width: 1;
+  stroke-width: 0.8;
 }
 .fst-plant-lg {
   fill: var(--bg-accent-subtle);
   stroke: var(--border-thriller);
-  stroke-width: 2;
+  stroke-width: 1.5;
 }
 
 .fst-emoji {

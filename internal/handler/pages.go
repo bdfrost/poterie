@@ -373,35 +373,41 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 	role := models.FSTRole(r.FormValue("swap_role"))
 	newID := parseInt(r.FormValue("swap_id"), 0)
 
-	// Start with a fresh recommendation
-	rec, err := h.service.Generate(zone, sun, layout, soil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if newID == 0 {
+		http.Error(w, "missing plant selection", http.StatusBadRequest)
 		return
 	}
 
-	// Swap in the chosen plant
+	// Fetch the selected plant first
 	f, err := h.service.GetFlowerByID(newID)
 	if err != nil {
 		http.Error(w, "plant not found", http.StatusBadRequest)
 		return
 	}
 
+	// Generate a fresh recommendation as the base
+	rec, err := h.service.Generate(zone, sun, layout, soil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Swap only the targeted role, leaving the others from the generated plan
 	switch role {
 	case models.RoleThriller:
 		rec.Thriller = f
 	case models.RoleFiller:
 		origID := parseInt(r.FormValue("orig_filler_id"), 0)
-		for i, fill := range rec.Fillers {
-			if fill.ID == origID {
+		for i := range rec.Fillers {
+			if rec.Fillers[i].ID == origID {
 				rec.Fillers[i] = *f
 				break
 			}
 		}
 	case models.RoleSpiller:
 		origID := parseInt(r.FormValue("orig_spiller_id"), 0)
-		for i, sp := range rec.Spillers {
-			if sp.ID == origID {
+		for i := range rec.Spillers {
+			if rec.Spillers[i].ID == origID {
 				rec.Spillers[i] = *f
 				break
 			}

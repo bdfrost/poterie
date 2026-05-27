@@ -1,99 +1,128 @@
 {{define "content"}}
 <section class="relative overflow-hidden">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24">
-        <div class="text-center max-w-3xl mx-auto relative z-10">
-            <!-- Redouté Rose Illustration -->
-            <div class="mx-auto mb-4 max-w-xs sm:max-w-sm opacity-80 sm:opacity-70 pointer-events-none">
-                <svg viewBox="0 0 300 340" class="w-full" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Stem -->
-                    <path d="M150,330 C145,290 140,260 138,230 C136,200 140,170 145,145 C148,130 152,115 155,100" fill="none" stroke="#7a9a6a" stroke-width="2"/>
-                    <path d="M150,330 C155,300 158,275 160,250 C162,225 158,200 155,178 C153,160 152,140 150,120" fill="none" stroke="#8aa87a" stroke-width="1.5"/>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+        <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            <!-- Redouté Botanical Plate — Lilies (Rosa Lilium style) -->
+            <div class="flex-shrink-0 w-full max-w-xs sm:max-w-sm lg:max-w-md">
+                <svg viewBox="0 0 320 420" class="w-full" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Main stem -->
+                    <path d="M160,410 C158,370 155,330 152,290 C149,250 150,210 155,175 C158,155 160,135 158,115 C156,95 162,75 165,55"
+                          fill="none" stroke="#7a9a6a" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Secondary stem branch -->
+                    <path d="M152,290 C135,275 115,260 100,245 C85,230 78,215 80,200"
+                          fill="none" stroke="#8aaa78" stroke-width="1.8" stroke-linecap="round"/>
 
-                    <!-- Leaves -->
-                    <path d="M138,230 C120,225 95,218 88,210 C92,200 110,210 130,220Z" fill="#8aaa78" stroke="#6a8a5a" stroke-width="0.5" opacity="0.8"/>
-                    <path d="M142,228 C130,222 115,215 108,210" fill="none" stroke="#6a8a5a" stroke-width="0.5" opacity="0.5"/>
+                    <!-- Thorns on stem -->
+                    <path d="M155,350 L143,344" stroke="#7a6a4a" stroke-width="1" opacity="0.6"/>
+                    <path d="M153,310 L166,303" stroke="#7a6a4a" stroke-width="1" opacity="0.6"/>
+                    <path d="M158,240 L146,234" stroke="#7a6a4a" stroke-width="1" opacity="0.6"/>
 
-                    <path d="M158,200 C180,195 210,188 218,180 C214,170 195,180 175,190Z" fill="#8aaa78" stroke="#6a8a5a" stroke-width="0.5" opacity="0.8"/>
-                    <path d="M162,198 C175,192 190,185 198,180" fill="none" stroke="#6a8a5a" stroke-width="0.5" opacity="0.5"/>
+                    <!-- Leaves (paired along stem) -->
+                    <!-- Lower left leaf pair -->
+                    <path d="M152,340 C135,332 108,320 98,310 C105,300 120,310 145,325Z"
+                          fill="#8aaa78" stroke="#6a8a5a" stroke-width="0.5" opacity="0.85"/>
+                    <path d="M140,334 C128,328 118,320 110,315" fill="none" stroke="#6a8a5a" stroke-width="0.5" opacity="0.4"/>
+                    <!-- Lower right leaf pair -->
+                    <path d="M154,310 C175,302 205,290 218,278 C212,268 192,280 168,295Z"
+                          fill="#96ba86" stroke="#7a9a6a" stroke-width="0.5" opacity="0.85"/>
+                    <path d="M168,300 C180,294 190,286 200,280" fill="none" stroke="#7a9a6a" stroke-width="0.5" opacity="0.4"/>
 
-                    <path d="M143,172 C125,165 102,158 96,148 C100,138 118,150 138,162Z" fill="#96ba86" stroke="#7a9a6a" stroke-width="0.5" opacity="0.7"/>
-                    <path d="M148,168 C135,162 120,155 114,150" fill="none" stroke="#7a9a6a" stroke-width="0.5" opacity="0.4"/>
+                    <!-- Mid left leaf -->
+                    <path d="M150,260 C130,250 105,238 96,225 C102,216 118,228 144,245Z"
+                          fill="#8aaa78" stroke="#6a8a5a" stroke-width="0.5" opacity="0.75"/>
+                    <path d="M138,250 C126,244 116,236 108,230" fill="none" stroke="#6a8a5a" stroke-width="0.5" opacity="0.4"/>
+                    <!-- Mid right leaf -->
+                    <path d="M151,230 C172,222 200,212 212,200 C206,190 188,202 165,218Z"
+                          fill="#96ba86" stroke="#7a9a6a" stroke-width="0.5" opacity="0.75"/>
 
-                    <path d="M155,155 C175,148 200,142 208,132 C204,122 185,134 168,145Z" fill="#96ba86" stroke="#7a9a6a" stroke-width="0.5" opacity="0.7"/>
+                    <!-- Upper left leaf -->
+                    <path d="M155,185 C140,176 120,166 112,154 C118,146 132,158 150,170Z"
+                          fill="#a0c490" stroke="#8aaa78" stroke-width="0.5" opacity="0.65"/>
+                    <!-- Upper right leaf -->
+                    <path d="M156,160 C170,152 190,144 198,134 C193,126 178,138 162,150Z"
+                          fill="#a0c490" stroke="#8aaa78" stroke-width="0.5" opacity="0.65"/>
 
-                    <!-- Small leaf near top -->
-                    <path d="M148,130 C135,124 120,118 116,110 C120,104 132,112 145,122Z" fill="#a0c490" stroke="#8aaa78" stroke-width="0.5" opacity="0.6"/>
+                    <!-- Small bud leaf -->
+                    <path d="M160,125 C150,118 140,110 138,102 C142,96 150,106 158,114Z"
+                          fill="#b0d4a0" stroke="#96ba86" stroke-width="0.5" opacity="0.55"/>
 
-                    <!-- Thorns -->
-                    <path d="M140,250 L130,245" stroke="#8a7a5a" stroke-width="0.8" opacity="0.5"/>
-                    <path d="M158,190 L168,185" stroke="#8a7a5a" stroke-width="0.8" opacity="0.5"/>
-                    <path d="M145,160 L135,155" stroke="#8a7a5a" stroke-width="0.8" opacity="0.5"/>
-
-                    <!-- Full Bloom - Left Rose (large) -->
-                    <g transform="translate(115, 75)">
-                        <!-- Outer petals -->
-                        <ellipse cx="0" cy="0" rx="28" ry="35" fill="#e8b4b8" stroke="#d49a9e" stroke-width="0.5" transform="rotate(-15)"/>
-                        <ellipse cx="5" cy="0" rx="22" ry="30" fill="#f0c8cc" stroke="#dca8ac" stroke-width="0.5" transform="rotate(10)"/>
-                        <!-- Inner petals -->
-                        <ellipse cx="-3" cy="2" rx="18" ry="24" fill="#ecb8bc" stroke="#d8a0a4" stroke-width="0.5" transform="rotate(-5)"/>
-                        <ellipse cx="3" cy="0" rx="15" ry="20" fill="#f4d4d8" stroke="#e0b0b4" stroke-width="0.5" transform="rotate(8)"/>
-                        <!-- Center -->
-                        <ellipse cx="0" cy="2" rx="8" ry="10" fill="#f8e0e4" opacity="0.8"/>
+                    <!-- === FULL BLOOM: Large Lily (left) === -->
+                    <g transform="translate(80, 200)">
+                        <!-- Outer petals (6 for lily) -->
+                        <ellipse cx="0" cy="-8" rx="14" ry="32" fill="#f4d4e8" stroke="#d4b0c8" stroke-width="0.5" transform="rotate(-20)"/>
+                        <ellipse cx="16" cy="-2" rx="14" ry="32" fill="#f8d8ec" stroke="#dca0c0" stroke-width="0.5" transform="rotate(-10)"/>
+                        <ellipse cx="12" cy="14" rx="14" ry="32" fill="#f0c8e0" stroke="#d0a8b8" stroke-width="0.5" transform="rotate(10)"/>
+                        <ellipse cx="-2" cy="18" rx="14" ry="32" fill="#ecb8d8" stroke="#c898b0" stroke-width="0.5" transform="rotate(25)"/>
+                        <ellipse cx="-16" cy="10" rx="14" ry="32" fill="#f4d4e8" stroke="#d4b0c8" stroke-width="0.5" transform="rotate(-35)"/>
+                        <ellipse cx="-10" cy="-8" rx="14" ry="32" fill="#f8e0f0" stroke="#dcb8cc" stroke-width="0.5" transform="rotate(-45)"/>
+                        <!-- Inner petal accents -->
+                        <ellipse cx="2" cy="2" rx="8" ry="14" fill="#fce4f4" opacity="0.6"/>
                         <!-- Stamens -->
-                        <circle cx="-3" cy="2" r="1" fill="#d4a040" opacity="0.7"/>
-                        <circle cx="3" cy="0" r="1" fill="#d4a040" opacity="0.7"/>
-                        <circle cx="0" cy="5" r="1" fill="#d4a040" opacity="0.7"/>
-                        <circle cx="2" cy="-3" r="1" fill="#d4a040" opacity="0.7"/>
+                        <line x1="-3" y1="0" x2="-8" y2="-12" stroke="#c0a060" stroke-width="0.8"/>
+                        <circle cx="-8" cy="-12" r="2" fill="#d4a840" opacity="0.8"/>
+                        <line x1="4" y1="0" x2="10" y2="-8" stroke="#c0a060" stroke-width="0.8"/>
+                        <circle cx="10" cy="-8" r="2" fill="#d4a840" opacity="0.8"/>
+                        <line x1="0" y1="4" x2="-2" y2="12" stroke="#c0a060" stroke-width="0.8"/>
+                        <circle cx="-2" cy="12" r="2" fill="#d4a840" opacity="0.8"/>
+                        <line x1="2" y1="2" x2="8" y2="10" stroke="#c0a060" stroke-width="0.8"/>
+                        <circle cx="8" cy="10" r="2" fill="#d4a840" opacity="0.8"/>
+                        <!-- Pistil -->
+                        <line x1="0" y1="0" x2="2" y2="-5" stroke="#a08050" stroke-width="0.8"/>
+                        <circle cx="2" cy="-5" r="1.5" fill="#b89060" opacity="0.7"/>
                     </g>
 
-                    <!-- Partial Bloom - Upper Right Rose (medium) -->
-                    <g transform="translate(180, 50)">
-                        <ellipse cx="0" cy="0" rx="20" ry="26" fill="#e8a8ac" stroke="#d49094" stroke-width="0.5" transform="rotate(-10)"/>
-                        <ellipse cx="3" cy="0" rx="16" ry="22" fill="#f0bcb8" stroke="#dca8a0" stroke-width="0.5" transform="rotate(5)"/>
-                        <ellipse cx="0" cy="2" rx="12" ry="16" fill="#f4c8c0" stroke="#e0b0a8" stroke-width="0.5" transform="rotate(-3)"/>
-                        <ellipse cx="1" cy="1" rx="6" ry="8" fill="#f8d8d0" opacity="0.8"/>
-                    </g>
-
-                    <!-- Rosebud - Lower Right (small) -->
-                    <g transform="translate(195, 110)">
-                        <ellipse cx="0" cy="0" rx="10" ry="16" fill="#d88888" stroke="#c47070" stroke-width="0.5"/>
-                        <ellipse cx="2" cy="-1" rx="7" ry="13" fill="#e09898" stroke="#d08080" stroke-width="0.5" transform="rotate(5)"/>
-                        <ellipse cx="1" cy="1" rx="4" ry="9" fill="#e8a8a8" opacity="0.8"/>
+                    <!-- === SECONDARY BLOOM: Bud (top right, closed) === -->
+                    <g transform="translate(198, 120)">
                         <!-- Sepals -->
-                        <path d="M-6,8 C-4,18 0,22 0,22 C0,22 4,18 6,8" fill="#7a9a6a" stroke="#6a8a5a" stroke-width="0.5" opacity="0.8"/>
-                        <path d="M-4,10 C-3,16 0,20 0,20" fill="none" stroke="#6a8a5a" stroke-width="0.5" opacity="0.5"/>
+                        <path d="M-8,5 C-6,18 -2,22 -2,22 C-2,22 2,18 4,5Z"
+                              fill="#7a9a6a" stroke="#6a8a5a" stroke-width="0.5" opacity="0.7"/>
+                        <path d="M-4,5 C-3,16 0,20 0,20 C0,20 3,16 6,5Z"
+                              fill="#8aaa78" stroke="#6a8a5a" stroke-width="0.5" opacity="0.7"/>
+                        <!-- Petals (tight bud) -->
+                        <ellipse cx="0" cy="-2" rx="8" ry="18" fill="#f0c0d8" stroke="#d0a0b8" stroke-width="0.5"/>
+                        <ellipse cx="3" cy="0" rx="6" ry="16" fill="#f8d8ec" stroke="#dca0c0" stroke-width="0.5" transform="rotate(5)"/>
+                        <ellipse cx="0" cy="2" rx="4" ry="12" fill="#fce4f4" opacity="0.7"/>
                     </g>
 
-                    <!-- Sepal under full bloom -->
-                    <g transform="translate(115, 108)">
-                        <path d="M-10,0 C-8,8 -4,12 -4,12 C-4,12 0,8 0,0Z" fill="#7a9a6a" stroke="#6a8a5a" stroke-width="0.5" opacity="0.7"/>
-                        <path d="M0,0 C2,8 6,12 6,12 C6,12 10,8 10,0Z" fill="#8aaa78" stroke="#6a8a5a" stroke-width="0.5" opacity="0.7"/>
+                    <!-- === TERTIARY BLOOM: Small opened flower (right, mid) === -->
+                    <g transform="translate(220, 200)">
+                        <ellipse cx="0" cy="0" rx="10" ry="22" fill="#f0c8e0" stroke="#d0a8b8" stroke-width="0.5" transform="rotate(-15)"/>
+                        <ellipse cx="8" cy="2" rx="10" ry="22" fill="#f4d4e8" stroke="#d4b0c8" stroke-width="0.5" transform="rotate(5)"/>
+                        <ellipse cx="4" cy="5" rx="8" ry="18" fill="#f8e0f0" stroke="#dcb8cc" stroke-width="0.5" transform="rotate(10)"/>
+                        <ellipse cx="1" cy="2" rx="5" ry="10" fill="#fce4f4" opacity="0.6"/>
+                        <!-- Stamens -->
+                        <circle cx="-2" cy="-4" r="1.5" fill="#d4a840" opacity="0.7"/>
+                        <circle cx="4" cy="-2" r="1.5" fill="#d4a840" opacity="0.7"/>
+                        <circle cx="1" cy="4" r="1.5" fill="#d4a840" opacity="0.7"/>
                     </g>
 
-                    <!-- Subtle shadow under leaves -->
-                    <ellipse cx="100" cy="212" rx="25" ry="3" fill="#6a7a58" opacity="0.08"/>
-                    <ellipse cx="208" cy="182" rx="22" ry="3" fill="#6a7a58" opacity="0.08"/>
+                    <!-- Small leaf on stem near bud -->
+                    <path d="M162,95 C152,88 142,80 140,72 C144,66 152,76 160,84Z"
+                          fill="#b8d8a8" stroke="#96ba86" stroke-width="0.5" opacity="0.5"/>
                 </svg>
             </div>
 
-            <div class="inline-block bot-bg-accent bot-rounded-full px-4 py-1 mb-6">
-                <span class="bot-text-accent text-sm font-medium">🌿 Filler · Spiller · Thriller</span>
-            </div>
-            <h1 class="bot-font-serif text-4xl md:text-5xl lg:text-6xl bot-text-primary font-bold leading-tight mb-6">
-                Design Beautiful<br/>
-                <em class="bot-text-accent">Flower Arrangements</em>
-            </h1>
-            <p class="text-lg md:text-xl bot-text-secondary mb-8 max-w-2xl mx-auto leading-relaxed">
-                Discover the perfect combination of flowers for your garden bed or container.
-                Get personalized recommendations based on your climate zone, sun exposure, and soil type.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/planner" class="bot-btn-primary bot-btn-lg">
-                    🌸 Start Planning
-                </a>
-                <a href="/guide" class="bot-btn-secondary bot-btn-lg">
-                    Learn FST →
-                </a>
+            <!-- Hero content -->
+            <div class="text-center lg:text-left max-w-3xl relative z-10">
+                <div class="inline-block bot-bg-accent bot-rounded-full px-4 py-1 mb-6">
+                    <span class="bot-text-accent text-sm font-medium">🌿 Filler · Spiller · Thriller</span>
+                </div>
+                <h1 class="bot-font-serif text-4xl md:text-5xl lg:text-6xl bot-text-primary font-bold leading-tight mb-6">
+                    Design Beautiful<br/>
+                    <em class="bot-text-accent">Flower Arrangements</em>
+                </h1>
+                <p class="text-lg md:text-xl bot-text-secondary mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                    Discover the perfect combination of flowers for your garden bed or container.
+                    Get personalized recommendations based on your climate zone, sun exposure, and soil type.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="/planner" class="bot-btn-primary bot-btn-lg">
+                        🌸 Start Planning
+                    </a>
+                    <a href="/guide" class="bot-btn-secondary bot-btn-lg">
+                        Learn FST →
+                    </a>
+                </div>
             </div>
         </div>
     </div>
