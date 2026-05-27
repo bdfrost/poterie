@@ -21,7 +21,8 @@ type Handler struct {
 	cfg     *config.Config
 	service *service.RecommendationService
 	assets  embed.FS
-	templates *template.Template
+	// preloaded templates: base + partials (no page-specific content)
+	baseTemplates *template.Template
 	templatesOnce sync.Once
 }
 
@@ -62,34 +63,43 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 
 func (h *Handler) initTemplates() {
 	h.templatesOnce.Do(func() {
-		h.templates = template.Must(template.New("").Funcs(template.FuncMap{
+		h.baseTemplates = template.Must(template.New("").Funcs(template.FuncMap{
 			"safeCSS": func(s string) template.CSS {
 				return template.CSS(s)
 			},
 		}).ParseFS(h.assets,
 			"templates/base.html",
-			"templates/home.html",
-			"templates/planner.html",
-			"templates/result.html",
-			"templates/guide.html",
-			"templates/admin.html",
 			"templates/partials/*.html",
 		))
 	})
 }
 
-func (h *Handler) render(w http.ResponseWriter, name string, data map[string]interface{}) {
+func (h *Handler) render(w http.ResponseWriter, pagename string, data map[string]interface{}) {
 	h.initTemplates()
 	data["Title"] = "Poterie"
 	if title, ok := data["PageTitle"].(string); ok {
 		data["Title"] = title
 	}
 	data["Version"] = h.cfg.Version
-	// Strip .html suffix — {{define}} blocks use bare names (home, planner, etc.)
-	data["TemplateName"] = strings.TrimSuffix(name, ".html")
+
+	// Clone the preloaded base+partials template set and add this page.
+	// Parsing only one page at a time avoids the "content" namespace collision
+	// that occurs when {{define "content"}} exists across multiple files loaded together.
+	tmpl, err := h.baseTemplates.Clone()
+	if err != nil {
+		http.Error(w, "template clone error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// Parse in just this page's content block
+	pagePath := strings.TrimSuffix(pagename, ".html")
+	_, err = tmpl.ParseFS(h.assets, fmt.Sprintf("templates/%s.html", pagePath))
+	if err != nil {
+		http.Error(w, "template parse error for "+pagename+": "+err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := h.templates.ExecuteTemplate(w, "base", data); err != nil {
+	if err := tmpl.ExecuteTemplate(w, "base", data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -181,7 +191,13 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.initTemplates()
-	if err := h.templates.ExecuteTemplate(w, "partials/result-card", map[string]interface{}{
+	// Parse the result-card partial into the base template clone for execution
+	tmpl, err := h.baseTemplates.Clone()
+	if err != nil {
+		http.Error(w, "template clone error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if err := tmpl.ExecuteTemplate(w, "partials/result-card", map[string]interface{}{
 		"Rec":    rec,
 		"Zone":   zone,
 		"Sun":    string(sun),
