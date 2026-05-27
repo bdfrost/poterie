@@ -1,0 +1,114 @@
+{{define "content"}}
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div class="text-center mb-10">
+        <h1 class="bot-font-serif text-3xl md:text-4xl bot-text-primary font-bold mb-3">
+            FST Garden Planner
+        </h1>
+        <p class="bot-text-secondary text-lg">
+            Select your conditions and we'll design the perfect flower arrangement for you.
+        </p>
+    </div>
+
+    <div class="bot-bg-card bot-rounded bot-shadow p-6 md:p-8">
+        <form id="fst-form" hx-post="/planner/recommend" hx-target="#result-area" hx-swap="innerHTML"
+              class="space-y-6">
+
+            <!-- Zone Selection -->
+            <div>
+                <label class="bot-label">USDA Hardiness Zone</label>
+                <div class="flex items-center gap-3">
+                    <select name="zone" id="zone-select" class="bot-select w-32">
+                        {{range .Zones}}
+                        <option value="{{.}}" {{if eq . 5}}selected{{end}}>{{.}}</option>
+                        {{end}}
+                    </select>
+                    <button type="button" @click="showZoneMap = true" class="bot-btn-ghost text-sm">
+                        🗺️ Not sure of your zone?
+                    </button>
+                </div>
+            </div>
+
+            <!-- Zone Map Modal -->
+            <div x-show="showZoneMap" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+                 @keydown.escape.window="showZoneMap = false">
+                <div class="bot-bg-card bot-rounded bot-shadow-xl max-w-2xl w-full p-6 relative">
+                    <button @click="showZoneMap = false" class="absolute top-4 right-4 bot-btn-icon">✕</button>
+                    <h3 class="bot-font-serif text-xl bot-text-primary mb-4">USDA Hardiness Zone Map</h3>
+                    <p class="bot-text-secondary mb-4 text-sm">Find your zone by entering your ZIP code on the USDA website:</p>
+                    <a href="https://planthardiness.ars.usda.gov/" target="_blank" rel="noopener"
+                       class="bot-btn-primary inline-block">
+                        🗺️ Open USDA Zone Map →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sun Exposure -->
+            <div>
+                <label class="bot-label">Sun Exposure</label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {{range .SunTypes}}
+                    <label class="bot-option-card">
+                        <input type="radio" name="sun" value="{{.Value}}" class="sr-only"
+                               {{if eq .Value "full_sun"}}checked{{end}}>
+                        <span class="bot-option-text">{{.Label}}</span>
+                    </label>
+                    {{end}}
+                </div>
+            </div>
+
+            <!-- Soil Type -->
+            <div>
+                <label class="bot-label">Soil Type</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {{range .SoilTypes}}
+                    <label class="bot-option-card">
+                        <input type="radio" name="soil" value="{{.Value}}" class="sr-only"
+                               {{if eq .Value "loam"}}checked{{end}}>
+                        <span class="bot-option-text">{{.Label}}</span>
+                    </label>
+                    {{end}}
+                </div>
+            </div>
+
+            <!-- Layout Type -->
+            <div>
+                <label class="bot-label">Arrangement Type</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="bot-option-card">
+                        <input type="radio" name="layout" value="container" class="sr-only" checked>
+                        <div class="text-center">
+                            <span class="text-3xl block mb-2">🪴</span>
+                            <span class="bot-option-text">Container / Pot</span>
+                        </div>
+                    </label>
+                    <label class="bot-option-card">
+                        <input type="radio" name="layout" value="bed" class="sr-only">
+                        <div class="text-center">
+                            <span class="text-3xl block mb-2">🌻</span>
+                            <span class="bot-option-text">Flower Bed</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="pt-4">
+                <button type="submit" class="bot-btn-primary bot-btn-lg w-full"
+                        hx-indicator="#loading">
+                    <span hx-show="false">🌸 Generate My FST Plan</span>
+                    <div id="loading" class="htmx-request flex items-center justify-center gap-2">
+                        <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                        </svg>
+                        Designing your garden...
+                    </div>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results area -->
+    <div id="result-area" class="mt-8"></div>
+</section>
+{{end}}

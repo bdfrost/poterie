@@ -1,0 +1,111 @@
+{{define "content"}}
+<!-- Hero Section -->
+<section class="relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24">
+        <div class="text-center max-w-3xl mx-auto">
+            <div class="inline-block bot-bg-accent bot-rounded-full px-4 py-1 mb-6">
+                <span class="bot-text-accent text-sm font-medium">🌿 Filler · Spiller · Thriller</span>
+            </div>
+            <h1 class="bot-font-serif text-4xl md:text-5xl lg:text-6xl bot-text-primary font-bold leading-tight mb-6">
+                Design Beautiful<br/>
+                <em class="bot-text-accent">Flower Arrangements</em>
+            </h1>
+            <p class="text-lg md:text-xl bot-text-secondary mb-8 max-w-2xl mx-auto leading-relaxed">
+                Discover the perfect combination of flowers for your garden bed or container.
+                Get personalized recommendations based on your climate zone, sun exposure, and soil type.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/planner" class="bot-btn-primary bot-btn-lg">
+                    🌸 Start Planning
+                </a>
+                <a href="/guide" class="bot-btn-secondary bot-btn-lg">
+                    Learn FST →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative botanical illustration area -->
+    <div class="absolute top-1/2 -translate-y-1/2 left-0 opacity-10 pointer-events-none">
+        <svg width="200" height="400" viewBox="0 0 200 400" class="botanical-decor">
+            <path d="M100,0 Q80,50 90,100 T80,200 T100,300 T80,400" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="90" cy="100" r="8" fill="currentColor"/>
+            <circle cx="80" cy="200" r="6" fill="currentColor"/>
+            <circle cx="100" cy="300" r="10" fill="currentColor"/>
+        </svg>
+    </div>
+    <div class="absolute top-1/2 -translate-y-1/2 right-0 opacity-10 pointer-events-none">
+        <svg width="200" height="400" viewBox="0 0 200 400" class="botanical-decor">
+            <path d="M100,0 Q120,50 110,100 T120,200 T100,300 T120,400" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="110" cy="100" r="7" fill="currentColor"/>
+            <circle cx="120" cy="200" r="9" fill="currentColor"/>
+            <circle cx="100" cy="300" r="6" fill="currentColor"/>
+        </svg>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+    <h2 class="bot-font-serif text-3xl bot-text-primary text-center mb-12">How It Works</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+        <div class="bot-bg-card bot-rounded bot-shadow p-6 text-center">
+            <div class="text-4xl mb-4">📍</div>
+            <h3 class="bot-font-serif text-xl bot-text-primary font-semibold mb-3">1. Tell Us Your Conditions</h3>
+            <p class="bot-text-secondary">Select your USDA hardiness zone, sun exposure, and soil type.</p>
+        </div>
+        <div class="bot-bg-card bot-rounded bot-shadow p-6 text-center">
+            <div class="text-4xl mb-4">🌺</div>
+            <h3 class="bot-font-serif text-xl bot-text-primary font-semibold mb-3">2. Choose Your Layout</h3>
+            <p class="bot-text-secondary">Pick a container pot or a garden bed arrangement.</p>
+        </div>
+        <div class="bot-bg-card bot-rounded bot-shadow p-6 text-center">
+            <div class="text-4xl mb-4">🎨</div>
+            <h3 class="bot-font-serif text-xl bot-text-primary font-semibold mb-3">3. Get Your FST Plan</h3>
+            <p class="bot-text-secondary">Receive a visual layout with a thriller centerpiece, body fillers, and cascading spillers.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FST Preview -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+    <div class="grid md:grid-cols-3 gap-6">
+        <div class="bot-bg-card bot-rounded bot-shadow p-6 border-t-4 border-red-400">
+            <div class="text-center mb-4">
+                <span class="text-5xl">🌺</span>
+            </div>
+            <h3 class="bot-font-serif text-xl text-center text-red-500 font-bold mb-2">Thriller</h3>
+            <p class="text-center bot-text-secondary text-sm mb-3">The dramatic centerpiece</p>
+            <p class="bot-text-secondary text-sm">Tall, striking plants that draw the eye upward. Examples: Canna Lily, Ornamental Grass, Salvia.</p>
+        </div>
+        <div class="bot-bg-card bot-rounded bot-shadow p-6 border-t-4 border-green-500">
+            <div class="text-center mb-4">
+                <span class="text-5xl">🌿</span>
+            </div>
+            <h3 class="bot-font-serif text-xl text-center text-green-600 font-bold mb-2">Filler</h3>
+            <p class="text-center bot-text-secondary text-sm mb-3">Body and fullness</p>
+            <p class="bot-text-secondary text-sm">Mounding plants that fill space between the thriller and edges. Examples: Petunia, Geranium, Coleus.</p>
+        </div>
+        <div class="bot-bg-card bot-rounded bot-shadow p-6 border-t-4 border-blue-400">
+            <div class="text-center mb-4">
+                <span class="text-5xl">💧</span>
+            </div>
+            <h3 class="bot-font-serif text-xl text-center text-blue-500 font-bold mb-2">Spiller</h3>
+            <p class="text-center bot-text-secondary text-sm mb-3">Casading over the edges</p>
+            <p class="bot-text-secondary text-sm">Trailing plants that spill over container edges or bed borders. Examples: Sweet Alyssum, Creeping Jenny.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-16 text-center">
+    <div class="bot-bg-accent-subtle bot-rounded-2xl p-8 md:p-12">
+        <h2 class="bot-font-serif text-3xl md:text-4xl bot-text-primary mb-4">Ready to Design?</h2>
+        <p class="bot-text-secondary text-lg mb-6 max-w-xl mx-auto">
+            Tell us about your garden and we'll curate the perfect FST combination for you.
+        </p>
+        <a href="/planner" class="bot-btn-primary bot-btn-lg">
+            🌱 Start Your Garden Plan
+        </a>
+    </div>
+</section>
+{{end}}

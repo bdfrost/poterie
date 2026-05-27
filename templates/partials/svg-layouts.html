@@ -1,0 +1,183 @@
+{{define "partials/svg-pot"}}
+<!-- Top-down container/pot SVG visualization -->
+<svg viewBox="0 0 400 400" class="fst-svg w-full max-w-md" xmlns="http://www.w3.org/2000/svg">
+    <!-- Pot outline -->
+    <circle cx="200" cy="200" r="180" class="fst-pot-rim" stroke-width="3"/>
+    <circle cx="200" cy="200" r="170" class="fst-pot-soil" fill-opacity="0.1"/>
+
+    <!-- Soil texture -->
+    <circle cx="200" cy="200" r="168" class="fst-pot-inner" stroke-width="1" stroke-dasharray="4,4"/>
+
+    {{if .Rec.Thriller}}
+    <!-- Thriller (center) -->
+    <g class="fst-thriller">
+        <circle cx="200" cy="200" r="40" class="fst-plant-circle"/>
+        <text x="200" y="195" text-anchor="middle" class="fst-emoji">{{.Rec.Thriller.ImageURL}}</text>
+        <text x="200" y="250" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
+        <text x="200" y="265" text-anchor="middle" class="fst-sublabel">THRILLER</text>
+    </g>
+    {{end}}
+
+    {{if .Rec.Fillers}}
+    <!-- Fillers (ring around center) -->
+    {{range $i, $f := .Rec.Fillers}}
+    {{/* Position fillers in a circle around the thriller */}}
+    {{if eq $i 0}}
+    <g class="fst-filler">
+        <circle cx="120" cy="140" r="25" class="fst-plant-circle"/>
+        <text x="120" y="135" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="120" y="175" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{else if eq $i 1}}
+    <g class="fst-filler">
+        <circle cx="280" cy="140" r="25" class="fst-plant-circle"/>
+        <text x="280" y="135" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="280" y="175" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{else if eq $i 2}}
+    <g class="fst-filler">
+        <circle cx="200" cy="100" r="25" class="fst-plant-circle"/>
+        <text x="200" y="95" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="200" y="135" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{else}}
+    <g class="fst-filler">
+        <circle cx="200" cy="280" r="25" class="fst-plant-circle"/>
+        <text x="200" y="275" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="200" y="315" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{end}}
+    {{end}}
+    {{end}}
+
+    {{if .Rec.Spillers}}
+    <!-- Spillers (at edges, cascading) -->
+    {{range $i, $s := .Rec.Spillers}}
+    {{if eq $i 0}}
+    <g class="fst-spiller">
+        <circle cx="80" cy="260" r="20" class="fst-plant-circle"/>
+        <text x="80" y="256" text-anchor="middle" class="fst-emoji">{{$s.ImageURL}}</text>
+        <text x="80" y="290" text-anchor="middle" class="fst-label">{{$s.Name}}</text>
+        <!-- Cascading arrows -->
+        <path d="M60,280 Q40,310 30,340" class="fst-cascade" fill="none"/>
+        <path d="M100,280 Q120,310 130,340" class="fst-cascade" fill="none"/>
+    </g>
+    {{else if eq $i 1}}
+    <g class="fst-spiller">
+        <circle cx="320" cy="260" r="20" class="fst-plant-circle"/>
+        <text x="320" y="256" text-anchor="middle" class="fst-emoji">{{$s.ImageURL}}</text>
+        <text x="320" y="290" text-anchor="middle" class="fst-label">{{$s.Name}}</text>
+        <path d="M300,280 Q280,310 270,340" class="fst-cascade" fill="none"/>
+        <path d="M340,280 Q360,310 370,340" class="fst-cascade" fill="none"/>
+    </g>
+    {{end}}
+    {{end}}
+    {{end}}
+
+    <!-- Legend -->
+    <g transform="translate(15, 15)">
+        <circle r="5" class="fst-legend-thriller"/>
+        <text x="12" y="4" class="fst-legend-label">Thriller (center)</text>
+        <circle cy="20" r="5" class="fst-legend-filler"/>
+        <text x="12" y="24" class="fst-legend-label">Filler (around)</text>
+        <circle cy="40" r="5" class="fst-legend-spiller"/>
+        <text x="12" y="44" class="fst-legend-label">Spiller (edges)</text>
+    </g>
+</svg>
+{{end}}
+
+{{define "partials/svg-bed"}}
+<!-- Top-down flower bed SVG visualization -->
+<svg viewBox="0 0 600 400" class="fst-svg w-full max-w-2xl" xmlns="http://www.w3.org/2000/svg">
+    <!-- Bed outline (curved border) -->
+    <rect x="20" y="20" width="560" height="360" rx="30" class="fst-bed-rim" stroke-width="2"/>
+    <rect x="25" y="25" width="550" height="350" rx="28" class="fst-bed-soil" fill-opacity="0.05"/>
+
+    <!-- Grid lines (plant spacing guide) -->
+    <g class="fst-grid" opacity="0.3">
+        <line x1="100" y1="25" x2="100" y2="375" stroke-dasharray="4,4"/>
+        <line x1="200" y1="25" x2="200" y2="375" stroke-dasharray="4,4"/>
+        <line x1="300" y1="25" x2="300" y2="375" stroke-dasharray="4,4"/>
+        <line x1="400" y1="25" x2="400" y2="375" stroke-dasharray="4,4"/>
+        <line x1="500" y1="25" x2="500" y2="375" stroke-dasharray="4,4"/>
+    </g>
+
+    {{if .Rec.Thriller}}
+    <!-- Thriller (back center of bed) -->
+    <g class="fst-thriller">
+        <circle cx="300" cy="80" r="45" class="fst-plant-circle fst-plant-lg"/>
+        <text x="300" y="75" text-anchor="middle" class="fst-emoji fst-emoji-lg">{{.Rec.Thriller.ImageURL}}</text>
+        <text x="300" y="140" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
+        <text x="300" y="155" text-anchor="middle" class="fst-sublabel">THRILLER — Back Center</text>
+    </g>
+    {{end}}
+
+    {{if .Rec.Fillers}}
+    <!-- Fillers (middle row of bed) -->
+    {{range $i, $f := .Rec.Fillers}}
+    {{if eq $i 0}}
+    <g class="fst-filler">
+        <circle cx="180" cy="200" r="30" class="fst-plant-circle"/>
+        <text x="180" y="195" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="180" y="240" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{else if eq $i 1}}
+    <g class="fst-filler">
+        <circle cx="300" cy="200" r="30" class="fst-plant-circle"/>
+        <text x="300" y="195" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="300" y="240" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{else if eq $i 2}}
+    <g class="fst-filler">
+        <circle cx="420" cy="200" r="30" class="fst-plant-circle"/>
+        <text x="420" y="195" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="420" y="240" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{else}}
+    <g class="fst-filler">
+        <circle cx="300" cy="280" r="30" class="fst-plant-circle"/>
+        <text x="300" y="275" text-anchor="middle" class="fst-emoji">{{$f.ImageURL}}</text>
+        <text x="300" y="320" text-anchor="middle" class="fst-label">{{$f.Name}}</text>
+    </g>
+    {{end}}
+    {{end}}
+    {{end}}
+
+    {{if .Rec.Spillers}}
+    <!-- Spillers (front edge of bed) -->
+    {{range $i, $s := .Rec.Spillers}}
+    {{if eq $i 0}}
+    <g class="fst-spiller">
+        <circle cx="150" cy="340" r="22" class="fst-plant-circle"/>
+        <text x="150" y="336" text-anchor="middle" class="fst-emoji">{{$s.ImageURL}}</text>
+        <text x="150" y="370" text-anchor="middle" class="fst-label">{{$s.Name}}</text>
+        <path d="M120,358 Q100,380 80,395" class="fst-cascade" fill="none"/>
+        <path d="M180,358 Q200,380 220,395" class="fst-cascade" fill="none"/>
+    </g>
+    {{else if eq $i 1}}
+    <g class="fst-spiller">
+        <circle cx="450" cy="340" r="22" class="fst-plant-circle"/>
+        <text x="450" y="336" text-anchor="middle" class="fst-emoji">{{$s.ImageURL}}</text>
+        <text x="450" y="370" text-anchor="middle" class="fst-label">{{$s.Name}}</text>
+        <path d="M420,358 Q400,380 380,395" class="fst-cascade" fill="none"/>
+        <path d="M480,358 Q500,380 520,395" class="fst-cascade" fill="none"/>
+    </g>
+    {{end}}
+    {{end}}
+    {{end}}
+
+    <!-- Labels -->
+    <text x="300" y="15" text-anchor="middle" class="fst-bed-label">← Spillers (front) | Fillers (middle) | Thriller (back) →</text>
+
+    <!-- Legend -->
+    <g transform="translate(30, 30)">
+        <rect width="140" height="70" rx="8" class="fst-legend-bg"/>
+        <circle cx="15" cy="20" r="5" class="fst-legend-thriller"/>
+        <text x="28" y="24" class="fst-legend-label">Thriller (back)</text>
+        <circle cx="15" cy="40" r="5" class="fst-legend-filler"/>
+        <text x="28" y="44" class="fst-legend-label">Filler (middle)</text>
+        <circle cx="15" cy="60" r="5" class="fst-legend-spiller"/>
+        <text x="28" y="64" class="fst-legend-label">Spiller (front)</text>
+    </g>
+</svg>
+{{end}}

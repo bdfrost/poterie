@@ -1,0 +1,71 @@
+{{define "content"}}
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="bot-font-serif text-3xl bot-text-primary font-bold">Admin Dashboard</h1>
+        <a href="/" class="bot-btn-ghost">← Back to App</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bot-bg-card bot-rounded bot-shadow p-4 text-center">
+            <p class="text-3xl font-bold bot-text-primary">{{.Total}}</p>
+            <p class="text-sm bot-text-secondary">Total Flowers</p>
+        </div>
+        <div class="bot-bg-card bot-rounded bot-shadow p-4 text-center border-t-2 bot-border-thriller">
+            <p class="text-3xl font-bold text-red-500">{{.Counts.thriller}}</p>
+            <p class="text-sm bot-text-secondary">Thrillers</p>
+        </div>
+        <div class="bot-bg-card bot-rounded bot-shadow p-4 text-center border-t-2 bot-border-filler">
+            <p class="text-3xl font-bold text-green-600">{{.Counts.filler}}</p>
+            <p class="text-sm bot-text-secondary">Fillers</p>
+        </div>
+        <div class="bot-bg-card bot-rounded bot-shadow p-4 text-center border-t-2 bot-border-spiller">
+            <p class="text-3xl font-bold text-blue-500">{{.Counts.spiller}}</p>
+            <p class="text-sm bot-text-secondary">Spillers</p>
+        </div>
+    </div>
+
+    <!-- Flower Table -->
+    <div class="bot-bg-card bot-rounded bot-shadow overflow-hidden">
+        <div class="p-4 bot-border border-b flex items-center justify-between">
+            <h2 class="bot-font-serif text-lg bot-text-primary">Flower Database</h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bot-bg-muted">
+                        <th class="text-left px-4 py-3 bot-text-secondary font-medium">Emoji</th>
+                        <th class="text-left px-4 py-3 bot-text-secondary font-medium">Name</th>
+                        <th class="text-left px-4 py-3 bot-text-secondary font-medium hidden md:table-cell">Role</th>
+                        <th class="text-left px-4 py-3 bot-text-secondary font-medium hidden md:table-cell">Zone</th>
+                        <th class="text-left px-4 py-3 bot-text-secondary font-medium hidden md:table-cell">Sun</th>
+                        <th class="text-left px-4 py-3 bot-text-secondary font-medium">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Flowers}}
+                    <tr class="bot-border border-t">
+                        <td class="px-4 py-3 text-lg">{{.ImageURL}}</td>
+                        <td class="px-4 py-3">
+                            <p class="bot-text-primary font-medium">{{.Name}}</p>
+                            <p class="text-xs bot-text-secondary italic">{{.BotanicalName}}</p>
+                        </td>
+                        <td class="px-4 py-3 hidden md:table-cell">
+                            <span class="bot-badge bot-badge-{{.Role}}">{{.Role}}</span>
+                        </td>
+                        <td class="px-4 py-3 bot-text-secondary hidden md:table-cell">{{.ZoneMin}}-{{.ZoneMax}}</td>
+                        <td class="px-4 py-3 bot-text-secondary hidden md:table-cell">{{.Sun}}</td>
+                        <td class="px-4 py-3">
+                            <form action="/admin/flowers/{{.ID}}/delete" method="POST"
+                                  onsubmit="return confirm('Delete {{.Name}}?');">
+                                <button type="submit" class="text-red-400 hover:text-red-500 text-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{{end}}

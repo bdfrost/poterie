@@ -1,0 +1,377 @@
+/* ===================================
+   Poterie — Botanical Theme CSS
+   Redouté-inspired: elegant serif typography,
+   natural color palette, smooth animations
+   =================================== */
+
+/* === Theme Variables === */
+.botanical {
+  --bg-page: #faf9f6;
+  --bg-card: #ffffff;
+  --bg-accent: #e8f0e4;
+  --bg-accent-subtle: #f0f5ee;
+  --bg-muted: #f5f5f5;
+  --text-primary: #2d3a2d;
+  --text-secondary: #5a6b5a;
+  --border-color: #e0e6e0;
+  --border-thriller: #e8716e;
+  --border-filler: #6aaa6a;
+  --border-spiller: #6b9dc2;
+  --text-thriller: #c04040;
+  --text-filler: #3d7a3d;
+  --text-spiller: #4a7ba0;
+  --text-accent: #4a7b50;
+  --btn-primary-bg: #4a7b50;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #3d6543;
+  --vine-color: rgba(74, 123, 80, 0.2);
+}
+
+.sage {
+  --bg-page: #f5f4f0;
+  --bg-card: #ffffff;
+  --bg-accent: #d4ddd0;
+  --bg-accent-subtle: #e8ede6;
+  --bg-muted: #eef0ec;
+  --text-primary: #3c4a3c;
+  --text-secondary: #6b7d6b;
+  --border-color: #d8dfd8;
+  --border-thriller: #c4716d;
+  --border-filler: #8aaa7a;
+  --border-spiller: #7ea8c8;
+  --text-thriller: #a0555a;
+  --text-filler: #5a8a5a;
+  --text-spiller: #5a8aa0;
+  --text-accent: #5a8a60;
+  --btn-primary-bg: #5a8a60;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #4a7a50;
+  --vine-color: rgba(90, 138, 96, 0.15);
+}
+
+/* === Base === */
+.bot-font-serif { font-family: 'Playfair Display', Georgia, serif; }
+.bot-font-body { font-family: 'Lora', Georgia, serif; }
+
+/* === Theme Classes (applied via Alpine) === */
+body.botanical {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+}
+body.sage {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+}
+
+/* === Utility === */
+.bot-bg-card { background-color: var(--bg-card); }
+.bot-bg-accent { background-color: var(--bg-accent); }
+.bot-bg-accent-subtle { background-color: var(--bg-accent-subtle); }
+.bot-bg-muted { background-color: var(--bg-muted); }
+.bot-text-primary { color: var(--text-primary); }
+.bot-text-secondary { color: var(--text-secondary); }
+.bot-text-accent { color: var(--text-accent); }
+.bot-text-thriller { color: var(--text-thriller); }
+.bot-text-filler { color: var(--text-filler); }
+.bot-text-spiller { color: var(--text-spiller); }
+.bot-border { border-color: var(--border-color); }
+.bot-border-thriller { border-color: var(--border-thriller); }
+.bot-border-filler { border-color: var(--border-filler); }
+.bot-border-spiller { border-color: var(--border-spiller); }
+
+/* Rounded / shadows */
+.bot-rounded { border-radius: 0.75rem; }
+.bot-rounded-2xl { border-radius: 1rem; }
+.bot-rounded-full { border-radius: 9999px; }
+.bot-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); }
+.bot-shadow-xl { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.05); }
+
+/* === Buttons === */
+.bot-btn-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+.bot-btn-primary:hover {
+  background-color: var(--btn-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 123, 80, 0.2);
+}
+
+.bot-btn-secondary {
+  background-color: transparent;
+  color: var(--btn-primary-bg);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+.bot-btn-secondary:hover {
+  background-color: var(--bg-accent);
+}
+
+.bot-btn-ghost {
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  transition: color 0.2s ease;
+}
+.bot-btn-ghost:hover { color: var(--text-primary); }
+
+.bot-btn-lg { font-size: 1.1rem; padding: 0.9rem 2rem; }
+.bot-btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+
+.bot-btn-icon {
+  color: var(--text-primary);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.bot-btn-icon:hover { background-color: var(--bg-accent); }
+
+.bot-btn-theme {
+  background-color: var(--bg-accent);
+  color: var(--text-accent);
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+.bot-btn-theme:hover { background-color: var(--bg-accent-subtle); }
+
+/* === Links === */
+.bot-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+.bot-link:hover { color: var(--text-accent); }
+
+/* === Navigation === */
+.bot-nav {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(8px);
+  background-color: color-mix(in srgb, var(--bg-card) 90%, transparent);
+}
+
+/* === Badges === */
+.bot-badge {
+  display: inline-block;
+  background-color: var(--bg-accent);
+  color: var(--text-accent);
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-right: 0.25rem;
+}
+
+.bot-badge-thriller {
+  background-color: #fce8e8;
+  color: var(--text-thriller);
+}
+.bot-badge-filler {
+  background-color: #e8f5e8;
+  color: var(--text-filler);
+}
+.bot-badge-spiller {
+  background-color: #e8f0f8;
+  color: var(--text-spiller);
+}
+
+/* === Form Elements === */
+.bot-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.bot-select {
+  appearance: none;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+.bot-select:focus {
+  border-color: var(--text-accent);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bg-accent);
+}
+
+/* === Option Cards === */
+.bot-option-card {
+  cursor: pointer;
+  border: 2px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  display: block;
+}
+.bot-option-card:has(input:checked) {
+  border-color: var(--btn-primary-bg);
+  background-color: var(--bg-accent);
+}
+.bot-option-card:has(input:checked) .bot-option-text {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.bot-option-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+/* === SVG Layout Elements === */
+.fst-svg {
+  width: 100%;
+  max-width: 400px;
+}
+
+.fst-pot-rim {
+  stroke: var(--border-color);
+  fill: var(--bg-muted);
+}
+.fst-pot-soil {
+  fill: var(--text-secondary);
+}
+.fst-pot-inner {
+  stroke: var(--border-color);
+}
+.fst-bed-rim {
+  stroke: var(--border-color);
+  fill: var(--bg-muted);
+}
+.fst-bed-soil {
+  fill: var(--text-secondary);
+}
+
+.fst-plant-circle {
+  fill: var(--bg-accent);
+  stroke: var(--border-color);
+  stroke-width: 1;
+}
+.fst-plant-lg {
+  fill: var(--bg-accent-subtle);
+  stroke: var(--border-thriller);
+  stroke-width: 2;
+}
+
+.fst-emoji {
+  font-size: 18px;
+  font-family: serif;
+}
+.fst-emoji-lg {
+  font-size: 24px;
+}
+.fst-label {
+  font-size: 10px;
+  fill: var(--text-primary);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+}
+.fst-sublabel {
+  font-size: 8px;
+  fill: var(--text-secondary);
+  font-family: 'Lora', Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.fst-cascade {
+  stroke: var(--border-spiller);
+  stroke-width: 1.5;
+  stroke-dasharray: 3,5;
+  opacity: 0.6;
+}
+
+.fst-legend-bg {
+  fill: var(--bg-card);
+  stroke: var(--border-color);
+  stroke-width: 1;
+}
+.fst-legend-thriller { fill: var(--border-thriller); }
+.fst-legend-filler { fill: var(--border-filler); }
+.fst-legend-spiller { fill: var(--border-spiller); }
+.fst-legend-label {
+  font-size: 11px;
+  fill: var(--text-secondary);
+  font-family: 'Lora', Georgia, serif;
+}
+
+.fst-bed-label {
+  font-size: 11px;
+  fill: var(--text-secondary);
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+}
+
+.fst-grid line {
+  stroke: var(--border-color);
+}
+
+/* === Vine Animations === */
+.vine-path {
+  stroke: var(--vine-color);
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.vine-leaf {
+  fill: var(--vine-color);
+  transition: opacity 0.3s ease;
+}
+
+.vine-leaves {
+  transition: opacity 0.8s ease;
+}
+
+/* === Animations === */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes vineGrow {
+  from { stroke-dashoffset: 100%; }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* === HTMX Loading Indicator === */
+.htmx-request { display: none; }
+.htmx-spinner { display: inline-block; animation: spin 1s linear infinite; }
+.htmx-spinner svg { height: 24px; width: 24px; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Print Styles === */
+@media print {
+  .bot-nav, footer, .bot-btn-primary, .bot-btn-secondary,
+  .vine-svg, #vine-svg { display: none !important; }
+  .bot-bg-card {
+    border: 1px solid #ddd;
+    background: white !important;
+    box-shadow: none !important;
+  }
+  body { background: white !important; }
+  .print-shopping-list { margin-bottom: 1rem; }
+}
