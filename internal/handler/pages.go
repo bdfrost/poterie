@@ -255,6 +255,11 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 		"Layout":         layoutType,
 		"FillerCounts":   countPlants(rec.Fillers),
 		"SpillerCounts":  countPlants(rec.Spillers),
+		"Alternatives": map[string]interface{}{
+			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
+			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
+			"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller),
+		},
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
