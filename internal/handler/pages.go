@@ -66,9 +66,12 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 func (h *Handler) initTemplates() {
 	h.templatesOnce.Do(func() {
 		h.baseTemplates = template.Must(template.New("").Funcs(template.FuncMap{
-			"safeCSS": func(s string) template.CSS {
-				return template.CSS(s)
-			},
+		"safeCSS": func(s string) template.CSS {
+			return template.CSS(s)
+		},
+		"add": func(a, b int) int {
+			return a + b
+		},
 		}).ParseFS(h.assets,
 			"templates/base.html",
 			"templates/partials/*.html",
