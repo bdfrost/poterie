@@ -71,18 +71,30 @@ func (r *RecommendationService) GenerateContainer(zone int, sun models.SunType, 
 	return r.Generate(zone, sun, "container", soil)
 }
 
-// filterBySoil returns flowers that support the given soil type
+// filterBySoil returns flowers that support the given soil type.
+// Loam is treated as universally compatible (most garden plants tolerate it).
+// If no flowers match the exact soil type, fall back to returning all candidates
+// so the user still gets a recommendation rather than an empty result.
 func filterBySoil(flowers []models.Flower, soil models.SoilType) []models.Flower {
-	var result []models.Flower
+	var exact []models.Flower
 	for _, f := range flowers {
 		for _, s := range f.Soils {
 			if s == soil {
-				result = append(result, f)
+				exact = append(exact, f)
+				break
+			}
+			// Loam is treated as universally tolerated
+			if s == models.SoilLoam && soil != models.SoilLoam {
+				exact = append(exact, f)
 				break
 			}
 		}
 	}
-	return result
+	if len(exact) > 0 {
+		return exact
+	}
+	// Fall back: return all candidates if no soil match found
+	return flowers
 }
 
 // pickMultiple randomly selects n items (or all if fewer available)
