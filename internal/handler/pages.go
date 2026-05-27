@@ -154,6 +154,15 @@ func (h *Handler) planner(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// countPlants returns a map of plant ID -> quantity (handles duplicates from swap)
+func countPlants(plants []models.Flower) map[int]int {
+	counts := make(map[int]int)
+	for _, p := range plants {
+		counts[p.ID]++
+	}
+	return counts
+}
+
 // POST /planner/recommend - full page redirect to results
 func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 	zone := parseInt(r.FormValue("zone"), 5)
@@ -178,13 +187,15 @@ func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.render(w, "result.html", map[string]interface{}{
-		"PageTitle":     "Your FST Arrangement",
-		"Rec":           rec,
-		"Zone":          zone,
-		"Sun":           string(sun),
-		"Soil":          string(soil),
-		"Layout":        layoutType,
-		"Alternatives":  alts,
+		"PageTitle":      "Your FST Arrangement",
+		"Rec":            rec,
+		"Zone":           zone,
+		"Sun":            string(sun),
+		"Soil":           string(soil),
+		"Layout":         layoutType,
+		"Alternatives":   alts,
+		"FillerCounts":   countPlants(rec.Fillers),
+		"SpillerCounts":  countPlants(rec.Spillers),
 	})
 }
 
@@ -209,11 +220,13 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := tmpl.ExecuteTemplate(w, "partials/result-card", map[string]interface{}{
-		"Rec":    rec,
-		"Zone":   zone,
-		"Sun":    string(sun),
-		"Soil":   string(soil),
-		"Layout": layoutType,
+		"Rec":            rec,
+		"Zone":           zone,
+		"Sun":            string(sun),
+		"Soil":           string(soil),
+		"Layout":         layoutType,
+		"FillerCounts":   countPlants(rec.Fillers),
+		"SpillerCounts":  countPlants(rec.Spillers),
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -402,11 +415,13 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := tmpl.ExecuteTemplate(w, "partials/result-card", map[string]interface{}{
-		"Rec":    rec,
-		"Zone":   zone,
-		"Sun":    string(sun),
-		"Soil":   string(soil),
-		"Layout": layout,
+		"Rec":           rec,
+		"Zone":          zone,
+		"Sun":           string(sun),
+		"Soil":          string(soil),
+		"Layout":        layout,
+		"FillerCounts":  countPlants(rec.Fillers),
+		"SpillerCounts": countPlants(rec.Spillers),
 		"Alternatives": map[string]interface{}{
 			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
 			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
