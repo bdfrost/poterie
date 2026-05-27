@@ -56,6 +56,8 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 
 	// API endpoints for HTMX
 	r.Post("/api/fst", h.apiFST)
+	r.Post("/api/fst/swap", h.apiFSTSwap)
+	r.Get("/api/alternatives", h.apiAlternatives)
 	r.Get("/api/health", h.health)
 
 	return r
@@ -166,14 +168,20 @@ func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to generate recommendation", http.StatusInternalServerError)
 		return
 	}
+	alts := map[string]interface{}{
+		"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
+		"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
+		"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller),
+	}
 
 	h.render(w, "result.html", map[string]interface{}{
-		"PageTitle": "Your FST Arrangement",
-		"Rec":       rec,
-		"Zone":      zone,
-		"Sun":       string(sun),
-		"Soil":      string(soil),
-		"Layout":    layoutType,
+		"PageTitle":     "Your FST Arrangement",
+		"Rec":           rec,
+		"Zone":          zone,
+		"Sun":           string(sun),
+		"Soil":          string(soil),
+		"Layout":        layoutType,
+		"Alternatives":  alts,
 	})
 }
 
@@ -309,4 +317,105 @@ func parseInt(s string, fallback int) int {
 		return fallback
 	}
 	return n
+}
+
+// GET /api/alternatives - HTMX endpoint returning dropdown options for a plant role
+func (h *Handler) apiAlternatives(w http.ResponseWriter, r *http.Request) {
+	zone := parseInt(r.URL.Query().Get("zone"), 5)
+	sun := models.SunType(r.URL.Query().Get("sun"))
+	soil := models.SoilType(r.URL.Query().Get("soil"))
+	role := models.FSTRole(r.URL.Query().Get("role"))
+	currentID := parseInt(r.URL.Query().Get("currentId"), 0)
+
+	alternatives, err := h.service.GetAlternatives(zone, sun, soil, role)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	h.initTemplates()
+	tmpl, err := h.baseTemplates.Clone()
+	if err != nil {
+		http.Error(w, "template clone error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if err := tmpl.ExecuteTemplate(w, "partials/alt-dropdown", map[string]interface{}{
+		"Alternatives": alternatives,
+		"CurrentID":    currentID,
+		"Role":         string(role),
+	}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+// POST /api/fst/swap - replace a plant in the current FST layout
+func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
+	zone := parseInt(r.FormValue("zone"), 5)
+	sun := models.SunType(r.FormValue("sun"))
+	soil := models.SoilType(r.FormValue("soil"))
+	layout := r.FormValue("layout")
+	role := models.FSTRole(r.FormValue("swap_role"))
+	newID := parseInt(r.FormValue("swap_id"), 0)
+
+	// Start with a fresh recommendation
+	rec, err := h.service.Generate(zone, sun, layout, soil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Swap in the chosen plant
+	f, err := h.service.GetFlowerByID(newID)
+	if err != nil {
+		http.Error(w, "plant not found", http.StatusBadRequest)
+		return
+	}
+
+	switch role {
+	case models.RoleThriller:
+		rec.Thriller = f
+	case models.RoleFiller:
+		origID := parseInt(r.FormValue("orig_filler_id"), 0)
+		for i, fill := range rec.Fillers {
+			if fill.ID == origID {
+				rec.Fillers[i] = *f
+				break
+			}
+		}
+	case models.RoleSpiller:
+		origID := parseInt(r.FormValue("orig_spiller_id"), 0)
+		for i, sp := range rec.Spillers {
+			if sp.ID == origID {
+				rec.Spillers[i] = *f
+				break
+			}
+		}
+	}
+
+	h.initTemplates()
+	tmpl, err := h.baseTemplates.Clone()
+	if err != nil {
+		http.Error(w, "template clone error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if err := tmpl.ExecuteTemplate(w, "partials/result-card", map[string]interface{}{
+		"Rec":    rec,
+		"Zone":   zone,
+		"Sun":    string(sun),
+		"Soil":   string(soil),
+		"Layout": layout,
+		"Alternatives": map[string]interface{}{
+			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
+			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
+			"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller),
+		},
+	}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+// fetchAlts is a helper to safely get alternatives without error checking in handlers
+func fetchAlts(svc *service.RecommendationService, zone int, sun models.SunType, soil models.SoilType, role models.FSTRole) []models.Flower {
+	alts, _ := svc.GetAlternatives(zone, sun, soil, role)
+	return alts
 }

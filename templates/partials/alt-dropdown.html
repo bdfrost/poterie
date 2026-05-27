@@ -1,0 +1,15 @@
+{{define "partials/alt-dropdown"}}
+<select class="bot-select text-xs w-full"
+        hx-trigger="change"
+        hx-post="/api/fst/swap"
+        hx-include="closest form"
+        hx-target="#result-area"
+        hx-swap="innerHTML"
+        hx-vals='{"swap_role": "{{.Role}}", "swap_id": "{{.CurrentID}}"}'>
+    {{range .Alternatives}}
+    <option value="{{.ID}}" {{if eq .ID $.CurrentID}}selected disabled{{end}}>
+        {{if eq .ID $.CurrentID}}✓ {{end}}{{.Name}}
+    </option>
+    {{end}}
+</select>
+{{end}}

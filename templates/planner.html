@@ -10,7 +10,7 @@
     </div>
 
     <div class="bot-bg-card bot-rounded bot-shadow p-6 md:p-8"
-         x-data="{ designing: false }"
+         x-data="{ designing: false, showSoilTest: false }"
          x-on:htmx:before-request="designing = true"
          x-on:htmx:after-request="designing = false">
         <form id="fst-form" hx-post="/planner/recommend" hx-target="#result-area" hx-swap="innerHTML"
@@ -61,7 +61,12 @@
 
             <!-- Soil Type -->
             <div>
-                <label class="bot-label">Soil Type</label>
+                <div class="flex items-center gap-2 mb-2">
+                    <label class="bot-label mb-0">Soil Type</label>
+                    <button type="button" @click="showSoilTest = true"
+                            class="inline-flex items-center justify-center w-5 h-5 rounded-full bot-bg-accent bot-text-accent text-xs font-bold hover:bot-bg-muted transition"
+                            title="Soil Test Guide">?</button>
+                </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {{range .SoilTypes}}
                     <label class="bot-option-card">
@@ -113,5 +118,63 @@
 
     <!-- Results area -->
     <div id="result-area" class="mt-8"></div>
+
+    <!-- Soil Test Modal -->
+    <div x-show="showSoilTest" x-transition.opacity.duration.300ms
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+         @keydown.escape.window="showSoilTest = false"
+         @click.self="showSoilTest = false"
+         style="display: none;">
+        <div class="bot-bg-card bot-rounded bot-shadow-xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+            <button @click="showSoilTest = false" class="absolute top-4 right-4 bot-btn-icon p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="flex items-center gap-2 mb-4">
+                <span class="text-2xl">🫙</span>
+                <h3 class="bot-font-serif text-xl bot-text-primary font-semibold">Soil Jar Test</h3>
+            </div>
+            <p class="bot-text-secondary text-sm mb-4">
+                Find out what kind of soil you have! Healthy soil is roughly <strong>20% clay, 40% silt, 40% sand</strong>.
+                This test takes ~1 min to set up and 24 hours to complete.
+            </p>
+
+            <div class="bot-bg-muted bot-rounded-lg p-4 mb-4 space-y-3">
+                <h4 class="bot-font-serif font-semibold bot-text-primary">Instructions:</h4>
+                <ol class="list-decimal list-inside space-y-2 bot-text-secondary text-sm">
+                    <li>Fill a straight-sided jar (mason jar) <strong>⅓–½ full</strong> with soil dug to root level (~6").</li>
+                    <li>Fill to the shoulder with water. <strong>Shake hard for 3 minutes.</strong></li>
+                    <li>Set down. After <strong>1 minute</strong>, measure sediment at bottom → that's <strong>sand</strong>.</li>
+                    <li>After <strong>4 more minutes</strong>, measure again. The difference → <strong>silt</strong>.</li>
+                    <li>After <strong>24 hours</strong>, measure once more. The difference → <strong>clay</strong>.</li>
+                </ol>
+            </div>
+
+            <div class="bot-bg-accent-subtle bot-rounded-lg p-4 space-y-3">
+                <h4 class="bot-font-serif font-semibold bot-text-primary text-sm">Amending Your Soil:</h4>
+                <div class="space-y-2 text-sm">
+                    <p class="bot-text-secondary">
+                        <strong class="bot-text-primary">🏖️ Sandy soil</strong> (well-draining):
+                        Add humus, aged manure, peat moss, or sawdust + extra nitrogen.
+                    </p>
+                    <p class="bot-text-secondary">
+                        <strong class="bot-text-primary">🌫️ Silty soil</strong> (holds water):
+                        Add coarse sand (not beach sand) or gravel + compost, or well-rotted horse manure with straw.
+                    </p>
+                    <p class="bot-text-secondary">
+                        <strong class="bot-text-primary">🧱 Clay soil</strong> (hard to drain):
+                        Add coarse sand, compost, and peat moss.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-4 bot-border">
+                <p class="text-sm bot-text-secondary italic">
+                    Plants that like "wet feet" thrive in silty or clay soils. Choose accordingly, or amend first!
+                </p>
+            </div>
+        </div>
+    </div>
 </section>
 {{end}}

@@ -129,3 +129,16 @@ func (r *RecommendationService) UpsertFlower(f *models.Flower) error {
 func (r *RecommendationService) DeleteFlower(id int) error {
 	return r.db.Delete(id)
 }
+
+// GetAlternatives returns compatible flowers for a given role/filter combo
+// (for the dropdown swap feature in the visual layout).
+func (r *RecommendationService) GetAlternatives(zone int, sun models.SunType, soil models.SoilType, role models.FSTRole) ([]models.Flower, error) {
+	flowers, err := r.db.FindByCriteria(zone, sun, role)
+	if err != nil {
+		return nil, err
+	}
+	if soil != "" {
+		flowers = filterBySoil(flowers, soil)
+	}
+	return flowers, nil
+}

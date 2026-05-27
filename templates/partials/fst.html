@@ -28,6 +28,15 @@
 
 {{define "partials/result-card"}}
 <div x-data="{ showShoppingList: false }" class="space-y-8">
+    <!-- Hidden form for HTMX swap requests -->
+    <!-- The ID must be unique per result-area so HTMX picks it up from the swapped DOM -->
+    <form id="fst-hidden-form" class="hidden">
+        <input type="hidden" name="zone" value="{{.Zone}}">
+        <input type="hidden" name="sun" value="{{.Sun}}">
+        <input type="hidden" name="soil" value="{{.Soil}}">
+        <input type="hidden" name="layout" value="{{.Layout}}">
+    </form>
+
     <!-- Recommendation header -->
     <div class="bot-bg-card bot-rounded bot-shadow p-6">
         <h2 class="bot-font-serif text-2xl bot-text-primary mb-2">
@@ -43,12 +52,55 @@
 
     <!-- FST Visual SVG Mockup -->
     <div class="bot-bg-card bot-rounded bot-shadow p-6">
-        <h3 class="bot-font-serif text-xl bot-text-primary mb-4">Visual Layout</h3>
-        <div class="flex justify-center">
+        <div class="flex justify-center mb-6">
             {{if eq .Layout "bed"}}
                 {{template "partials/svg-bed" .}}
             {{else}}
                 {{template "partials/svg-pot" .}}
+            {{end}}
+        </div>
+
+        <!-- Plant Swap Controls -->
+        <div class="flex flex-wrap justify-center gap-4 pt-4 bot-border">
+            <div class="flex flex-col items-center">
+                <span class="text-xs font-bold bot-text-thriller mb-1">🎯 THRILLER</span>
+                <select class="bot-select text-xs"
+                    hx-post="/api/fst/swap" hx-target="#result-area" hx-swap="innerHTML"
+                    hx-include="#fst-hidden-form"
+                    hx-vals='{"swap_role": "thriller"}'>
+                    <option value="{{.Rec.Thriller.ID}}" selected disabled>✓ {{.Rec.Thriller.Name}}</option>
+                    {{range .Alternatives.Thrillers}}
+                    <option value="{{.ID}}">{{.Name}}</option>
+                    {{end}}
+                </select>
+            </div>
+            {{range $i, $filler := .Rec.Fillers}}
+            <div class="flex flex-col items-center">
+                <span class="text-xs font-bold bot-text-filler mb-1">🌿 FILLER {{add $i 1}}</span>
+                <select class="bot-select text-xs"
+                    hx-post="/api/fst/swap" hx-target="#result-area" hx-swap="innerHTML"
+                    hx-include="#fst-hidden-form"
+                    hx-vals='{"swap_role": "filler", "orig_filler_id": {{$filler.ID}}}'>
+                    <option value="{{$filler.ID}}" selected disabled>✓ {{$filler.Name}}</option>
+                    {{range $.Alternatives.Fillers}}
+                    <option value="{{.ID}}">{{.Name}}</option>
+                    {{end}}
+                </select>
+            </div>
+            {{end}}
+            {{range $i, $spiller := .Rec.Spillers}}
+            <div class="flex flex-col items-center">
+                <span class="text-xs font-bold bot-text-spiller mb-1">💧 SPILLER {{add $i 1}}</span>
+                <select class="bot-select text-xs"
+                    hx-post="/api/fst/swap" hx-target="#result-area" hx-swap="innerHTML"
+                    hx-include="#fst-hidden-form"
+                    hx-vals='{"swap_role": "spiller", "orig_spiller_id": {{$spiller.ID}}}'>
+                    <option value="{{$spiller.ID}}" selected disabled>✓ {{$spiller.Name}}</option>
+                    {{range $.Alternatives.Spillers}}
+                    <option value="{{.ID}}">{{.Name}}</option>
+                    {{end}}
+                </select>
+            </div>
             {{end}}
         </div>
     </div>

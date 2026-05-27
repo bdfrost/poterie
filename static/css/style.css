@@ -301,7 +301,12 @@ body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
   font-size: 10px;
   fill: var(--text-primary);
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 600;
+  font-weight: 700;
+  /* Text outline for readability over any background */
+  stroke: var(--bg-card);
+  stroke-width: 3px;
+  paint-order: stroke;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
 }
 .fst-sublabel {
   font-size: 8px;
@@ -309,6 +314,9 @@ body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
   font-family: 'Lora', Georgia, serif;
   text-transform: uppercase;
   letter-spacing: 1px;
+  stroke: var(--bg-card);
+  stroke-width: 2px;
+  paint-order: stroke;
 }
 
 .fst-cascade {
