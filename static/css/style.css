@@ -299,14 +299,14 @@ body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
 }
 .fst-label {
   font-size: 10px;
-  fill: var(--text-primary);
+  fill: var(--text-secondary);
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700;
-  /* Text outline for readability over any background */
-  stroke: var(--bg-card);
-  stroke-width: 3px;
+  font-weight: 500;
+  /* Subtle outline for readability over any background */
+  stroke: var(--bg-accent);
+  stroke-width: 1.5px;
   paint-order: stroke;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.06));
 }
 .fst-sublabel {
   font-size: 8px;
