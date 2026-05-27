@@ -23,7 +23,7 @@ type Handler struct {
 	assets  embed.FS
 	// preloaded templates: base + partials (no page-specific content)
 	baseTemplates *template.Template
-	templatesOnce sync.Once
+	tmplMu        sync.Mutex
 }
 
 func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
@@ -33,6 +33,11 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 		service: service.NewRecommendationService(database),
 		assets:  assets,
 	}
+
+	// Initialize templates eagerly — crash at startup if broken, not on first request.
+	// This avoids the sync.Once trap where a transient ParseFS failure leaves the
+	// handler permanently broken (Once won't retry, nil template causes 500s forever).
+	h.loadTemplates()
 
 	r := chi.NewRouter()
 	r.Use(chilog.Logger)
@@ -63,24 +68,43 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 	return r
 }
 
-func (h *Handler) initTemplates() {
-	h.templatesOnce.Do(func() {
-		h.baseTemplates = template.Must(template.New("").Funcs(template.FuncMap{
+func (h *Handler) loadTemplates() {
+	h.tmplMu.Lock()
+	defer h.tmplMu.Unlock()
+	if h.baseTemplates != nil {
+		return
+	}
+	h.baseTemplates = template.Must(template.New("").Funcs(template.FuncMap{
 		"safeCSS": func(s string) template.CSS {
 			return template.CSS(s)
 		},
 		"add": func(a, b int) int {
 			return a + b
 		},
-		}).ParseFS(h.assets,
-			"templates/base.html",
-			"templates/partials/*.html",
-		))
-	})
+		"sub": func(a, b int) int {
+			return a - b
+		},
+		"merge": func(maps ...map[string]int) map[string]int {
+			result := make(map[string]int)
+			for _, m := range maps {
+				for k, v := range m {
+					result[k] += v
+				}
+			}
+			return result
+		},
+	}).ParseFS(h.assets,
+		"templates/base.html",
+		"templates/partials/*.html",
+	))
 }
 
 func (h *Handler) render(w http.ResponseWriter, pagename string, data map[string]interface{}) {
-	h.initTemplates()
+	h.loadTemplates()
+	if h.baseTemplates == nil {
+		http.Error(w, "templates failed to initialize", http.StatusInternalServerError)
+		return
+	}
 	data["Title"] = "Poterie"
 	if title, ok := data["PageTitle"].(string); ok {
 		data["Title"] = title
@@ -90,6 +114,10 @@ func (h *Handler) render(w http.ResponseWriter, pagename string, data map[string
 	// Clone the preloaded base+partials template set and add this page.
 	// Parsing only one page at a time avoids the "content" namespace collision
 	// that occurs when {{define "content"}} exists across multiple files loaded together.
+	if h.baseTemplates == nil {
+		http.Error(w, "templates not initialized", http.StatusInternalServerError)
+		return
+	}
 	tmpl, err := h.baseTemplates.Clone()
 	if err != nil {
 		http.Error(w, "template clone error: "+err.Error(), http.StatusInternalServerError)
@@ -212,7 +240,7 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.initTemplates()
+	h.loadTemplates()
 	// Parse the result-card partial into the base template clone for execution
 	tmpl, err := h.baseTemplates.Clone()
 	if err != nil {
@@ -349,7 +377,7 @@ func (h *Handler) apiAlternatives(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.initTemplates()
+	h.loadTemplates()
 	tmpl, err := h.baseTemplates.Clone()
 	if err != nil {
 		http.Error(w, "template clone error: "+err.Error(), http.StatusInternalServerError)
@@ -414,7 +442,7 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	h.initTemplates()
+	h.loadTemplates()
 	tmpl, err := h.baseTemplates.Clone()
 	if err != nil {
 		http.Error(w, "template clone error: "+err.Error(), http.StatusInternalServerError)
