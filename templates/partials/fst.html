@@ -1,27 +1,27 @@
 {{define "partials/vines"}}
-<!-- Decorative growing vines - visible on scroll -->
+<!-- Decorative growing vines - Redoute-inspired botanical scrollwork -->
 <svg id="vine-svg" class="fixed inset-0 w-full h-full pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
-    <!-- Left vine -->
-    <path id="vine-left" class="vine-path" d="M0,0 Q20,100 5,200 T15,400 T8,600 T20,800" 
-          stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
-          stroke-dasharray="2000" stroke-dashoffset="2000"/>
-    <!-- Right vine -->
-    <path id="vine-right" class="vine-path" d="M100%,0 Q98%,100 100%,200 T99%,400 T100%,600 T98%,800"
-          stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
-          stroke-dasharray="2000" stroke-dashoffset="2000"/>
+    <!-- Left vine with curling tendrils -->
+    <path id="vine-left" class="vine-path" d="M0,0 Q20,80 5,160 C-5,200 25,220 15,260 C5,300 30,320 20,360 C10,400 25,420 15,480 C10,520 20,580 8,620 C0,660 18,700 20,760 C22,800 5,830 12,860" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="2000" stroke-dashoffset="2000"/>
+    <path id="vine-left-curl1" class="vine-path" d="M15,260 C30,240 40,270 25,280 C15,285 10,270 15,260" stroke-width="1" fill="none" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+    <path id="vine-left-curl2" class="vine-path" d="M20,360 C5,340 -5,370 10,380 C20,385 25,370 20,360" stroke-width="1" fill="none" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+    <!-- Right vine with curling tendrils -->
+    <path id="vine-right" class="vine-path" d="M100%,0 Q98%,80 100%,160 C105%,200 95%,220 100%,260 C105%,300 90%,320 98%,360 C105%,400 92%,420 102%,480 C108%,520 95%,580 105%,620 C110%,660 98%,700 100%,760 C102%,800 108%,830 102%,860" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="2000" stroke-dashoffset="2000"/>
+    <path id="vine-right-curl1" class="vine-path" d="M100%,260 C85%,240 78%,270 92%,280 C100%,285 105%,270 100%,260" stroke-width="1" fill="none" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
     <!-- Corner flourishes -->
-    <path id="vine-top-left" class="vine-path" d="M0,0 C30,0 40,20 60,15 C45,30 50,50 30,45"
-          stroke-width="1.5" fill="none" stroke-linecap="round"
-          stroke-dasharray="500" stroke-dashoffset="500"/>
-    <path id="vine-top-right" class="vine-path" d="M100%,0 C70%,0 60%,20 40%,15 C55%,30 50%,50 70%,45"
-          stroke-width="1.5" fill="none" stroke-linecap="round"
-          stroke-dasharray="500" stroke-dashoffset="500"/>
-    <!-- Leaf decorations (hidden until vines grow) -->
+    <path id="vine-top-left" class="vine-path" d="M0,0 C35,0 50,15 55,35 C60,55 45,60 35,50 C25,40 20,30 30,25 C40,20 50,30 45,40" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-dasharray="500" stroke-dashoffset="500"/>
+    <path id="vine-top-right" class="vine-path" d="M100%,0 C65%,0 50%,15 45%,35 C40%,55 55%,60 65%,50 C75%,40 80%,30 70%,25 C60%,20 50%,30 55%,40" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-dasharray="500" stroke-dashoffset="500"/>
+    <path id="vine-bottom-left" class="vine-path" d="M0,100% C20%,100% 30%,95% 35%,90% C40%,85% 30%,80% 25%,85% C20%,90% 15%,85% 20%,80% C25%,75% 35%,80% 30%,85%" stroke-width="1" fill="none" stroke-linecap="round" stroke-dasharray="400" stroke-dashoffset="400"/>
+    <path id="vine-bottom-right" class="vine-path" d="M100%,100% C80%,100% 70%,95% 65%,90% C60%,85% 70%,80% 75%,85% C80%,90% 85%,85% 80%,80% C75%,75% 65%,80% 70%,85%" stroke-width="1" fill="none" stroke-linecap="round" stroke-dasharray="400" stroke-dashoffset="400"/>
+    <!-- Leaves & berries -->
     <g class="vine-leaves" opacity="0">
-        <path d="M15,100 Q25,90 20,80 Q10,90 15,100Z" class="vine-leaf"/>
-        <path d="M5,300 Q-5,290 0,280 Q10,290 5,300Z" class="vine-leaf"/>
-        <path d="M98%,200 Q100%,190 99%,180 Q97%,190 98%,200Z" class="vine-leaf"/>
-        <path d="M100%,400 Q105%,390 100%,380 Q96%,390 100%,400Z" class="vine-leaf"/>
+        <path d="M15,160 Q28,145 22,130 Q10,145 15,160Z" class="vine-leaf"/>
+        <path d="M20,360 Q33,345 28,330 Q15,345 20,360Z" class="vine-leaf"/>
+        <path d="M15,480 Q5,465 0,480 Q10,495 15,480Z" class="vine-leaf"/>
+        <path d="M100%,160 Q87%,145 93%,130 Q102%,145 100%,160Z" class="vine-leaf"/>
+        <path d="M98%,360 Q85%,345 90%,330 Q100%,345 98%,360Z" class="vine-leaf"/>
+        <circle cx="25" cy="280" r="2" class="vine-berry"/>
+        <circle cx="92%" cy="280" r="2" class="vine-berry"/>
     </g>
 </svg>
 {{end}}

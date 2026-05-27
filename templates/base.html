@@ -46,6 +46,7 @@
                     <a href="/" class="bot-link">Home</a>
                     <a href="/planner" class="bot-link">Planner</a>
                     <a href="/guide" class="bot-link">FST Guide</a>
+                    <a href="/admin" class="bot-link opacity-60 hover:opacity-100" title="Admin">🔒</a>
                     <button @click="theme = theme === 'light' ? 'dark' : 'light'; localStorage.setItem('poterie-theme', theme)"
                             class="bot-btn-theme p-2 rounded-full"
                             x-text="theme === 'light' ? '🌙 Dark' : '☀️ Light'">
@@ -79,6 +80,7 @@
                 <a href="/" class="bot-link block py-2" @click="navOpen = false">Home</a>
                 <a href="/planner" class="bot-link block py-2" @click="navOpen = false">Planner</a>
                 <a href="/guide" class="bot-link block py-2" @click="navOpen = false">FST Guide</a>
+                <a href="/admin" class="bot-link block py-2 opacity-60 hover:opacity-100" @click="navOpen = false">🔒 Admin</a>
                 <button @click="theme = theme === 'light' ? 'dark' : 'light'; localStorage.setItem('poterie-theme', theme)"
                         class="bot-link block py-2 w-full text-left" x-text="theme === 'light' ? '🌙 Switch to Dark' : '☀️ Switch to Light'">
                 </button>

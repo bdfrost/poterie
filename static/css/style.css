@@ -354,6 +354,11 @@ body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
   transition: opacity 0.3s ease;
 }
 
+.vine-berry {
+  fill: var(--vine-color);
+  opacity: 0.8;
+}
+
 .vine-leaves {
   transition: opacity 0.8s ease;
 }
@@ -374,11 +379,25 @@ body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
 }
 
 /* === HTMX Loading Indicator === */
-.htmx-request { display: none; }
-.htmx-spinner { display: inline-block; animation: spin 1s linear infinite; }
-.htmx-spinner svg { height: 24px; width: 24px; }
-@keyframes spin {
-  to { transform: rotate(360deg); }
+/* Alpine.js handles the spinner visibility — see planner.html x-data */
+.htmx-request {} /* HTMX marker class, no default style */
+
+/* Dark-mode SVG text readability */
+body.dark .fst-label {
+  fill: #f0f4f0;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  font-weight: 700;
+}
+body.dark .fst-sublabel {
+  fill: #c5d5c5;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4));
+}
+body.dark .fst-plant-circle {
+  fill: rgba(58, 74, 58, 0.7);
+  stroke-width: 1.5;
+}
+body.dark .fst-emoji {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
 /* === Print Styles === */

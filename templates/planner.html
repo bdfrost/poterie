@@ -9,7 +9,10 @@
         </p>
     </div>
 
-    <div class="bot-bg-card bot-rounded bot-shadow p-6 md:p-8">
+    <div class="bot-bg-card bot-rounded bot-shadow p-6 md:p-8"
+         x-data="{ designing: false }"
+         x-on:htmx:before-request="designing = true"
+         x-on:htmx:after-request="designing = false">
         <form id="fst-form" hx-post="/planner/recommend" hx-target="#result-area" hx-swap="innerHTML"
               class="space-y-6">
 
@@ -93,12 +96,12 @@
 
             <!-- Submit -->
             <div class="pt-4">
-                <button type="submit" class="bot-btn-primary bot-btn-lg w-full"
-                        hx-indicator="#loading">
-                    <span hx-show="false">🌸 Generate My FST Plan</span>
-                    <div id="loading" class="htmx-request flex items-center justify-center gap-2">
-                        <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                <button type="submit" class="bot-btn-primary bot-btn-lg w-full relative"
+                        hx-indicator="#loading-indicator">
+                    <span x-show="!designing" x-transition.leave>🌸 Generate My FST Plan</span>
+                    <div id="loading-indicator" x-show="designing" x-transition class="absolute inset-0 flex items-center justify-center gap-2 bg-inherit bot-rounded">
+                        <svg class="animate-spin h-5 w-5 text-current" viewBox="0 0 24 24" fill="none">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                         </svg>
                         Designing your garden...
