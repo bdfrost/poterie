@@ -1,21 +1,21 @@
 {{define "partials/svg-pot"}}
 <svg viewBox="0 0 400 400" class="fst-svg" xmlns="http://www.w3.org/2000/svg">
-    <!-- Pot rim -->
-    <ellipse cx="200" cy="175" rx="175" ry="18" class="fst-pot-rim"/>
-    <!-- Pot body -->
-    <path d="M35,175 C35,175 55,380 200,380 C345,380 365,175 365,175Z" class="fst-pot-rim"/>
-    <!-- Soil surface - lighter for less text contrast -->
-    <ellipse cx="200" cy="178" rx="168" ry="15" class="fst-pot-soil" fill-opacity="0.04"/>
+    <!-- Top-down pot: just a circle outline -->
+    <circle cx="200" cy="200" r="180" class="fst-pot-rim" fill="none" stroke-width="4"/>
+    <!-- Inner rim -->
+    <circle cx="200" cy="200" r="170" class="fst-pot-inner" fill="none" stroke-width="1" />
+    <!-- Soil fill - light -->
+    <circle cx="200" cy="200" r="168" class="fst-pot-soil" fill-opacity="0.04"/>
 
     <!-- Thriller (center, largest) -->
     {{if .Rec.Thriller}}
-    <circle cx="200" cy="170" r="50" class="fst-plant-lg"/>
-    <text x="200" y="165" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
-    <text x="200" y="178" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
+    <circle cx="200" cy="200" r="55" class="fst-plant-lg"/>
+    <text x="200" y="195" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
+    <text x="200" y="210" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
     {{end}}
 
     <!-- Fillers (medium, around thriller) -->
-    {{$fillerPositions := slice (slice 130 130) (slice 270 130) (slice 200 95)}}
+    {{$fillerPositions := slice (slice 110 130) (slice 290 130) (slice 200 90)}}
     {{range $i, $filler := .Rec.Fillers}}
     {{$pos := index $fillerPositions $i}}
     <circle cx="{{index $pos 0}}" cy="{{index $pos 1}}" r="35" class="fst-plant-circle"/>
@@ -23,34 +23,34 @@
     {{end}}
 
     <!-- Spillers (small, at edges) -->
-    {{$spillerPositions := slice (slice 90 200) (slice 310 200) (slice 140 250) (slice 260 250)}}
+    {{$spillerPositions := slice (slice 70 200) (slice 330 200) (slice 130 290) (slice 270 290)}}
     {{range $i, $spiller := .Rec.Spillers}}
     {{$pos := index $spillerPositions $i}}
     <circle cx="{{index $pos 0}}" cy="{{index $pos 1}}" r="28" class="fst-plant-circle"/>
     <text x="{{index $pos 0}}" y="{{index $pos 1}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
-    <!-- Cascade lines -->
-    <path d="M{{index $pos 0}},{{add (index $pos 1) 28}} Q{{sub (index $pos 0) 15}},{{add (index $pos 1) 55}} {{index $pos 0}},{{add (index $pos 1) 70}}" class="fst-cascade"/>
+    <!-- Cascade lines (subtle arcs outward) -->
+    <path d="M{{index $pos 0}},{{add (index $pos 1) 28}} Q{{index $pos 0}},{{add (index $pos 1) 45}} {{add (index $pos 0) 5}},{{add (index $pos 1) 55}}" class="fst-cascade"/>
     {{end}}
 
     <!-- Legend -->
-    <rect x="310" y="330" width="80" height="55" rx="6" class="fst-legend-bg"/>
-    <circle cx="325" cy="345" r="5" class="fst-legend-thriller"/>
-    <text x="335" y="348" class="fst-legend-label">Thriller</text>
-    <circle cx="325" cy="360" r="5" class="fst-legend-filler"/>
-    <text x="335" y="363" class="fst-legend-label">Filler</text>
-    <circle cx="325" cy="375" r="5" class="fst-legend-spiller"/>
-    <text x="335" y="378" class="fst-legend-label">Spiller</text>
+    <rect x="280" y="340" width="90" height="55" rx="6" class="fst-legend-bg"/>
+    <circle cx="295" cy="355" r="5" class="fst-legend-thriller"/>
+    <text x="305" y="358" class="fst-legend-label">Thriller</text>
+    <circle cx="295" cy="370" r="5" class="fst-legend-filler"/>
+    <text x="305" y="373" class="fst-legend-label">Filler</text>
+    <circle cx="295" cy="385" r="5" class="fst-legend-spiller"/>
+    <text x="305" y="388" class="fst-legend-label">Spiller</text>
 </svg>
 {{end}}
 
 {{define "partials/svg-bed"}}
 <svg viewBox="0 0 600 400" class="fst-svg" xmlns="http://www.w3.org/2000/svg">
-    <!-- Bed outline - lighter interior -->
-    <rect x="25" y="25" width="550" height="350" rx="28" class="fst-bed-rim"/>
-    <rect x="30" y="30" width="540" height="340" rx="24" class="fst-bed-soil" fill-opacity="0.03"/>
+    <!-- Bed outline - top-down rectangle -->
+    <rect x="25" y="25" width="550" height="350" rx="20" class="fst-bed-rim" fill="none" stroke-width="3"/>
+    <rect x="30" y="30" width="540" height="340" rx="16" class="fst-bed-soil" fill-opacity="0.03"/>
 
     <!-- Subtle grid -->
-    <g class="fst-grid" stroke-width="0.5" opacity="0.3">
+    <g class="fst-grid" stroke-width="0.5" opacity="0.2">
         <line x1="150" y1="30" x2="150" y2="365"/>
         <line x1="275" y1="30" x2="275" y2="365"/>
         <line x1="400" y1="30" x2="400" y2="365"/>
