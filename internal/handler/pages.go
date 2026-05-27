@@ -85,7 +85,8 @@ func (h *Handler) render(w http.ResponseWriter, name string, data map[string]int
 		data["Title"] = title
 	}
 	data["Version"] = h.cfg.Version
-	data["TemplateName"] = name // e.g. "home", "planner", "admin"
+	// Strip .html suffix — {{define}} blocks use bare names (home, planner, etc.)
+	data["TemplateName"] = strings.TrimSuffix(name, ".html")
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := h.templates.ExecuteTemplate(w, "base", data); err != nil {
