@@ -13,5 +13,5 @@ poterie
 .DS_Store
 Thumbs.db
 
-# Go
-go.sum
+# Go cache (not go.sum - that must be committed)
+vendor/
