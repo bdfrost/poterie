@@ -80,7 +80,7 @@ func (h *Handler) initTemplates() {
 
 func (h *Handler) render(w http.ResponseWriter, name string, data map[string]interface{}) {
 	h.initTemplates()
-	data["Title"] = "FST Garden Planner"
+	data["Title"] = "Poterie"
 	if title, ok := data["PageTitle"].(string); ok {
 		data["Title"] = title
 	}
