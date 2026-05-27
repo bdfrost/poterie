@@ -57,6 +57,11 @@
 body.light {
   background-color: var(--bg-page);
   color: var(--text-primary);
+  /* Watercolor paper / Redouté parchment effect */
+  background-image:
+    radial-gradient(ellipse at 15% 25%, rgba(180, 140, 120, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 75%, rgba(160, 130, 110, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 55% 15%, rgba(170, 145, 125, 0.06) 0%, transparent 50%);
 }
 body.dark {
   background-color: var(--bg-page);
