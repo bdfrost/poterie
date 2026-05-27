@@ -6,7 +6,8 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=1 go build -ldflags="-s -w" -o /poterie .
+ARG VERSION=dev
+RUN CGO_ENABLED=1 go build -ldflags="-s -w -X github.com/bdfrost/poterie/internal/config.Version=${VERSION}" -o /poterie .
 
 # Runtime
 FROM alpine:3.20

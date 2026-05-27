@@ -8,7 +8,14 @@ type Config struct {
 	AdminUser   string
 	AdminPass   string
 	ExternalURL string
+	Version     string
 }
+
+// These are set via -ldflags at build time
+var (
+	Version   = "dev"
+	GitCommit = "unknown"
+)
 
 func New() *Config {
 	return &Config{
@@ -17,6 +24,7 @@ func New() *Config {
 		AdminUser:   envOr("ADMIN_USER", "admin"),
 		AdminPass:   envOr("ADMIN_PASS", "changeme"),
 		ExternalURL: envOr("EXTERNAL_URL", ""),
+		Version:     Version,
 	}
 }
 

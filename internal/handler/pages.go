@@ -84,6 +84,8 @@ func (h *Handler) render(w http.ResponseWriter, name string, data map[string]int
 	if title, ok := data["PageTitle"].(string); ok {
 		data["Title"] = title
 	}
+	data["Version"] = h.cfg.Version
+	data["TemplateName"] = name // e.g. "home", "planner", "admin"
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := h.templates.ExecuteTemplate(w, "base", data); err != nil {

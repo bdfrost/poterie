@@ -91,7 +91,7 @@
 
     <!-- Main Content -->
     <main class="relative z-10">
-        {{template "content" .}}
+        {{template .TemplateName .}}
     </main>
 
     <!-- Footer -->
@@ -118,7 +118,7 @@
                 </div>
             </div>
             <div class="bot-border border-t mt-6 pt-4 text-center text-sm bot-text-secondary">
-                <p>&copy; <span x-text="new Date().getFullYear()"></span> Poterie — Built with care 🌱</p>
+                <p>&copy; <span x-text="new Date().getFullYear()"></span> Poterie — Built with care 🌱 <span class="ml-1 opacity-50 text-xs">{{.Version}}</span></p>
             </div>
         </div>
     </footer>
