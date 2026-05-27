@@ -1,11 +1,11 @@
 /* ===================================
-   Poterie — Botanical Theme CSS
+   Poterie — Light/Dark Theme CSS
    Redouté-inspired: elegant serif typography,
    natural color palette, smooth animations
    =================================== */
 
 /* === Theme Variables === */
-.botanical {
+.light {
   --bg-page: #faf9f6;
   --bg-card: #ffffff;
   --bg-accent: #e8f0e4;
@@ -27,26 +27,26 @@
   --vine-color: rgba(74, 123, 80, 0.2);
 }
 
-.sage {
-  --bg-page: #f5f4f0;
-  --bg-card: #ffffff;
-  --bg-accent: #d4ddd0;
-  --bg-accent-subtle: #e8ede6;
-  --bg-muted: #eef0ec;
-  --text-primary: #3c4a3c;
-  --text-secondary: #6b7d6b;
-  --border-color: #d8dfd8;
-  --border-thriller: #c4716d;
-  --border-filler: #8aaa7a;
-  --border-spiller: #7ea8c8;
-  --text-thriller: #a0555a;
-  --text-filler: #5a8a5a;
-  --text-spiller: #5a8aa0;
-  --text-accent: #5a8a60;
-  --btn-primary-bg: #5a8a60;
-  --btn-primary-text: #ffffff;
-  --btn-primary-hover: #4a7a50;
-  --vine-color: rgba(90, 138, 96, 0.15);
+.dark {
+  --bg-page: #1a1f1a;
+  --bg-card: #252d25;
+  --bg-accent: #3a4a3a;
+  --bg-accent-subtle: #2e3a2e;
+  --bg-muted: #2a322a;
+  --text-primary: #e8ede8;
+  --text-secondary: #a0b0a0;
+  --border-color: #3a453a;
+  --border-thriller: #e8716e;
+  --border-filler: #8aca8a;
+  --border-spiller: #7ebcd2;
+  --text-thriller: #f09090;
+  --text-filler: #a0daa0;
+  --text-spiller: #a0d0f0;
+  --text-accent: #80c080;
+  --btn-primary-bg: #5a9a60;
+  --btn-primary-text: #1a1f1a;
+  --btn-primary-hover: #70b078;
+  --vine-color: rgba(128, 192, 128, 0.15);
 }
 
 /* === Base === */
@@ -54,11 +54,11 @@
 .bot-font-body { font-family: 'Lora', Georgia, serif; }
 
 /* === Theme Classes (applied via Alpine) === */
-body.botanical {
+body.light {
   background-color: var(--bg-page);
   color: var(--text-primary);
 }
-body.sage {
+body.dark {
   background-color: var(--bg-page);
   color: var(--text-primary);
 }
@@ -85,6 +85,13 @@ body.sage {
 .bot-rounded-full { border-radius: 9999px; }
 .bot-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); }
 .bot-shadow-xl { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.05); }
+
+body.dark .bot-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2); }
+body.dark .bot-shadow-xl { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.3); }
+body.dark .bot-option-card { background-color: var(--bg-card); }
+body.dark .bot-select { color-scheme: dark; }
+body.dark .fst-pot-rim, body.dark .fst-bed-rim { stroke-opacity: 0.5; }
+body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.2; }
 
 /* === Buttons === */
 .bot-btn-primary {
@@ -188,6 +195,10 @@ body.sage {
   color: var(--text-spiller);
 }
 
+body.dark .bot-badge-thriller { background-color: #3a2020; }
+body.dark .bot-badge-filler { background-color: #1e301e; }
+body.dark .bot-badge-spiller { background-color: #1e2830; }
+
 /* === Form Elements === */
 .bot-label {
   display: block;
@@ -246,20 +257,27 @@ body.sage {
 .fst-pot-rim {
   stroke: var(--border-color);
   fill: var(--bg-muted);
+  stroke-opacity: 0.6;
 }
 .fst-pot-soil {
   fill: var(--text-secondary);
+  fill-opacity: 0.1;
 }
 .fst-pot-inner {
   stroke: var(--border-color);
+  stroke-opacity: 0.4;
 }
 .fst-bed-rim {
   stroke: var(--border-color);
   fill: var(--bg-muted);
+  stroke-opacity: 0.6;
 }
 .fst-bed-soil {
   fill: var(--text-secondary);
+  fill-opacity: 0.05;
 }
+body.dark .fst-pot-rim, body.dark .fst-bed-rim { stroke-opacity: 0.4; }
+body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
 
 .fst-plant-circle {
   fill: var(--bg-accent);
@@ -366,12 +384,12 @@ body.sage {
 /* === Print Styles === */
 @media print {
   .bot-nav, footer, .bot-btn-primary, .bot-btn-secondary,
-  .vine-svg, #vine-svg { display: none !important; }
+  .vine-path, #vine-svg, .botanical-decor { display: none !important; }
   .bot-bg-card {
     border: 1px solid #ddd;
     background: white !important;
     box-shadow: none !important;
   }
-  body { background: white !important; }
+  body { background: white !important; color: #333 !important; }
   .print-shopping-list { margin-bottom: 1rem; }
 }

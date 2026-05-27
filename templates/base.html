@@ -25,7 +25,7 @@
         }
     </script>
 </head>
-<body x-data="{ theme: localStorage.getItem('fst-theme') || 'sage', showZoneMap: false, navOpen: false }"
+<body x-data="{ theme: localStorage.getItem('poterie-theme') || 'light', showZoneMap: false, navOpen: false }"
       :class="theme"
       class="min-h-screen bot-font-body transition-colors duration-500">
 
@@ -46,9 +46,9 @@
                     <a href="/" class="bot-link">Home</a>
                     <a href="/planner" class="bot-link">Planner</a>
                     <a href="/guide" class="bot-link">FST Guide</a>
-                    <button @click="theme = theme === 'botanical' ? 'sage' : 'botanical'; localStorage.setItem('fst-theme', theme)"
+                    <button @click="theme = theme === 'light' ? 'dark' : 'light'; localStorage.setItem('poterie-theme', theme)"
                             class="bot-btn-theme p-2 rounded-full"
-                            x-text="theme === 'botanical' ? '🌿 Sage' : '🌱 Bright'">
+                            x-text="theme === 'light' ? '🌙 Dark' : '☀️ Light'">
                     </button>
                 </div>
 
@@ -79,8 +79,8 @@
                 <a href="/" class="bot-link block py-2" @click="navOpen = false">Home</a>
                 <a href="/planner" class="bot-link block py-2" @click="navOpen = false">Planner</a>
                 <a href="/guide" class="bot-link block py-2" @click="navOpen = false">FST Guide</a>
-                <button @click="theme = theme === 'botanical' ? 'sage' : 'botanical'; localStorage.setItem('fst-theme', theme)"
-                        class="bot-link block py-2 w-full text-left" x-text="theme === 'botanical' ? '🌿 Switch to Bright' : '🌱 Switch to Sage'">
+                <button @click="theme = theme === 'light' ? 'dark' : 'light'; localStorage.setItem('poterie-theme', theme)"
+                        class="bot-link block py-2 w-full text-left" x-text="theme === 'light' ? '🌙 Switch to Dark' : '☀️ Switch to Light'">
                 </button>
             </div>
         </div>
