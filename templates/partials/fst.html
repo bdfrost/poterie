@@ -29,12 +29,21 @@
 {{define "partials/result-card"}}
 <div x-data="{ showShoppingList: false }" class="space-y-8">
     <!-- Hidden form for HTMX swap requests -->
-    <!-- The ID must be unique per result-area so HTMX picks it up from the swapped DOM -->
     <form id="fst-hidden-form" class="hidden">
         <input type="hidden" name="zone" value="{{.Zone}}">
         <input type="hidden" name="sun" value="{{.Sun}}">
         <input type="hidden" name="soil" value="{{.Soil}}">
         <input type="hidden" name="layout" value="{{.Layout}}">
+        <!-- Preserve current plants across swaps -->
+        {{if .Rec.Thriller}}
+        <input type="hidden" name="thriller_id" value="{{.Rec.Thriller.ID}}">
+        {{end}}
+        {{range $i, $f := .Rec.Fillers}}
+        <input type="hidden" name="filler_{{$i}}" value="{{$f.ID}}">
+        {{end}}
+        {{range $i, $s := .Rec.Spillers}}
+        <input type="hidden" name="spiller_{{$i}}" value="{{$s.ID}}">
+        {{end}}
     </form>
 
     <!-- Recommendation header -->

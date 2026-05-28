@@ -419,33 +419,55 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Fetch the selected plant first
-	f, err := h.service.GetFlowerByID(newID)
+	// Fetch the newly selected plant
+	newPlant, err := h.service.GetFlowerByID(newID)
 	if err != nil {
 		http.Error(w, "plant not found", http.StatusBadRequest)
 		return
 	}
 
-	// Generate a fresh recommendation as the base
-	rec, err := h.service.Generate(zone, sun, layout, soil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	// Build the recommendation from the preserved plant IDs sent by the client.
+	// This keeps all existing plants unchanged and only replaces the one the user picked.
+	thrillerID := parseInt(r.FormValue("thriller_id"), 0)
+	rec := &models.FSTRecommendation{
+		Notes: "Custom arrangement",
+	}
+	// Load thriller
+	if thrillerID > 0 {
+		if f, err := h.service.GetFlowerByID(thrillerID); err == nil {
+			rec.Thriller = f
+		}
+	}
+	// Load fillers
+	for i := 0; i < 3; i++ {
+		fid := parseInt(r.FormValue(fmt.Sprintf("filler_%d", i)), 0)
+		if fid > 0 {
+			if f, err := h.service.GetFlowerByID(fid); err == nil {
+				rec.Fillers = append(rec.Fillers, *f)
+			}
+		}
+	}
+	// Load spillers
+	for i := 0; i < 2; i++ {
+		fid := parseInt(r.FormValue(fmt.Sprintf("spiller_%d", i)), 0)
+		if fid > 0 {
+			if f, err := h.service.GetFlowerByID(fid); err == nil {
+				rec.Spillers = append(rec.Spillers, *f)
+			}
+		}
 	}
 
-	// Swap by slot index — this preserves the position in the layout even though
-	// Generate() picks different random plants. We're telling the user "keep your
-	// other choices" so we replace the same spatial slot with the new plant.
+	// Apply the swap — replace the selected plant at its slot
 	switch role {
 	case models.RoleThriller:
-		rec.Thriller = f
+		rec.Thriller = newPlant
 	case models.RoleFiller:
 		if slotIdx < len(rec.Fillers) {
-			rec.Fillers[slotIdx] = *f
+			rec.Fillers[slotIdx] = *newPlant
 		}
 	case models.RoleSpiller:
 		if slotIdx < len(rec.Spillers) {
-			rec.Spillers[slotIdx] = *f
+			rec.Spillers[slotIdx] = *newPlant
 		}
 	}
 
