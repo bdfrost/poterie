@@ -73,18 +73,16 @@ func (r *RecommendationService) GenerateContainer(zone int, sun models.SunType, 
 
 // filterBySoil returns flowers that support the given soil type.
 // Loam is treated as universally compatible (most garden plants tolerate it).
-// If no flowers match the exact soil type, fall back to returning all candidates
-// so the user still gets a recommendation rather than an empty result.
+// Uses a two-pass approach to avoid duplicate entries:
+//   1. First pass: find exact soil matches
+//   2. Second pass (only if exact is empty): include loam-tolerant plants
+//   3. Fallback: return all candidates if still no matches
 func filterBySoil(flowers []models.Flower, soil models.SoilType) []models.Flower {
+	// Pass 1: exact soil match only
 	var exact []models.Flower
 	for _, f := range flowers {
 		for _, s := range f.Soils {
 			if s == soil {
-				exact = append(exact, f)
-				break
-			}
-			// Loam is treated as universally tolerated
-			if s == models.SoilLoam && soil != models.SoilLoam {
 				exact = append(exact, f)
 				break
 			}
@@ -93,7 +91,24 @@ func filterBySoil(flowers []models.Flower, soil models.SoilType) []models.Flower
 	if len(exact) > 0 {
 		return exact
 	}
-	// Fall back: return all candidates if no soil match found
+
+	// Pass 2: loam-tolerant plants (only if no exact matches)
+	if soil != models.SoilLoam {
+		var loamTolerant []models.Flower
+		for _, f := range flowers {
+			for _, s := range f.Soils {
+				if s == models.SoilLoam {
+					loamTolerant = append(loamTolerant, f)
+					break
+				}
+			}
+		}
+		if len(loamTolerant) > 0 {
+			return loamTolerant
+		}
+	}
+
+	// Fallback: return all candidates if nothing matched
 	return flowers
 }
 
