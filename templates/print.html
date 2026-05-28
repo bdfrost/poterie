@@ -26,29 +26,27 @@
             </div>
         </div>
         <div class="fst-card filler-card">
-            <h2>🌿 Filler{{if gt (len .Rec.Fillers) 1}}s{{end}}</h2>
+            <h2>🌿 Filler{{if gt (len .FilledFillers) 1}}s{{end}}</h2>
             <div class="plant-list">
-                {{range .Rec.Fillers}}
-                {{$qty := index $.FillerCounts .ID}}
+                {{range .FilledFillers}}
                 <div class="plant-entry">
-                    <span class="emoji">{{.ImageURL}}</span>
-                    <span class="name">{{.Name}}</span>
-                    <span class="botanical">({{.BotanicalName}})</span>
-                    <span class="qty">× {{$qty}}</span>
+                    <span class="emoji">{{.Flower.ImageURL}}</span>
+                    <span class="name">{{.Flower.Name}}</span>
+                    <span class="botanical">({{.Flower.BotanicalName}})</span>
+                    <span class="qty">× {{.Qty}}</span>
                 </div>
                 {{end}}
             </div>
         </div>
         <div class="fst-card spiller-card">
-            <h2>💧 Spiller{{if gt (len .Rec.Spillers) 1}}s{{end}}</h2>
+            <h2>💧 Spiller{{if gt (len .FilledSpillers) 1}}s{{end}}</h2>
             <div class="plant-list">
-                {{range .Rec.Spillers}}
-                {{$qty := index $.SpillerCounts .ID}}
+                {{range .FilledSpillers}}
                 <div class="plant-entry">
-                    <span class="emoji">{{.ImageURL}}</span>
-                    <span class="name">{{.Name}}</span>
-                    <span class="botanical">({{.BotanicalName}})</span>
-                    <span class="qty">× {{$qty}}</span>
+                    <span class="emoji">{{.Flower.ImageURL}}</span>
+                    <span class="name">{{.Flower.Name}}</span>
+                    <span class="botanical">({{.Flower.BotanicalName}})</span>
+                    <span class="qty">× {{.Qty}}</span>
                 </div>
                 {{end}}
             </div>
@@ -59,11 +57,11 @@
         <h2>Planting Instructions</h2>
         <ul>
             <li><strong>Thriller:</strong> Plant in the center (container) or back (bed){{if .Rec.Thriller}} — {{.Rec.Thriller.Height}} tall{{end}}</li>
-            {{range .Rec.Fillers}}
-            <li><strong>{{.Name}}:</strong> {{.Description}}</li>
+            {{range .FilledFillers}}
+            <li><strong>{{.Flower.Name}}:</strong> {{.Flower.Description}}</li>
             {{end}}
-            {{range .Rec.Spillers}}
-            <li><strong>{{.Name}}:</strong> {{.Description}}</li>
+            {{range .FilledSpillers}}
+            <li><strong>{{.Flower.Name}}:</strong> {{.Flower.Description}}</li>
             {{end}}
             <li><strong>Spacing:</strong> {{if .Rec.Thriller}}{{.Rec.Thriller.Spacing}}{{else}}See plant tag{{end}}</li>
         </ul>

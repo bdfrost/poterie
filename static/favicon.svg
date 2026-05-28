@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Pot body -->
+  <path d="M8 14 L10 26 L22 26 L24 14" fill="#c9a87c" stroke="#8b6914" stroke-width="1"/>
+  <!-- Pot rim -->
+  <rect x="6" y="12" width="20" height="4" rx="1" fill="#d4b896" stroke="#8b6914" stroke-width="1"/>
+  <!-- Thriller plant -->
+  <line x1="16" y1="12" x2="16" y2="4" stroke="#3d7a3d" stroke-width="2"/>
+  <circle cx="16" cy="4" r="2.5" fill="#e8716e"/>
+  <!-- Filler left -->
+  <line x1="12" y1="12" x2="10" y2="6" stroke="#3d7a3d" stroke-width="1.5"/>
+  <circle cx="10" cy="6" r="1.8" fill="#6aaa6a"/>
+  <!-- Filler right -->
+  <line x1="20" y1="12" x2="22" y2="6" stroke="#3d7a3d" stroke-width="1.5"/>
+  <circle cx="22" cy="6" r="1.8" fill="#6aaa6a"/>
+  <!-- Spiller left -->
+  <path d="M8 14 Q4 16 5 20" fill="none" stroke="#6b9dc2" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="5" cy="20" r="1.2" fill="#6b9dc2"/>
+  <!-- Spiller right -->
+  <path d="M24 14 Q28 16 27 20" fill="none" stroke="#6b9dc2" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="27" cy="20" r="1.2" fill="#6b9dc2"/>
+</svg>

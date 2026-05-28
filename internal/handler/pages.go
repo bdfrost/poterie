@@ -198,6 +198,30 @@ func countPlants(plants []models.Flower) map[int]int {
 	return counts
 }
 
+// plantWithQty pairs a flower with its quantity for display
+type plantWithQty struct {
+	Flower models.Flower
+	Qty    int
+}
+
+// deduplicatePlants returns unique plants with their quantities
+func deduplicatePlants(plants []models.Flower) []plantWithQty {
+	counts := countPlants(plants)
+	if len(counts) == 0 {
+		return nil
+	}
+	result := make([]plantWithQty, 0, len(counts))
+	// Iterate in insertion order to keep consistent display
+	seen := make(map[int]bool)
+	for _, p := range plants {
+		if !seen[p.ID] {
+			seen[p.ID] = true
+			result = append(result, plantWithQty{Flower: p, Qty: counts[p.ID]})
+		}
+	}
+	return result
+}
+
 // POST /planner/recommend - full page redirect to results
 func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 	zone := parseInt(r.FormValue("zone"), 5)
@@ -215,7 +239,7 @@ func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to generate recommendation", http.StatusInternalServerError)
 		return
 	}
-	alts := map[string]interface{}{
+	alters := map[string]interface{}{
 		"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
 		"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
 		"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller),
@@ -228,9 +252,11 @@ func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 		"Sun":            string(sun),
 		"Soil":           string(soil),
 		"Layout":         layoutType,
-		"Alternatives":   alts,
+		"Alternatives":   alters,
 		"FillerCounts":   countPlants(rec.Fillers),
 		"SpillerCounts":  countPlants(rec.Spillers),
+		"FilledFillers":  deduplicatePlants(rec.Fillers),
+		"FilledSpillers": deduplicatePlants(rec.Spillers),
 	})
 }
 
@@ -262,6 +288,8 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 		"Layout":         layoutType,
 		"FillerCounts":   countPlants(rec.Fillers),
 		"SpillerCounts":  countPlants(rec.Spillers),
+		"FilledFillers":  deduplicatePlants(rec.Fillers),
+		"FilledSpillers": deduplicatePlants(rec.Spillers),
 		"Alternatives": map[string]interface{}{
 			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
 			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
@@ -430,7 +458,11 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 	// This keeps all existing plants unchanged and only replaces the one the user picked.
 	thrillerID := parseInt(r.FormValue("thriller_id"), 0)
 	rec := &models.FSTRecommendation{
-		Notes: "Custom arrangement",
+		LayoutType: layout,
+		Zone:       zone,
+		Sun:        sun,
+		Soils:      []models.SoilType{soil},
+		Notes:      "Custom arrangement",
 	}
 	// Load thriller
 	if thrillerID > 0 {
@@ -456,6 +488,11 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+	// Generate a meaningful note based on actual plants
+	if rec.Thriller != nil && (len(rec.Fillers) > 0 || len(rec.Spillers) > 0) {
+		rec.Notes = fmt.Sprintf("Your custom %s features %s as the centerpiece, %d filler(s) for body, and %d spiller(s) for trailing edges.",
+			layout, rec.Thriller.Name, len(rec.Fillers), len(rec.Spillers))
+	}
 
 	// Apply the swap — replace the selected plant at its slot
 	switch role {
@@ -478,13 +515,15 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := tmpl.ExecuteTemplate(w, "partials/result-card", map[string]interface{}{
-		"Rec":           rec,
-		"Zone":          zone,
-		"Sun":           string(sun),
-		"Soil":          string(soil),
-		"Layout":        layout,
-		"FillerCounts":  countPlants(rec.Fillers),
-		"SpillerCounts": countPlants(rec.Spillers),
+		"Rec":            rec,
+		"Zone":           zone,
+		"Sun":            string(sun),
+		"Soil":           string(soil),
+		"Layout":         layout,
+		"FillerCounts":   countPlants(rec.Fillers),
+		"SpillerCounts":  countPlants(rec.Spillers),
+		"FilledFillers":  deduplicatePlants(rec.Fillers),
+		"FilledSpillers": deduplicatePlants(rec.Spillers),
 		"Alternatives": map[string]interface{}{
 			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
 			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
@@ -514,14 +553,16 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.render(w, "print.html", map[string]interface{}{
-		"PageTitle":     "Shopping List",
-		"Rec":           rec,
-		"Zone":          zone,
-		"Sun":           string(sun),
-		"Soil":          string(soil),
-		"Layout":        layout,
-		"FillerCounts":  countPlants(rec.Fillers),
-		"SpillerCounts": countPlants(rec.Spillers),
+		"PageTitle":      "Shopping List",
+		"Rec":            rec,
+		"Zone":           zone,
+		"Sun":            string(sun),
+		"Soil":           string(soil),
+		"Layout":         layout,
+		"FillerCounts":   countPlants(rec.Fillers),
+		"SpillerCounts":  countPlants(rec.Spillers),
+		"FilledFillers":  deduplicatePlants(rec.Fillers),
+		"FilledSpillers": deduplicatePlants(rec.Spillers),
 	})
 }
 

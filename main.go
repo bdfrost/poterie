@@ -12,7 +12,7 @@ import (
 	"github.com/bdfrost/poterie/internal/handler"
 )
 
-//go:embed templates/* templates/partials/* static/css/* static/js/*
+//go:embed templates/* templates/partials/* static/css/* static/js/* static/favicon.svg
 var assets embed.FS
 
 func main() {
