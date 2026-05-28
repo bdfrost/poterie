@@ -261,6 +261,18 @@ func seedFlowers() []models.Flower {
 			[]models.SoilType{models.SoilLoam, models.SoilClay},
 			"Green foliage", "summer", "6-18in", "12-18in",
 			"Aggressive spreader, great in containers (contained). Fragrant foliage.", "🌿"),
+		spiller("Vinca Minor", "Vinca minor", 4, 9, models.SunFullShade,
+			[]models.SoilType{models.SoilLoam, models.SoilClay, models.SoilWellDrained},
+			"Purple/blue tiny flowers", "spring", "3-6in", "12-18in",
+			"Evergreen trailing groundcover. Shade-loving with spring blooms.", "💜"),
+		spiller("Sweet Woodruff", "Galium odoratum", 4, 8, models.SunFullShade,
+			[]models.SoilType{models.SoilLoam},
+			"White tiny flowers", "spring", "6-12in", "9-12in",
+			"Delicate whorled foliage with tiny white spring flowers. Fragrant.", "🤍"),
+		spiller("Ajuga", "Ajuga reptans", 3, 9, models.SunPartShade,
+			[]models.SoilType{models.SoilLoam, models.SoilClay},
+			"Blue flower spikes", "spring", "4-6in", "8-12in",
+			"Low-growing shade spiller with purple-bronze foliage and blue spikes.", "💙"),
 	}
 }
 
