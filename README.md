@@ -1,29 +1,44 @@
 # 🌿 Poterie
 
-**A modern, minimalist web app for gardeners** — design beautiful flower arrangements using the **Filler-Spiller-Thriller (FST)** methodology.
+**Poterie** is a modern, minimalist web app for gardeners — design beautiful flower arrangements using the **Filler-Spiller-Thriller (FST)** methodology.
+
+Live site: [poterie.frost.haus](https://poterie.frost.haus)
 
 ## Features
 
 - **FST Planner** — Select your USDA zone, sun exposure, soil type, and layout type to get a personalized flower arrangement
 - **Visual SVG Mockup** — Top-down rendering of your container or bed arrangement with labeled flowers
-- **Botanical Theme** — Redouté-inspired design with two selectable themes (Bright/Sage)
-- **Scroll Animations** — Growing vine effects as you scroll
-- **Shopping List** — Export-ready shopping list with print/PDF support
-- **Admin Panel** — Browse and manage the flower database (basic auth protected)
-- **Zero Dependencies** — Single Go binary with embedded SQLite
+  - **Pot layout:** Thriller in center, fillers surrounding on sides and back, spillers cascading over the front edge
+  - **Bed layout:** Thriller back-center, fillers flanking, spillers cascading at the front
+- **Zone Reference** — Interactive USDA zone modal with temperature bands and compatible flowers
+- **Botanical Theme** — Redouté-inspired design with growing vine scrollwork and watercolor parchment background
+- **Shopping List** — Dedicated print page (`/planner/print`) with clean 3-column layout and planting instructions
+- **Plant Swap** — Swap individual flowers via dropdown while preserving positional layout
+- **Admin Panel** — Full CRUD for the flower database (basic auth protected at `/admin`)
+- **Zero Dependencies** — Single Go binary with embedded SQLite and templates
 
 ## Tech Stack
 
-- **Go** — idiomatic backend with chi router
-- **SQLite** — embedded database (WAL mode)
-- **HTMX + Alpine.js** — lightweight SPA without a build step
-- **Tailwind CSS** — utility-first styling via CDN
-- **SVG** — inline FST arrangement visualization
+| Layer | Technology |
+|-------|------------|
+| **Backend** | Go 1.22 + chi router |
+| **Database** | SQLite (embedded, WAL mode) |
+| **Frontend** | Go `html/template` + HTMX + Alpine.js |
+| **Styling** | Tailwind CSS (CDN) + custom botanical CSS |
+| **Visualization** | Inline SVG with Redouté aesthetics |
+| **Container** | Multi-stage Docker → Alpine |
+| **CI/CD** | GitHub Actions → GHCR → ArgoCD |
+| **DNS/Ingress** | cloudflared tunnel (HTTPS via Cloudflare) |
+| **Kubernetes** | Helm chart, PVC via Synology CSI |
 
 ## Quick Start
 
 ```bash
-go run .
+# From source
+go run ./cmd/server
+
+# Or with Docker
+docker run -p 8080:8080 ghcr.io/bdfrost/poterie:latest
 ```
 
 Open `http://localhost:8080`
@@ -41,54 +56,103 @@ Open `http://localhost:8080`
 
 ```bash
 docker build -t ghcr.io/bdfrost/poterie:latest .
-docker run -p 8080:8080 ghcr.io/bdfrost/poterie:latest
+docker run -p 8080:8080 \
+  -v poterie-data:/data \
+  -e ADMIN_USER=admin -e ADMIN_PASS=changeme \
+  ghcr.io/bdfrost/poterie:latest
 ```
 
 ## Kubernetes
 
-A Helm chart is included in `helm/fst-planner/`. Configure your values and install:
+Deployed via Helm chart in the ArgoCD GitOps repo (`github.com/bdfrost/argocd`).
 
 ```bash
-helm install poterie helm/fst-planner/ -n poterie --create-namespace
+helm install poterie charts/poterie/ -n poterie --create-namespace
 ```
 
-## CI/CD
+Accessed through the cloudflared tunnel at `poterie.frost.haus`.
 
-GitHub Actions workflow (`.github/workflows/ci.yml`):
-1. **Test** — Runs all tests on PR and push
-2. **Build & Push** — On version tags (`v*`), builds Docker image and pushes to GHCR
-3. **Release** — Creates a GitHub release with auto-generated notes
+## CI/CD Pipeline
 
-## Test Coverage
-
+### Development Cycle
 ```
-config:    100.0%
-db:         85.4%
-handler:    14.0%
-models:    100.0%
-service:    91.7%
+write → go build → go test → go run (manual test) → git commit → push
 ```
 
-Core packages all exceed 80% coverage.
+### Pipeline Stages (on push/PR)
+| Stage | Purpose |
+|-------|---------|
+| **test** | `go test -cover` + coverage check → **staticcheck** |
+| **smoke-test** | Docker build → start container → verify `/api/health`, `/api/fst`, `/planner` |
+| **build-and-push** | Multi-stage Docker → push to GHCR → **Trivy CVE scan** (reported) |
+| **release** | Auto-create GitHub release |
+
+### Release Cycle (tag → prod)
+```
+git tag v0.5.x → CI builds/test/push → gitops bump → ArgoCD sync → verify
+```
+
+1. **Pre-tag:** `go test ./...` and `go build ./...` pass locally
+2. **Tag push:** `git tag v0.5.x && git push origin main v0.5.x`
+3. **CI gates:** test + staticcheck + smoke test pass (Trivy scan reports but doesn't block)
+4. **GitOps bump:** Update `image` tag in `charts/poterie/values.yaml` → push to argocd repo
+5. **Post-deploy:** `curl -sf https://poterie.frost.haus/api/health`
+6. **Rollback:** Revert GitOps commit → ArgoCD auto-syncs to previous version
 
 ## Project Structure
 
 ```
-├── main.go              # Entry point
+├── cmd/server/main.go          # Entry point, router init
 ├── internal/
-│   ├── config/          # App configuration
-│   ├── db/              # SQLite database + schema + seed
-│   ├── models/          # Data structures
-│   ├── handler/         # HTTP handlers + HTMX endpoints
-│   └── service/         # FST recommendation engine
-├── templates/           # Go HTML templates
-│   ├── partials/        # SVG layouts, result cards, decorative vines
-├── static/css/          # Custom botanical theme CSS
-├── static/js/           # Client-side JS (vines, animations)
-├── helm/                # Helm chart for Kubernetes
-└── .github/workflows/   # CI/CD pipeline
+│   ├── config/config.go        # Env vars, defaults
+│   ├── db/                     # SQLite schema + seed data
+│   ├── handler/pages.go        # HTTP handlers (pages + API)
+│   ├── models/flower.go        # Flower structs, enums
+│   └── service/
+│       ├── recommendation.go   # FST matching engine
+│       └── ...
+├── templates/                  # Go html/template + HTMX
+│   ├── base.html
+│   ├── planner.html            # Input form + zone map modal
+│   ├── print.html              # Print-optimized shopping list
+│   └── partials/
+│       ├── fst.html            # Result card with SVG + swap
+│       └── svg-layouts.html    # Pot & bed SVG layouts
+├── static/css/style.css        # Botanical theme, print styles
+├── static/js/app.js            # Theme toggle, vine animations
+└── .github/workflows/ci.yml    # CI/CD pipeline
 ```
 
-## License
+## Dev → Prod Release Process
 
-MIT — Built by [Brian Frost](mailto:bfrost@brainboy.com)
+To cut a release from `main`:
+
+```bash
+# 1. Ensure main is clean and tests pass
+cd ~/poterie
+go test ./... && go build ./...
+
+# 2. Tag and push
+git tag v0.5.19 && git push origin main v0.5.19
+
+# 3. Wait for CI (CI → GHCR)
+gh run watch --repo bdfrost/poterie
+
+# 4. Bump GitOps repo
+cd ~/argocd
+# Edit charts/poterie/values.yaml → image: ghcr.io/bdfrost/poterie:0.5.19
+git add . && git commit -m "bump: poterie → v0.5.19" && git push
+
+# 5. Verify
+sleep 30
+curl -sf -o /dev/null -w "%{http_code}" https://poterie.frost.haus/api/health
+# should return 200
+```
+
+## Flower Database
+
+Seed data includes **50+ flowers** spanning USDA zones 3–11, with full/sun/shade and loam/clay/sandy/well-drained soil types. Each entry has bloom season, height, spacing, description, and compatibility info.
+
+## Screenshots
+
+*Coming soon*

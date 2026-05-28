@@ -9,29 +9,31 @@
 
     <!-- Thriller (center, largest) -->
     {{if .Rec.Thriller}}
-    <circle cx="200" cy="200" r="55" class="fst-plant-lg"/>
-    <text x="200" y="195" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
-    <text x="200" y="210" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
+    <circle cx="200" cy="190" r="55" class="fst-plant-lg"/>
+    <text x="200" y="185" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
+    <text x="200" y="205" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
     {{end}}
 
-    <!-- Fillers (medium, around thriller) -->
+    <!-- Fillers surround thriller on sides and back -->
     {{range $i, $filler := .Rec.Fillers}}
-    {{$cx := 110}}{{$cy := 130}}
-    {{if eq $i 1}}{{$cx = 290}}{{else if eq $i 2}}{{$cx = 200}}{{$cy = 90}}{{end}}
+    {{$cx := 130}}{{$cy := 160}}
+    {{if eq $i 1}}{{$cx = 270}}{{else if eq $i 2}}{{$cx = 200}}{{$cy = 100}}{{end}}
     <circle cx="{{$cx}}" cy="{{$cy}}" r="35" class="fst-plant-circle"/>
     <text x="{{$cx}}" y="{{$cy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
     {{end}}
 
-    <!-- Spillers (small, at edges) -->
-    {{range $i, $spiller := .Rec.Spillers}}
-    {{$sx := 70}}{{$sy := 200}}
-    {{if eq $i 1}}{{$sx = 330}}{{else if eq $i 2}}{{$sx = 130}}{{$sy = 290}}{{else if eq $i 3}}{{$sx = 270}}{{end}}
-    <!-- Cascade trail outside rim -->
-    <path d="M{{$sx}},{{add $sy 35}} Q{{$sx}},{{add $sy 55}} {{if eq $i 0}}{{add $sx 15}}{{else}}{{if eq $i 1}}{{sub $sx 15}}{{else}}{{add $sx 15}}{{end}}{{end}},{{add $sy 70}}" class="fst-cascade" stroke-width="1.5"/>
-    <path d="M{{if eq $i 0}}{{add $sx 10}}{{else}}{{if eq $i 1}}{{sub $sx 10}}{{else}}{{add $sx 10}}{{end}}{{end}},{{add $sy 30}} Q{{if eq $i 0}}{{add $sx 20}}{{else}}{{if eq $i 1}}{{sub $sx 20}}{{else}}{{add $sx 20}}{{end}}{{end}},{{add $sy 50}} {{if eq $i 0}}{{add $sx 25}}{{else}}{{if eq $i 1}}{{sub $sx 25}}{{else}}{{add $sx 25}}{{end}}{{end}},{{add $sy 65}}" class="fst-cascade" stroke-width="1"/>
-    <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
-    <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
-    {{end}}
+    <!-- Spillers hang over front edge (bottom of pot) -->
+    <g>
+        {{range $i, $spiller := .Rec.Spillers}}
+        {{$sx := 140}}{{$sy := 290}}
+        {{if eq $i 1}}{{$sx = 260}}{{end}}
+        <!-- Cascade path hangs outside rim, going down toward viewer -->
+        <path d="M{{$sx}},{{add $sy 28}} C{{$sx}},{{add $sy 50}} {{add $sx 12}},{{add $sy 65}} {{add $sx 8}},{{add $sy 80}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
+        <path d="M{{add $sx 15}},{{add $sy 25}} C{{add $sx 20}},{{add $sy 45}} {{add $sx 30}},{{add $sy 55}} {{add $sx 22}},{{add $sy 70}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
+        <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
+        {{end}}
+    </g>
 
     <!-- Legend -->
     <rect x="280" y="340" width="90" height="55" rx="6" class="fst-legend-bg"/>
@@ -46,7 +48,7 @@
 
 {{define "partials/svg-bed"}}
 <svg viewBox="0 0 600 400" class="fst-svg" xmlns="http://www.w3.org/2000/svg">
-    <!-- Bed outline - top-down rectangle -->
+    <!-- Bed outline - top-down rounded rectangle -->
     <rect x="25" y="25" width="550" height="350" rx="20" class="fst-bed-rim" fill="none" stroke-width="3"/>
     <rect x="30" y="30" width="540" height="340" rx="16" class="fst-bed-soil" fill-opacity="0.03"/>
 
@@ -60,40 +62,40 @@
         <line x1="30" y1="250" x2="565" y2="250"/>
     </g>
 
-    <!-- Back row: Thriller -->
+    <!-- Back center: Thriller -->
     {{if .Rec.Thriller}}
-    <circle cx="300" cy="90" r="55" class="fst-plant-lg"/>
-    <text x="300" y="85" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
-    <text x="300" y="100" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
+    <circle cx="300" cy="100" r="55" class="fst-plant-lg"/>
+    <text x="300" y="95" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
+    <text x="300" y="115" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
     {{end}}
 
-    <!-- Middle row: Fillers -->
+    <!-- Fillers on sides of thriller -->
     {{range $i, $filler := .Rec.Fillers}}
-    {{$cx := 160}}{{$cy := 195}}
-    {{if eq $i 1}}{{$cx = 280}}{{else if eq $i 2}}{{$cx = 420}}{{end}}
+    {{$cx := 180}}{{$cy := 200}}
+    {{if eq $i 1}}{{$cx = 420}}{{else if eq $i 2}}{{$cx = 300}}{{$cy = 150}}{{end}}
     <circle cx="{{$cx}}" cy="{{$cy}}" r="35" class="fst-plant-circle"/>
     <text x="{{$cx}}" y="{{$cy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
     {{end}}
 
-    <!-- Front row: Spillers -->
+    <!-- Spillers at front edge, cascading down toward viewer -->
     {{range $i, $spiller := .Rec.Spillers}}
-    {{$sx := 100}}{{$sy := 310}}
-    {{if eq $i 1}}{{$sx = 220}}{{else if eq $i 2}}{{$sx = 340}}{{else if eq $i 3}}{{$sx = 460}}{{end}}
+    {{$sx := 230}}{{$sy := 295}}
+    {{if eq $i 1}}{{$sx = 370}}{{end}}
     <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
     <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
-    <!-- Cascade down -->
-    <path d="M{{$sx}},{{add $sy 30}} Q{{$sx}},{{add $sy 55}} {{add $sx 10}},{{add $sy 75}}" class="fst-cascade" stroke-width="1.5"/>
-    <path d="M{{add $sx 8}},{{add $sy 25}} Q{{add $sx 15}},{{add $sy 48}} {{add $sx 20}},{{add $sy 65}}" class="fst-cascade" stroke-width="1"/>
+    <!-- Cascades hang outside bed rim, going down -->
+    <path d="M{{$sx}},{{add $sy 28}} C{{$sx}},{{add $sy 45}} {{add $sx 10}},{{add $sy 60}} {{add $sx 6}},{{add $sy 72}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
+    <path d="M{{add $sx 12}},{{add $sy 25}} C{{add $sx 18}},{{add $sy 42}} {{add $sx 28}},{{add $sy 52}} {{add $sx 18}},{{add $sy 64}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
     {{end}}
 
     <!-- Legend -->
-    <rect x="440" y="340" width="80" height="55" rx="6" class="fst-legend-bg"/>
-    <circle cx="455" cy="355" r="5" class="fst-legend-thriller"/>
-    <text x="465" y="358" class="fst-legend-label">Thriller</text>
-    <circle cx="455" cy="370" r="5" class="fst-legend-filler"/>
-    <text x="465" y="373" class="fst-legend-label">Filler</text>
-    <circle cx="455" cy="385" r="5" class="fst-legend-spiller"/>
-    <text x="465" y="388" class="fst-legend-label">Spiller</text>
+    <rect x="450" y="340" width="80" height="55" rx="6" class="fst-legend-bg"/>
+    <circle cx="465" cy="355" r="5" class="fst-legend-thriller"/>
+    <text x="475" y="358" class="fst-legend-label">Thriller</text>
+    <circle cx="465" cy="370" r="5" class="fst-legend-filler"/>
+    <text x="475" y="373" class="fst-legend-label">Filler</text>
+    <circle cx="465" cy="385" r="5" class="fst-legend-spiller"/>
+    <text x="475" y="388" class="fst-legend-label">Spiller</text>
 
     <!-- Bed label -->
     <text x="300" y="385" text-anchor="middle" class="fst-bed-label">Garden Bed — Top View</text>
