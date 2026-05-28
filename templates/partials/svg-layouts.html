@@ -26,13 +26,11 @@
     {{range $i, $spiller := .Rec.Spillers}}
     {{$sx := 70}}{{$sy := 200}}
     {{if eq $i 1}}{{$sx = 330}}{{else if eq $i 2}}{{$sx = 130}}{{$sy = 290}}{{else if eq $i 3}}{{$sx = 270}}{{end}}
+    <!-- Cascade trail outside rim -->
+    <path d="M{{$sx}},{{add $sy 35}} Q{{$sx}},{{add $sy 55}} {{if eq $i 0}}{{add $sx 15}}{{else}}{{if eq $i 1}}{{sub $sx 15}}{{else}}{{add $sx 15}}{{end}}{{end}},{{add $sy 70}}" class="fst-cascade" stroke-width="1.5"/>
+    <path d="M{{if eq $i 0}}{{add $sx 10}}{{else}}{{if eq $i 1}}{{sub $sx 10}}{{else}}{{add $sx 10}}{{end}}{{end}},{{add $sy 30}} Q{{if eq $i 0}}{{add $sx 20}}{{else}}{{if eq $i 1}}{{sub $sx 20}}{{else}}{{add $sx 20}}{{end}}{{end}},{{add $sy 50}} {{if eq $i 0}}{{add $sx 25}}{{else}}{{if eq $i 1}}{{sub $sx 25}}{{else}}{{add $sx 25}}{{end}}{{end}},{{add $sy 65}}" class="fst-cascade" stroke-width="1"/>
     <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
     <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
-    <!-- Cascade lines (subtle arcs outward) -->
-    {{$syOuter := add $sy 28}}
-    {{$sxOuter := add $sx 5}}
-    {{$syEnd := add $sy 55}}
-    <path d="M{{$sx}},{{$syOuter}} Q{{$sx}},{{add $sy 45}} {{$sxOuter}},{{$syEnd}}" class="fst-cascade"/>
     {{end}}
 
     <!-- Legend -->
@@ -84,7 +82,8 @@
     <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
     <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
     <!-- Cascade down -->
-    <path d="M{{$sx}},{{add $sy 28}} Q{{add $sx 10}},{{add $sy 50}} {{$sx}},{{add $sy 60}}" class="fst-cascade"/>
+    <path d="M{{$sx}},{{add $sy 30}} Q{{$sx}},{{add $sy 55}} {{add $sx 10}},{{add $sy 75}}" class="fst-cascade" stroke-width="1.5"/>
+    <path d="M{{add $sx 8}},{{add $sy 25}} Q{{add $sx 15}},{{add $sy 48}} {{add $sx 20}},{{add $sy 65}}" class="fst-cascade" stroke-width="1"/>
     {{end}}
 
     <!-- Legend -->

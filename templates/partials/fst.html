@@ -80,7 +80,7 @@
                 <select name="swap_id" class="bot-select text-xs"
                     hx-post="/api/fst/swap" hx-target="#result-area" hx-swap="innerHTML"
                     hx-include="#fst-hidden-form"
-                    hx-vals='{"swap_role": "filler", "orig_filler_id": {{$filler.ID}}}'>
+                    hx-vals='{"swap_role": "filler", "swap_slot": {{$i}}}'>
                     <option value="{{$filler.ID}}" selected disabled>✓ {{$filler.Name}}</option>
                     {{range $.Alternatives.Fillers}}
                     <option value="{{.ID}}">{{.Name}}</option>
@@ -94,7 +94,7 @@
                 <select name="swap_id" class="bot-select text-xs"
                     hx-post="/api/fst/swap" hx-target="#result-area" hx-swap="innerHTML"
                     hx-include="#fst-hidden-form"
-                    hx-vals='{"swap_role": "spiller", "orig_spiller_id": {{$spiller.ID}}}'>
+                    hx-vals='{"swap_role": "spiller", "swap_slot": {{$i}}}'>
                     <option value="{{$spiller.ID}}" selected disabled>✓ {{$spiller.Name}}</option>
                     {{range $.Alternatives.Spillers}}
                     <option value="{{.ID}}">{{.Name}}</option>

@@ -411,6 +411,7 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 	layout := r.FormValue("layout")
 	role := models.FSTRole(r.FormValue("swap_role"))
 	newID := parseInt(r.FormValue("swap_id"), 0)
+	slotIdx := parseInt(r.FormValue("swap_slot"), 0)
 
 	if newID == 0 {
 		http.Error(w, "missing plant selection", http.StatusBadRequest)
@@ -431,25 +432,19 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Swap only the targeted role, leaving the others from the generated plan
+	// Swap by slot index — this preserves the position in the layout even though
+	// Generate() picks different random plants. We're telling the user "keep your
+	// other choices" so we replace the same spatial slot with the new plant.
 	switch role {
 	case models.RoleThriller:
 		rec.Thriller = f
 	case models.RoleFiller:
-		origID := parseInt(r.FormValue("orig_filler_id"), 0)
-		for i := range rec.Fillers {
-			if rec.Fillers[i].ID == origID {
-				rec.Fillers[i] = *f
-				break
-			}
+		if slotIdx < len(rec.Fillers) {
+			rec.Fillers[slotIdx] = *f
 		}
 	case models.RoleSpiller:
-		origID := parseInt(r.FormValue("orig_spiller_id"), 0)
-		for i := range rec.Spillers {
-			if rec.Spillers[i].ID == origID {
-				rec.Spillers[i] = *f
-				break
-			}
+		if slotIdx < len(rec.Spillers) {
+			rec.Spillers[slotIdx] = *f
 		}
 	}
 
