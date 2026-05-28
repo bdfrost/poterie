@@ -1,0 +1,89 @@
+{{define "content"}}
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="bot-font-serif text-3xl bot-text-primary font-bold">Edit Flower</h1>
+        <a href="/admin/flowers" class="bot-btn-ghost">← Back to Flowers</a>
+    </div>
+
+    <div class="bot-bg-card bot-rounded bot-shadow p-8">
+        <form action="/admin/flowers/{{.Flower.ID}}/update" method="POST" class="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Emoji</label>
+                <input type="text" name="image_url" class="bot-input w-full text-sm" value="{{.Flower.ImageURL}}" required>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Name</label>
+                <input type="text" name="name" class="bot-input w-full text-sm" value="{{.Flower.Name}}" required>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Botanical Name</label>
+                <input type="text" name="botanical_name" class="bot-input w-full text-sm" value="{{.Flower.BotanicalName}}" required>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Role</label>
+                <select name="role" class="bot-input w-full text-sm" required>
+                    <option value="thriller" {{if eq .Flower.Role "thriller"}}selected{{end}}>Thriller</option>
+                    <option value="filler" {{if eq .Flower.Role "filler"}}selected{{end}}>Filler</option>
+                    <option value="spiller" {{if eq .Flower.Role "spiller"}}selected{{end}}>Spiller</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Zone Min</label>
+                <input type="number" name="zone_min" class="bot-input w-full text-sm" min="3" max="10" value="{{.Flower.ZoneMin}}" required>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Zone Max</label>
+                <input type="number" name="zone_max" class="bot-input w-full text-sm" min="3" max="10" value="{{.Flower.ZoneMax}}" required>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Sun</label>
+                <select name="sun" class="bot-input w-full text-sm" required>
+                    <option value="full_sun" {{if eq .Flower.Sun "full_sun"}}selected{{end}}>Full Sun</option>
+                    <option value="part_shade" {{if eq .Flower.Sun "part_shade"}}selected{{end}}>Part Shade</option>
+                    <option value="full_shade" {{if eq .Flower.Sun "full_shade"}}selected{{end}}>Full Shade</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Soils (comma-sep)</label>
+                <input type="text" name="soils" class="bot-input w-full text-sm" value="{{.Flower.SoilsCSV}}" required>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Color</label>
+                <input type="text" name="color" class="bot-input w-full text-sm" value="{{.Flower.Color}}">
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Bloom Season</label>
+                <select name="bloom_season" class="bot-input w-full text-sm">
+                    <option value="spring" {{if eq .Flower.BloomSeason "spring"}}selected{{end}}>Spring</option>
+                    <option value="summer" {{if eq .Flower.BloomSeason "summer"}}selected{{end}}>Summer</option>
+                    <option value="fall" {{if eq .Flower.BloomSeason "fall"}}selected{{end}}>Fall</option>
+                    <option value="all_season" {{if eq .Flower.BloomSeason "all_season"}}selected{{end}}>All Season</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Height</label>
+                <input type="text" name="height" class="bot-input w-full text-sm" value="{{.Flower.Height}}">
+            </div>
+            <div>
+                <label class="block text-xs bot-text-secondary mb-1">Spacing</label>
+                <input type="text" name="spacing" class="bot-input w-full text-sm" value="{{.Flower.Spacing}}">
+            </div>
+            <div class="md:col-span-3">
+                <label class="block text-xs bot-text-secondary mb-1">Description</label>
+                <input type="text" name="description" class="bot-input w-full text-sm" value="{{.Flower.Description}}">
+            </div>
+            <div class="md:col-span-3">
+                <label class="block text-xs bot-text-secondary mb-1">Wikipedia URL</label>
+                <input type="url" name="wikipedia_url" class="bot-input w-full text-sm" value="{{.Flower.WikipediaURL}}" placeholder="https://en.wikipedia.org/wiki/Plant_name">
+                {{if .Flower.WikipediaURL}}
+                <a href="{{.Flower.WikipediaURL}}" target="_blank" class="text-xs bot-text-secondary" title="Opens existing link in new tab">↗ Current link</a>
+                {{end}}
+            </div>
+            <div class="md:col-span-3 flex justify-end gap-3 mt-4">
+                <a href="/admin/flowers" class="bot-btn-ghost text-sm">Cancel</a>
+                <button type="submit" class="bot-btn-primary text-sm">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</section>
+{{end}}

@@ -138,7 +138,8 @@
                         </td>
                         <td class="px-4 py-3 bot-text-secondary hidden md:table-cell">{{.ZoneMin}}-{{.ZoneMax}}</td>
                         <td class="px-4 py-3 bot-text-secondary hidden md:table-cell">{{.Sun}}</td>
-                        <td class="px-4 py-3">
+                        <td class="px-4 py-3 flex gap-2">
+                            <a href="/admin/flowers/{{.ID}}/edit" class="text-blue-400 hover:text-blue-500 text-sm">Edit</a>
                             <form action="/admin/flowers/{{.ID}}/delete" method="POST"
                                   onsubmit="return confirm('Delete {{.Name}}?');">
                                 <button type="submit" class="text-red-400 hover:text-red-500 text-sm">Delete</button>

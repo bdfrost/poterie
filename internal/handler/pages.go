@@ -57,6 +57,8 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 		r.Use(adminAuth(cfg.AdminUser, cfg.AdminPass))
 		r.Get("/admin", h.admin)
 		r.Get("/admin/flowers", h.adminFlowers)
+		r.Get("/admin/flowers/{id}/edit", h.adminEditFlower)
+		r.Post("/admin/flowers/{id}/update", h.adminUpdateFlower)
 		r.Post("/admin/flowers/new", h.adminNewFlower)
 		r.Post("/admin/flowers/{id}/delete", h.adminDeleteFlower)
 	})
@@ -392,6 +394,64 @@ func (h *Handler) adminDeleteFlower(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, "/admin", http.StatusSeeOther)
+}
+
+// GET /admin/flowers/{id}/edit - edit flower form
+func (h *Handler) adminEditFlower(w http.ResponseWriter, r *http.Request) {
+	id := parseInt(chi.URLParam(r, "id"), 0)
+	if id == 0 {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+	f, err := h.service.GetFlowerByID(id)
+	if err != nil {
+		http.Error(w, "Flower not found", http.StatusNotFound)
+		return
+	}
+	h.render(w, "admin_edit.html", map[string]interface{}{
+		"PageTitle": "Edit Flower",
+		"Flower":    f,
+	})
+}
+
+// POST /admin/flowers/{id}/update - save flower changes
+func (h *Handler) adminUpdateFlower(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
+
+	id := parseInt(chi.URLParam(r, "id"), 0)
+	f := &models.Flower{
+		ID:            id,
+		Name:          r.FormValue("name"),
+		BotanicalName: r.FormValue("botanical_name"),
+		Role:          models.FSTRole(r.FormValue("role")),
+		ZoneMin:       parseInt(r.FormValue("zone_min"), 3),
+		ZoneMax:       parseInt(r.FormValue("zone_max"), 10),
+		Sun:           models.SunType(r.FormValue("sun")),
+		Color:         r.FormValue("color"),
+		BloomSeason:   r.FormValue("bloom_season"),
+		Height:        r.FormValue("height"),
+		Spacing:       r.FormValue("spacing"),
+		Description:   r.FormValue("description"),
+		ImageURL:      r.FormValue("image_url"),
+		WikipediaURL:  r.FormValue("wikipedia_url"),
+	}
+
+	soilsStr := r.FormValue("soils")
+	if soilsStr != "" {
+		for _, s := range strings.Split(soilsStr, ",") {
+			f.Soils = append(f.Soils, models.SoilType(strings.TrimSpace(s)))
+		}
+	}
+
+	if err := h.service.UpsertFlower(f); err != nil {
+		http.Error(w, "Failed to save flower", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/admin/flowers", http.StatusSeeOther)
 }
 
 func parseInt(s string, fallback int) int {

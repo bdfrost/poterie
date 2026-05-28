@@ -34,6 +34,10 @@ func (d *DB) Init() error {
 	}
 	// Migration: add wikipedia_url column if it doesn't exist
 	d.Exec("ALTER TABLE flowers ADD COLUMN wikipedia_url TEXT NOT NULL DEFAULT ''")
+	// Backfill Wikipedia URLs for all seeded flowers
+	if err := migrateFlowerWikipedia(d); err != nil {
+		return fmt.Errorf("wikipedia migration: %w", err)
+	}
 	return nil
 }
 
