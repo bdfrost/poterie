@@ -48,6 +48,7 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 	r.Get("/", h.home)
 	r.Get("/planner", h.planner)
 	r.Post("/planner/recommend", h.recommend)
+	r.Post("/planner/print", h.printPlan)
 	r.Get("/planner/print", h.printPlan)
 	r.Get("/guide", h.guide)
 
@@ -534,22 +535,83 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// GET /planner/print - printable shopping list page
+// GET/POST /planner/print - printable shopping list page
+// GET: regenerate from zone/sun/soil/layout params (bookmarkable)
+// POST: build from current plant IDs in form fields (preserves swaps)
 func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
-	zone := parseInt(r.URL.Query().Get("zone"), 5)
-	layout := r.URL.Query().Get("layout")
-	sun := models.SunType(r.URL.Query().Get("sun"))
-	soil := models.SoilType(r.URL.Query().Get("soil"))
+	var rec *models.FSTRecommendation
+	var zone int
+	var sun models.SunType
+	var soil models.SoilType
+	var layout string
 
-	if !models.IsValidZone(zone) || layout == "" {
-		http.Redirect(w, r, "/planner", http.StatusSeeOther)
-		return
-	}
+	if r.Method == http.MethodPost {
+		// Build from current plant IDs (preserves swaps)
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Bad request", http.StatusBadRequest)
+			return
+		}
+		zone = parseInt(r.FormValue("zone"), 0)
+		sun = models.SunType(r.FormValue("sun"))
+		soil = models.SoilType(r.FormValue("soil"))
+		layout = r.FormValue("layout")
 
-	rec, err := h.service.Generate(zone, sun, layout, soil)
-	if err != nil {
-		http.Error(w, "Failed to generate recommendation", http.StatusInternalServerError)
-		return
+		if !models.IsValidZone(zone) || layout == "" {
+			http.Redirect(w, r, "/planner", http.StatusSeeOther)
+			return
+		}
+
+		thrillerID := parseInt(r.FormValue("thriller_id"), 0)
+		rec = &models.FSTRecommendation{
+			LayoutType: layout,
+			Zone:       zone,
+			Sun:        sun,
+			Soils:      []models.SoilType{soil},
+			Notes:      "Custom arrangement",
+		}
+		if thrillerID > 0 {
+			if f, err := h.service.GetFlowerByID(thrillerID); err == nil {
+				rec.Thriller = f
+			}
+		}
+		for i := 0; i < 3; i++ {
+			fid := parseInt(r.FormValue(fmt.Sprintf("filler_%d", i)), 0)
+			if fid > 0 {
+				if f, err := h.service.GetFlowerByID(fid); err == nil {
+					rec.Fillers = append(rec.Fillers, *f)
+				}
+			}
+		}
+		for i := 0; i < 2; i++ {
+			fid := parseInt(r.FormValue(fmt.Sprintf("spiller_%d", i)), 0)
+			if fid > 0 {
+				if f, err := h.service.GetFlowerByID(fid); err == nil {
+					rec.Spillers = append(rec.Spillers, *f)
+				}
+			}
+		}
+		if rec.Thriller != nil && (len(rec.Fillers) > 0 || len(rec.Spillers) > 0) {
+			rec.Notes = fmt.Sprintf("Your custom %s features %s as the centerpiece, %d filler(s) for body, and %d spiller(s) for trailing edges.",
+				layout, rec.Thriller.Name, len(rec.Fillers), len(rec.Spillers))
+		}
+	} else {
+		// GET: generate fresh from params
+		zone = parseInt(r.URL.Query().Get("zone"), 5)
+		layout = r.URL.Query().Get("layout")
+		sun = models.SunType(r.URL.Query().Get("sun"))
+		soil = models.SoilType(r.URL.Query().Get("soil"))
+
+		if !models.IsValidZone(zone) || layout == "" {
+			http.Redirect(w, r, "/planner", http.StatusSeeOther)
+			return
+		}
+
+		var err error
+		rec, err = h.service.Generate(zone, sun, layout, soil)
+		if err != nil {
+			http.Error(w, "Failed to generate recommendation", http.StatusInternalServerError)
+			return
+		}
 	}
 
 	h.render(w, "print.html", map[string]interface{}{
