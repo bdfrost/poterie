@@ -414,14 +414,51 @@ body.dark .fst-emoji {
 }
 
 /* === Print Styles === */
+@page {
+  margin: 1.5cm;
+  size: A4;
+}
+
 @media print {
-  .bot-nav, footer, .bot-btn-primary, .bot-btn-secondary,
-  .vine-path, #vine-svg, .botanical-decor { display: none !important; }
+  /* Reset body for paper */
+  body { background: white !important; color: #222 !important; font-size: 11pt; }
+
+  /* Hide structural UI */
+  .bot-nav, footer, #vine-svg, .botanical-decor, .vine-path { display: none !important; }
+
+  /* Hide planner form */
+  form#fst-form { display: none !important; }
+
+  /* When printing — hide all result-area children EXCEPT shopping list */
+  #result-area > *:not(#shopping-list-print) { display: none !important; }
+
+  /* Hide buttons in print */
+  #shopping-list-print button { display: none !important; }
+
+  /* Force shopping list visible with proper layout */
+  #shopping-list-print { display: block !important; }
+  #shopping-list-print .flex { display: flex !important; }
+  #shopping-list-print .grid { display: grid !important; }
+  #shopping-list-print ul { display: block !important; list-style: disc; margin-left: 1.5rem !important; }
+  #shopping-list-print li { display: list-item !important; }
+
+  /* Card styling for paper */
   .bot-bg-card {
     border: 1px solid #ddd;
     background: white !important;
     box-shadow: none !important;
   }
-  body { background: white !important; color: #333 !important; }
-  .print-shopping-list { margin-bottom: 1rem; }
+  .bot-border-b { border-bottom: 2px solid #333 !important; }
+  .bot-border-thriller { border-color: #c04040 !important; }
+  .bot-border-filler { border-color: #3d7a3d !important; }
+  .bot-border-spiller { border-color: #4a7ba0 !important; }
+  .bot-bg-accent-subtle { background: #f5f7f5 !important; }
+  .bot-bg-muted { background: #f9f9f9 !important; }
+
+  /* Ensure colors print nicely */
+  .bot-text-thriller { color: #c04040 !important; }
+  .bot-text-filler { color: #3d7a3d !important; }
+  .bot-text-spiller { color: #4a7ba0 !important; }
+  .bot-text-primary { color: #222 !important; }
+  .bot-text-secondary { color: #555 !important; }
 }

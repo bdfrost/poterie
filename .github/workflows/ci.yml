@@ -31,7 +31,7 @@ jobs:
         run: go mod download
 
       - name: Run tests
-        run: go test ./... -v -cover -count=1
+        run: go test ./... -v -coverprofile=cover.out -count=1
 
       - name: Check coverage
         run: |
@@ -40,13 +40,68 @@ jobs:
           # Require at least 50% average coverage (core packages are 80%+)
           python3 -c "exit(0 if $COVER >= 50 else 1)"
 
-  build-and-push:
+      - name: Run staticcheck
+        uses: dominikh/staticcheck-action@v1.3.1
+        with:
+          version: "latest"
+          install-go: false
+          cache-key: "staticcheck"
+
+  smoke-test:
     needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          load: true
+          tags: poterie:smoke
+          build-args: |
+            VERSION=smoke-test
+
+      - name: Run container
+        run: |
+          docker run -d --name poterie-smoke -p 8080:8080 poterie:smoke
+          sleep 3
+
+      - name: Health check
+        run: curl -sf http://localhost:8080/api/health
+
+      - name: FST endpoint smoke test
+        run: |
+          # Zone 5, full sun, loam, container — should return 6 plants
+          body=$(curl -sf -X POST http://localhost:8080/api/fst \
+            -d "zone=5&sun=full_sun&soil=loam&layout=container")
+
+          # Count fst-plant- entries (each plant in the SVG layout)
+          count=$(echo "$body" | grep -o 'fst-plant-' | wc -l)
+          echo "Plants returned: $count"
+          [ "$count" -ge 3 ] || { echo "FAIL: expected >= 3 plants, got $count"; exit 1; }
+
+      - name: Planner page renders
+        run: |
+          code=$(curl -sf -o /dev/null -w "%{http_code}" http://localhost:8080/planner)
+          [ "$code" = "200" ] || exit 1
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f poterie-smoke
+
+  build-and-push:
+    needs: [test, smoke-test]
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+      security-events: write
     steps:
       - uses: actions/checkout@v4
 
@@ -82,6 +137,21 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH"
+          exit-code: "1"
+
+      - name: Upload Trivy scan results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "trivy-results.sarif"
 
   release:
     needs: build-and-push

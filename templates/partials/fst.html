@@ -167,56 +167,89 @@
         </div>
     </div>
 
-    <!-- Shopping List -->
-    <div class="bot-bg-card bot-rounded bot-shadow p-6" x-show="showShoppingList" x-transition>
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="bot-font-serif text-xl bot-text-primary">🧾 Shopping List</h3>
-            <button @click="window.print()" class="bot-btn-primary btn-sm">
-                Print / Save PDF
-            </button>
-        </div>
-        <div id="shopping-list" class="space-y-4">
-            <div class="print-shopping-list">
-                <h4 class="bot-font-serif font-semibold">Thriller (Centerpiece):</h4>
-                <ul class="ml-4">
-                    {{if .Rec.Thriller}}
-                    <li>1× {{.Rec.Thriller.Name}} <span class="text-sm bot-text-secondary">— {{.Rec.Thriller.BotanicalName}}</span></li>
-                    {{end}}
-                </ul>
-            </div>
-            <div class="print-shopping-list">
-                <h4 class="bot-font-serif font-semibold">Fillers:</h4>
-                <ul class="ml-4">
-                    {{range .Rec.Fillers}}
-                    {{$qty := index $.FillerCounts .ID}}
-                    <li>{{$qty}}× {{.Name}} <span class="text-sm bot-text-secondary">— {{.BotanicalName}}</span></li>
-                    {{end}}
-                </ul>
-            </div>
-            <div class="print-shopping-list">
-                <h4 class="bot-font-serif font-semibold">Spillers:</h4>
-                <ul class="ml-4">
-                    {{range .Rec.Spillers}}
-                    {{$qty := index $.SpillerCounts .ID}}
-                    <li>{{$qty}}× {{.Name}} <span class="text-sm bot-text-secondary">— {{.BotanicalName}}</span></li>
-                    {{end}}
-                </ul>
-            </div>
-            <div class="mt-4 p-3 bot-bg-muted rounded">
-                <p class="text-sm bot-text-secondary">
-                    <strong>Notes:</strong> Plant the thriller in the center (or back for beds),
-                    arrange fillers around it, and place spillers at the edges to cascade over.
-                    Spacing: {{if .Rec.Thriller}}{{.Rec.Thriller.Spacing}}{{end}}
-                </p>
-            </div>
-        </div>
-    </div>
-
+    <!-- Shopping List toggle -->
     <div class="flex gap-3">
         <button @click="showShoppingList = !showShoppingList" class="bot-btn-secondary">
-            <span x-text="showShoppingList ? 'Hide Shopping List' : '🧾 Show Shopping List'"></span>
+            <span x-text="showShoppingList ? '🧾 Hide Shopping List' : '🧾 Show Shopping List'"></span>
         </button>
-        <a href="/planner" class="bot-btn-primary">Start New Plan</a>
+        <button @click="showShoppingList = true; setTimeout(() => { const el = document.getElementById('shopping-list-print'); if (el) el.querySelector('button')?.click(); }, 100)" class="bot-btn-primary">
+            🖨️ Print / Save PDF
+        </button>
+        <a href="/planner" class="bot-btn-secondary">Start New Plan</a>
+    </div>
+
+    <!-- Shopping List Print View -->
+    <div id="shopping-list-print" x-show="showShoppingList" x-transition.opacity.duration.300ms
+         class="bot-bg-card bot-rounded bot-shadow-xl p-6 mt-4" style="display: none;">
+        <div class="flex justify-between items-start mb-6 bot-border-b pb-4">
+            <div>
+                <h2 class="bot-font-serif text-2xl bot-text-primary">🧾 Shopping List</h2>
+                <p class="bot-text-secondary text-sm mt-1">
+                    Zone {{.Zone}} · {{.Sun}} · {{.Soil}} · {{.Layout}}
+                </p>
+            </div>
+            <button @click="window.print()" class="bot-btn-primary">
+                🖨️ Print
+            </button>
+        </div>
+
+        <!-- Compact FST recap -->
+        <div class="mb-4 p-3 bot-bg-accent-subtle bot-rounded-lg">
+            <p class="text-sm bot-text-secondary italic">{{.Rec.Notes}}</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <!-- Thriller -->
+            <div class="text-center p-3 bot-rounded-lg bot-border-thriller" style="border-width: 2px;">
+                <span class="bot-text-thriller text-xs font-bold uppercase tracking-wide">Thriller</span>
+                {{if .Rec.Thriller}}
+                <p class="bot-font-serif font-semibold bot-text-primary mt-1">{{.Rec.Thriller.Name}}</p>
+                <p class="text-xs bot-text-secondary italic">{{.Rec.Thriller.BotanicalName}}</p>
+                <p class="text-sm font-bold bot-text-secondary mt-2">1 plant</p>
+                {{end}}
+            </div>
+            <!-- Fillers -->
+            <div class="text-center p-3 bot-rounded-lg bot-border-filler" style="border-width: 2px;">
+                <span class="bot-text-filler text-xs font-bold uppercase tracking-wide">Filler{{if gt (len .Rec.Fillers) 1}}s{{end}}</span>
+                {{range .Rec.Fillers}}
+                <p class="bot-font-serif bot-text-primary mt-1">{{.Name}}</p>
+                <p class="text-xs bot-text-secondary italic">{{.BotanicalName}}</p>
+                {{$qty := index $.FillerCounts .ID}}
+                <p class="text-sm font-bold bot-text-secondary">{{$qty}} plant{{if gt $qty 1}}s{{end}}</p>
+                {{end}}
+            </div>
+            <!-- Spillers -->
+            <div class="text-center p-3 bot-rounded-lg bot-border-spiller" style="border-width: 2px;">
+                <span class="bot-text-spiller text-xs font-bold uppercase tracking-wide">Spiller{{if gt (len .Rec.Spillers) 1}}s{{end}}</span>
+                {{range .Rec.Spillers}}
+                <p class="bot-font-serif bot-text-primary mt-1">{{.Name}}</p>
+                <p class="text-xs bot-text-secondary italic">{{.BotanicalName}}</p>
+                {{$qty := index $.SpillerCounts .ID}}
+                <p class="text-sm font-bold bot-text-secondary">{{$qty}} plant{{if gt $qty 1}}s{{end}}</p>
+                {{end}}
+            </div>
+        </div>
+
+        <!-- Planting instructions -->
+        <div class="bot-bg-muted bot-rounded-lg p-4 space-y-2">
+            <h4 class="bot-font-serif font-semibold bot-text-primary text-sm">Planting Instructions</h4>
+            <ul class="list-disc list-inside space-y-1 text-sm bot-text-secondary">
+                <li><strong class="bot-text-thriller">Thriller:</strong> Plant center of container or back of bed{{if .Rec.Thriller}} — {{.Rec.Thriller.Height}} tall{{end}}</li>
+                {{range .Rec.Fillers}}
+                <li><strong class="bot-text-filler">{{.Name}}:</strong> {{.Description}}</li>
+                {{end}}
+                {{range .Rec.Spillers}}
+                <li><strong class="bot-text-spiller">{{.Name}}:</strong> {{.Description}}</li>
+                {{end}}
+                <li><strong>Spacing:</strong> {{if .Rec.Thriller}}{{.Rec.Thriller.Spacing}}{{else}}Follow plant tag instructions{{end}}</li>
+            </ul>
+        </div>
+
+        <div class="mt-4 pt-4 bot-border text-center">
+            <p class="bot-font-serif text-sm bot-text-secondary">
+                Generated by <strong class="bot-text-primary">Poterie</strong> at poterie.frost.haus
+            </p>
+        </div>
     </div>
 </div>
 {{end}}
