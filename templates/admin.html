@@ -25,6 +25,45 @@
         </div>
     </div>
 
+    <!-- Catalog Management -->
+    <div class="bot-bg-card bot-rounded bot-shadow p-6 mb-8">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="text-xl">📦</span>
+            <h2 class="bot-font-serif text-lg bot-text-primary font-semibold">Flower Catalog</h2>
+        </div>
+        <p class="bot-text-secondary text-sm mb-4">
+            Manage the ship-in flower catalog. Export it as JSON for users to host their own version,
+            or import a custom catalog to replace the built-in data.
+        </p>
+        <div class="flex gap-3 flex-wrap">
+            <a href="/admin/catalog/export" class="bot-btn-secondary">📥 Export Catalog JSON</a>
+            <button onclick="document.getElementById('import-catalog-form').classList.toggle('hidden')"
+                    class="bot-btn-ghost text-sm">📤 Import Catalog</button>
+        </div>
+        <!-- Import form (toggled) -->
+        <div id="import-catalog-form" class="hidden mt-4 p-4 bot-bg-muted bot-rounded-lg">
+            <form action="/admin/catalog/import" method="POST" enctype="multipart/form-data">
+                <p class="bot-text-secondary text-xs mb-3">
+                    Upload a catalog JSON file (same format as export).
+                    <strong>Warning:</strong> this adds new flowers — existing flowers are not removed.
+                    Duplicate names are skipped.
+                </p>
+                <div class="flex items-center gap-3">
+                    <input type="file" name="catalog" accept=".json" class="text-sm" required>
+                    <button type="submit" class="bot-btn-primary text-sm">Import</button>
+                    <button type="button" onclick="document.getElementById('import-catalog-form').classList.add('hidden')"
+                            class="bot-btn-ghost text-sm">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <div class="mt-3 pt-3 bot-border">
+            <p class="text-xs bot-text-secondary">
+                Current version: <strong>v1.1</strong> ·
+                Format: <code class="text-xs bot-bg-muted px-1 py-0.5 bot-rounded">{"catalog_version": 1, "flowers": [...]}</code>
+            </p>
+        </div>
+    </div>
+
     <!-- Flower Table -->
     <div class="bot-bg-card bot-rounded bot-shadow overflow-hidden">
         <div class="p-4 bot-border border-b flex items-center justify-between">

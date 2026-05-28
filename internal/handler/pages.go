@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
@@ -61,6 +62,9 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 		r.Post("/admin/flowers/{id}/update", h.adminUpdateFlower)
 		r.Post("/admin/flowers/new", h.adminNewFlower)
 		r.Post("/admin/flowers/{id}/delete", h.adminDeleteFlower)
+		// Catalog management
+		r.Get("/admin/catalog/export", h.adminCatalogExport)
+		r.Post("/admin/catalog/import", h.adminCatalogImport)
 	})
 
 	// API endpoints for HTMX
@@ -353,6 +357,49 @@ func (h *Handler) adminFlowers(w http.ResponseWriter, r *http.Request) {
 		"PageTitle": "Admin - All Flowers",
 		"Flowers":   flowers,
 	})
+}
+
+// GET /admin/catalog/export - download the embedded catalog JSON
+func (h *Handler) adminCatalogExport(w http.ResponseWriter, r *http.Request) {
+	data, err := h.service.ExportCatalogJSON()
+	if err != nil {
+		http.Error(w, "Failed to export catalog", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Disposition", "attachment; filename=\"catalog.json\"")
+	w.Write(data)
+}
+
+// POST /admin/catalog/import - upload a custom catalog JSON
+func (h *Handler) adminCatalogImport(w http.ResponseWriter, r *http.Request) {
+	// Limit upload to 512KB
+	r.Body = http.MaxBytesReader(w, r.Body, 512*1024)
+
+	if err := r.ParseMultipartForm(512 * 1024); err != nil {
+		http.Error(w, "Failed to parse upload: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	file, _, err := r.FormFile("catalog")
+	if err != nil {
+		http.Error(w, "Failed to read file: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	data, err := io.ReadAll(io.LimitReader(file, 512*1024))
+	if err != nil {
+		http.Error(w, "Failed to read data: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := h.service.ImportCatalogJSON(data); err != nil {
+		http.Error(w, "Import failed: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
 
 func (h *Handler) adminNewFlower(w http.ResponseWriter, r *http.Request) {
