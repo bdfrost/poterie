@@ -360,6 +360,7 @@ func (h *Handler) adminNewFlower(w http.ResponseWriter, r *http.Request) {
 		Spacing:       r.FormValue("spacing"),
 		Description:   r.FormValue("description"),
 		ImageURL:      r.FormValue("image_url"),
+		WikipediaURL:  r.FormValue("wikipedia_url"),
 	}
 
 	// Parse comma-separated soils

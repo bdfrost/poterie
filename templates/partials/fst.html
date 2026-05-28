@@ -130,17 +130,15 @@
             {{end}}
         </div>
     </div>
-
     <!-- FST Details -->
     <div class="grid md:grid-cols-3 gap-6">
         <!-- Thriller -->
         <div class="bot-bg-card bot-rounded bot-shadow p-5 border-l-4 bot-border-thriller">
             <div class="flex items-center gap-2 mb-3">
-                <span class="text-2xl">{{if .Rec.Thriller}}{{.Rec.Thriller.ImageURL}}{{end}}</span>
                 <h4 class="bot-font-serif text-lg bot-text-thriller font-semibold">🎯 Thriller</h4>
             </div>
             {{if .Rec.Thriller}}
-            <p class="bot-font-serif italic bot-text-primary">{{.Rec.Thriller.Name}}</p>
+            <p class="bot-font-serif italic bot-text-primary">{{if .Rec.Thriller.WikipediaURL}}<a href="{{.Rec.Thriller.WikipediaURL}}" target="_blank" rel="noopener" class="hover:underline">{{.Rec.Thriller.Name}}</a>{{else}}{{.Rec.Thriller.Name}}{{end}}</p>
             <p class="text-xs bot-text-secondary italic">{{.Rec.Thriller.BotanicalName}}</p>
             <p class="mt-2 text-sm bot-text-secondary">{{.Rec.Thriller.Description}}</p>
             <dl class="mt-3 bot-text-secondary text-sm space-y-1">
@@ -161,7 +159,7 @@
             <ul class="space-y-3">
                 {{range .FilledFillers}}
                 <li class="border-b bot-border pb-2 last:border-0 last:pb-0">
-                    <p class="bot-font-serif">{{.Flower.ImageURL}} {{.Flower.Name}}{{if gt .Qty 1}} ×{{.Qty}}{{end}}</p>
+                    <p class="bot-font-serif">{{if .Flower.WikipediaURL}}<a href="{{.Flower.WikipediaURL}}" target="_blank" rel="noopener" class="hover:underline">{{.Flower.Name}}</a>{{else}}{{.Flower.Name}}{{end}}{{if gt .Qty 1}} ×{{.Qty}}{{end}}</p>
                     <p class="text-xs bot-text-secondary italic">{{.Flower.BotanicalName}}</p>
                     <p class="text-xs bot-text-secondary mt-1">{{.Flower.Description}}</p>
                 </li>
@@ -181,7 +179,7 @@
             <ul class="space-y-3">
                 {{range .FilledSpillers}}
                 <li class="border-b bot-border pb-2 last:border-0 last:pb-0">
-                    <p class="bot-font-serif">{{.Flower.ImageURL}} {{.Flower.Name}}{{if gt .Qty 1}} ×{{.Qty}}{{end}}</p>
+                    <p class="bot-font-serif">{{if .Flower.WikipediaURL}}<a href="{{.Flower.WikipediaURL}}" target="_blank" rel="noopener" class="hover:underline">{{.Flower.Name}}</a>{{else}}{{.Flower.Name}}{{end}}{{if gt .Qty 1}} ×{{.Qty}}{{end}}</p>
                     <p class="text-xs bot-text-secondary italic">{{.Flower.BotanicalName}}</p>
                     <p class="text-xs bot-text-secondary mt-1">{{.Flower.Description}}</p>
                 </li>

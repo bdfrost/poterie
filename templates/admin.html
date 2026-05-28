@@ -29,7 +29,90 @@
     <div class="bot-bg-card bot-rounded bot-shadow overflow-hidden">
         <div class="p-4 bot-border border-b flex items-center justify-between">
             <h2 class="bot-font-serif text-lg bot-text-primary">Flower Database</h2>
+            <button onclick="document.getElementById('new-flower-form').classList.toggle('hidden')" 
+                    class="bot-btn-ghost text-sm">+ Add Flower</button>
         </div>
+
+        <!-- New Flower Form -->
+        <div id="new-flower-form" class="hidden p-4 bot-bg-muted bot-border border-b">
+            <form action="/admin/flowers/new" method="POST" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Emoji</label>
+                    <input type="text" name="image_url" class="bot-input w-full text-sm" placeholder="🌻" required>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Name</label>
+                    <input type="text" name="name" class="bot-input w-full text-sm" placeholder="Sunflower" required>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Botanical Name</label>
+                    <input type="text" name="botanical_name" class="bot-input w-full text-sm" placeholder="Helianthus annuus" required>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Role</label>
+                    <select name="role" class="bot-input w-full text-sm" required>
+                        <option value="thriller">Thriller</option>
+                        <option value="filler">Filler</option>
+                        <option value="spiller">Spiller</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Zone Min</label>
+                    <input type="number" name="zone_min" class="bot-input w-full text-sm" min="3" max="10" value="3" required>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Zone Max</label>
+                    <input type="number" name="zone_max" class="bot-input w-full text-sm" min="3" max="10" value="10" required>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Sun</label>
+                    <select name="sun" class="bot-input w-full text-sm" required>
+                        <option value="full_sun">Full Sun</option>
+                        <option value="part_shade">Part Shade</option>
+                        <option value="full_shade">Full Shade</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Soils (comma-sep)</label>
+                    <input type="text" name="soils" class="bot-input w-full text-sm" placeholder="loam,sandy" required>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Color</label>
+                    <input type="text" name="color" class="bot-input w-full text-sm" placeholder="Yellow">
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Bloom Season</label>
+                    <select name="bloom_season" class="bot-input w-full text-sm">
+                        <option value="spring">Spring</option>
+                        <option value="summer" selected>Summer</option>
+                        <option value="fall">Fall</option>
+                        <option value="all_season">All Season</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Height</label>
+                    <input type="text" name="height" class="bot-input w-full text-sm" placeholder="24-36in">
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Spacing</label>
+                    <input type="text" name="spacing" class="bot-input w-full text-sm" placeholder="12-18in">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs bot-text-secondary mb-1">Description</label>
+                    <input type="text" name="description" class="bot-input w-full text-sm" placeholder="Tall annual with large golden blooms">
+                </div>
+                <div>
+                    <label class="block text-xs bot-text-secondary mb-1">Wikipedia URL</label>
+                    <input type="url" name="wikipedia_url" class="bot-input w-full text-sm" placeholder="https://en.wikipedia.org/wiki/Helianthus">
+                </div>
+                <div class="md:col-span-3 flex justify-end gap-3 mt-2">
+                    <button type="button" onclick="document.getElementById('new-flower-form').classList.add('hidden')" 
+                            class="bot-btn-ghost text-sm">Cancel</button>
+                    <button type="submit" class="bot-btn-primary text-sm">Save Flower</button>
+                </div>
+            </form>
+        </div>
+
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead>

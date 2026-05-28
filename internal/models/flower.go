@@ -18,6 +18,7 @@ type Flower struct {
 	Spacing       string     `json:"spacing"`   // e.g. "8-12in"
 	Description   string     `json:"description"`
 	ImageURL      string     `json:"image_url"` // emoji or URL
+	WikipediaURL  string     `json:"wikipedia_url"` // link to Wikipedia
 }
 
 // FSTRole is the Filler/Spiller/Thriller role

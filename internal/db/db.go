@@ -32,6 +32,8 @@ func (d *DB) Init() error {
 	if _, err := d.Exec(schemaSQL); err != nil {
 		return fmt.Errorf("schema: %w", err)
 	}
+	// Migration: add wikipedia_url column if it doesn't exist
+	d.Exec("ALTER TABLE flowers ADD COLUMN wikipedia_url TEXT NOT NULL DEFAULT ''")
 	return nil
 }
 
@@ -43,7 +45,7 @@ func (d *DB) Count() (int, error) {
 
 func (d *DB) FindByCriteria(zone int, sun models.SunType, role models.FSTRole) ([]models.Flower, error) {
 	rows, err := d.Query(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url
+		color, bloom_season, height, spacing, description, image_url, wikipedia_url
 		FROM flowers WHERE ? BETWEEN zone_min AND zone_max AND sun = ? AND role = ?
 		ORDER BY name`, zone, sun, role)
 	if err != nil {
@@ -64,7 +66,7 @@ func (d *DB) FindByCriteria(zone int, sun models.SunType, role models.FSTRole) (
 
 func (d *DB) FindAll() ([]models.Flower, error) {
 	rows, err := d.Query(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url
+		color, bloom_season, height, spacing, description, image_url, wikipedia_url
 		FROM flowers ORDER BY role, name`)
 	if err != nil {
 		return nil, fmt.Errorf("query: %w", err)
@@ -84,7 +86,7 @@ func (d *DB) FindAll() ([]models.Flower, error) {
 
 func (d *DB) FindByRole(role models.FSTRole) ([]models.Flower, error) {
 	rows, err := d.Query(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url
+		color, bloom_season, height, spacing, description, image_url, wikipedia_url
 		FROM flowers WHERE role = ? ORDER BY name`, role)
 	if err != nil {
 		return nil, fmt.Errorf("query: %w", err)
@@ -104,7 +106,7 @@ func (d *DB) FindByRole(role models.FSTRole) ([]models.Flower, error) {
 
 func (d *DB) FindByID(id int) (*models.Flower, error) {
 	row := d.QueryRow(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url
+		color, bloom_season, height, spacing, description, image_url, wikipedia_url
 		FROM flowers WHERE id = ?`, id)
 	return scanFlowerRowPtr(row)
 }
@@ -113,10 +115,10 @@ func (d *DB) Upsert(f *models.Flower) error {
 	soils := soilsCSV(f.Soils)
 	if f.ID == 0 {
 		result, err := d.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
-			color, bloom_season, height, spacing, description, image_url)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			color, bloom_season, height, spacing, description, image_url, wikipedia_url)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, soils,
-			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL)
+			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.WikipediaURL)
 		if err != nil {
 			return err
 		}
@@ -127,10 +129,10 @@ func (d *DB) Upsert(f *models.Flower) error {
 		return nil
 	}
 	_, err := d.Exec(`UPDATE flowers SET name=?, botanical_name=?, role=?, zone_min=?, zone_max=?,
-		sun=?, soils=?, color=?, bloom_season=?, height=?, spacing=?, description=?, image_url=?
+		sun=?, soils=?, color=?, bloom_season=?, height=?, spacing=?, description=?, image_url=?, wikipedia_url=?
 		WHERE id=?`,
 		f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, soils,
-		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.ID)
+		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.WikipediaURL, f.ID)
 	return err
 }
 
@@ -155,7 +157,7 @@ func scanFlowerRaw(r interface{ Scan(...interface{}) error }) (models.Flower, er
 	var soilsStr string
 	err := r.Scan(&f.ID, &f.Name, &f.BotanicalName, &f.Role, &f.ZoneMin, &f.ZoneMax,
 		&f.Sun, &soilsStr, &f.Color, &f.BloomSeason, &f.Height, &f.Spacing,
-		&f.Description, &f.ImageURL)
+		&f.Description, &f.ImageURL, &f.WikipediaURL)
 	if err != nil {
 		return f, err
 	}

@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS flowers (
 	height TEXT NOT NULL DEFAULT '',
 	spacing TEXT NOT NULL DEFAULT '',
 	description TEXT NOT NULL DEFAULT '',
-	image_url TEXT NOT NULL DEFAULT ''
+	image_url TEXT NOT NULL DEFAULT '',
+	wikipedia_url TEXT NOT NULL DEFAULT ''
 );

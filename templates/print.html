@@ -18,7 +18,7 @@
                 {{if .Rec.Thriller}}
                 <div class="plant-entry">
                     <span class="emoji">{{.Rec.Thriller.ImageURL}}</span>
-                    <span class="name">{{.Rec.Thriller.Name}}</span>
+                    <span class="name">{{if .Rec.Thriller.WikipediaURL}}<a href="{{.Rec.Thriller.WikipediaURL}}" target="_blank" rel="noopener">{{.Rec.Thriller.Name}}</a>{{else}}{{.Rec.Thriller.Name}}{{end}}</span>
                     <span class="botanical">({{.Rec.Thriller.BotanicalName}})</span>
                     <span class="qty">× 1</span>
                 </div>
@@ -31,7 +31,7 @@
                 {{range .FilledFillers}}
                 <div class="plant-entry">
                     <span class="emoji">{{.Flower.ImageURL}}</span>
-                    <span class="name">{{.Flower.Name}}</span>
+                    <span class="name">{{if .Flower.WikipediaURL}}<a href="{{.Flower.WikipediaURL}}" target="_blank" rel="noopener">{{.Flower.Name}}</a>{{else}}{{.Flower.Name}}{{end}}</span>
                     <span class="botanical">({{.Flower.BotanicalName}})</span>
                     <span class="qty">× {{.Qty}}</span>
                 </div>
@@ -44,7 +44,7 @@
                 {{range .FilledSpillers}}
                 <div class="plant-entry">
                     <span class="emoji">{{.Flower.ImageURL}}</span>
-                    <span class="name">{{.Flower.Name}}</span>
+                    <span class="name">{{if .Flower.WikipediaURL}}<a href="{{.Flower.WikipediaURL}}" target="_blank" rel="noopener">{{.Flower.Name}}</a>{{else}}{{.Flower.Name}}{{end}}</span>
                     <span class="botanical">({{.Flower.BotanicalName}})</span>
                     <span class="qty">× {{.Qty}}</span>
                 </div>
