@@ -7,7 +7,7 @@ import "fmt"
 func migrateFlowerWikipedia(d *DB) error {
 	type entry struct{ name, url string }
 	entries := []entry{
-		{"Canna Lily", "https://en.wikipedia.org/wiki/Canna_x_generalis"},
+		{"Canna Lily", "https://en.wikipedia.org/wiki/Canna_(plant)"},
 		{"Angelonia", "https://en.wikipedia.org/wiki/Angelonia_angustifolia"},
 		{"Salvia", "https://en.wikipedia.org/wiki/Salvia_splendens"},
 		{"Celosia", "https://en.wikipedia.org/wiki/Celosia_argentea"},
@@ -58,8 +58,8 @@ func migrateFlowerWikipedia(d *DB) error {
 		{"Sedum Angelina", "https://en.wikipedia.org/wiki/Sedum_rupestre"},
 		{"Lotus Vine", "https://en.wikipedia.org/wiki/Lotus_berthelotii"},
 		{"English Ivy", "https://en.wikipedia.org/wiki/Hedera_hibernica"},
-		{"Creeping Jenny Gold", "https://en.wikipedia.org/wiki/Lysimachia_nummularia_'Aurea'"},
-		{"Trailing Rosemary", "https://en.wikipedia.org/wiki/Rosmarinus_officinalis_'Prostratus'"},
+		{"Creeping Jenny Gold", "https://en.wikipedia.org/wiki/Lysimachia_nummularia"},
+		{"Trailing Rosemary", "https://en.wikipedia.org/wiki/Salvia_rosmarinus"},
 		{"String of Pearls", "https://en.wikipedia.org/wiki/Senecio_rowleyanus"},
 		{"Mint", "https://en.wikipedia.org/wiki/Mentha_spp."},
 		{"Vinca Minor", "https://en.wikipedia.org/wiki/Vinca_minor"},
