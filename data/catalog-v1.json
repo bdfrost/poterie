@@ -1,0 +1,1124 @@
+{
+  "catalog_version": 1,
+  "flowers": [
+    {
+      "name": "Canna Lily",
+      "botanical_name": "Canna × generalis",
+      "role": "thriller",
+      "zone_min": 7,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Red/Orange/Yellow",
+      "bloom_season": "summer",
+      "height": "3-6ft",
+      "spacing": "12-18in",
+      "description": "Bold tropical foliage with vibrant flower spikes. Thrives in hot summer sun.",
+      "image_url": "🌺",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Canna_(plant)"
+    },
+    {
+      "name": "Angelonia",
+      "botanical_name": "Angelonia angustifolia",
+      "role": "thriller",
+      "zone_min": 9,
+      "zone_max": 11,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained",
+        "loam"
+      ],
+      "color": "Purple/Blue/White/Pink",
+      "bloom_season": "summer",
+      "height": "12-18in",
+      "spacing": "8-12in",
+      "description": "Heat-tolerant spikes of snapdragon-like flowers. Excellent for containers.",
+      "image_url": "💜",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Angelonia_angustifolia"
+    },
+    {
+      "name": "Salvia",
+      "botanical_name": "Salvia splendens",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained",
+        "sandy"
+      ],
+      "color": "Red",
+      "bloom_season": "summer",
+      "height": "12-24in",
+      "spacing": "10-14in",
+      "description": "Classic vibrant red spikes, long-blooming annual. Hummingbird magnet.",
+      "image_url": "🔴",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Salvia_splendens"
+    },
+    {
+      "name": "Celosia",
+      "botanical_name": "Celosia argentea",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Red/Orange/Yellow/Pink",
+      "bloom_season": "summer",
+      "height": "12-36in",
+      "spacing": "6-12in",
+      "description": "Flame-like plumes or crested heads. Excellent dried flower.",
+      "image_url": "🌾",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Celosia_argentea"
+    },
+    {
+      "name": "Dracaena Spike",
+      "botanical_name": "Cordyline australis",
+      "role": "thriller",
+      "zone_min": 8,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "welldrained",
+        "loam"
+      ],
+      "color": "Green/Bronze/Purple foliage",
+      "bloom_season": "all_season",
+      "height": "2-4ft",
+      "spacing": "12-18in",
+      "description": "Architectural sword-like foliage. Dramatic container centerpiece.",
+      "image_url": "🌿",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Cordyline_australis"
+    },
+    {
+      "name": "Ornamental Grass",
+      "botanical_name": "Pennisetum setaceum",
+      "role": "thriller",
+      "zone_min": 9,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained",
+        "loam"
+      ],
+      "color": "Burgundy/Green",
+      "bloom_season": "summer",
+      "height": "2-4ft",
+      "spacing": "12-24in",
+      "description": "Graceful arching plumes. Adds movement and texture.",
+      "image_url": "🌾",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Pennisetum_setaceum"
+    },
+    {
+      "name": "Torenia",
+      "botanical_name": "Torenia fournieri",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Blue/Purple/White",
+      "bloom_season": "summer",
+      "height": "8-12in",
+      "spacing": "6-10in",
+      "description": "Wishbone flower with unique tubular blooms. Shade-tolerant thriller.",
+      "image_url": "💙",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Torenia_fournieri"
+    },
+    {
+      "name": "Castor Bean",
+      "botanical_name": "Ricinus communis",
+      "role": "thriller",
+      "zone_min": 9,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Red/bronze foliage",
+      "bloom_season": "all_season",
+      "height": "6-10ft",
+      "spacing": "24-36in",
+      "description": "Massive tropical leaves, dramatic height. Use in beds, caution: toxic.",
+      "image_url": "🍃",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Ricinus_communis"
+    },
+    {
+      "name": "Astilbe",
+      "botanical_name": "Astilbe × arendsii",
+      "role": "thriller",
+      "zone_min": 4,
+      "zone_max": 8,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "clay"
+      ],
+      "color": "Pink/Red/White/Purple",
+      "bloom_season": "summer",
+      "height": "18-36in",
+      "spacing": "12-18in",
+      "description": "Feathery plumes above fern-like foliage. Moisture-loving shade thriller.",
+      "image_url": "💗",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Astilbe_x_arendsii"
+    },
+    {
+      "name": "Foxglove",
+      "botanical_name": "Digitalis purpurea",
+      "role": "thriller",
+      "zone_min": 4,
+      "zone_max": 8,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Purple/Pink/White",
+      "bloom_season": "spring",
+      "height": "2-4ft",
+      "spacing": "12-18in",
+      "description": "Tall elegant spires of tubular flowers. Cottage garden classic.",
+      "image_url": "💜",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Digitalis_purpurea"
+    },
+    {
+      "name": "Delphinium",
+      "botanical_name": "Delphinium elatum",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 7,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Blue/Purple/White/Pink",
+      "bloom_season": "summer",
+      "height": "3-6ft",
+      "spacing": "12-18in",
+      "description": "Towering flower spikes in rich blues. Classic cottage garden thriller.",
+      "image_url": "💙",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Delphinium_elatum"
+    },
+    {
+      "name": "Banana Plant",
+      "botanical_name": "Musa basjoo",
+      "role": "thriller",
+      "zone_min": 5,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Green foliage",
+      "bloom_season": "all_season",
+      "height": "6-15ft",
+      "spacing": "36-48in",
+      "description": "Tropical giant leaves for dramatic tropical effect. Hardy banana.",
+      "image_url": "🌴",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Musa_basjoo"
+    },
+    {
+      "name": "Hosta",
+      "botanical_name": "Hosta spp.",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 8,
+      "sun": "full_shade",
+      "soils": [
+        "loam",
+        "clay"
+      ],
+      "color": "Green/Gold/Variegated foliage",
+      "bloom_season": "summer",
+      "height": "12-36in",
+      "spacing": "12-36in",
+      "description": "Architectural foliage plant for shade. Lavender flower scapes add height.",
+      "image_url": "🌿",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Hosta_spp."
+    },
+    {
+      "name": "Japanese Painted Fern",
+      "botanical_name": "Athyrium niponicum",
+      "role": "thriller",
+      "zone_min": 4,
+      "zone_max": 8,
+      "sun": "full_shade",
+      "soils": [
+        "loam",
+        "clay",
+        "welldrained"
+      ],
+      "color": "Silver/green/red foliage",
+      "bloom_season": "all_season",
+      "height": "8-12in",
+      "spacing": "12-18in",
+      "description": "Elegant arching fronds with silver and burgundy coloring.",
+      "image_url": "🌿",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Athyrium_niponicum"
+    },
+    {
+      "name": "Hollyhock",
+      "botanical_name": "Alcea rosea",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 8,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Pink/Red/White/Yellow",
+      "bloom_season": "summer",
+      "height": "4-8ft",
+      "spacing": "18-24in",
+      "description": "Towering cottage classic. Long flower spikes in cottage gardens.",
+      "image_url": "🌸",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Alcea_rosea"
+    },
+    {
+      "name": "Sunflower",
+      "botanical_name": "Helianthus annuus",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Yellow",
+      "bloom_season": "summer",
+      "height": "3-10ft",
+      "spacing": "12-24in",
+      "description": "Iconic tall blooms. Excellent for beds and as a dramatic container thriller.",
+      "image_url": "🌻",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Helianthus_annuus"
+    },
+    {
+      "name": "Gladiolus",
+      "botanical_name": "Gladiolus × hortulanus",
+      "role": "thriller",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained",
+        "sandy"
+      ],
+      "color": "Many colors",
+      "bloom_season": "summer",
+      "height": "2-5ft",
+      "spacing": "6-8in",
+      "description": "Tall dramatic sword-like flower spikes. Excellent cut flowers.",
+      "image_url": "🌺",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Gladiolus_x_hortulanus"
+    },
+    {
+      "name": "Petunia",
+      "botanical_name": "Petunia × hybrida",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained",
+        "sandy"
+      ],
+      "color": "Many colors",
+      "bloom_season": "summer",
+      "height": "6-14in",
+      "spacing": "6-12in",
+      "description": "Reliable, prolific bloomer in every color. Container bed staple.",
+      "image_url": "🌸",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Petunia_x_hybrida"
+    },
+    {
+      "name": "Geranium",
+      "botanical_name": "Pelargonium × hortorum",
+      "role": "filler",
+      "zone_min": 9,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Red/Pink/White/Salmon",
+      "bloom_season": "summer",
+      "height": "12-18in",
+      "spacing": "8-12in",
+      "description": "Classic container flower. Long-lasting, heat-tolerant blooms.",
+      "image_url": "🌺",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Pelargonium_x_hortorum"
+    },
+    {
+      "name": "Marigold",
+      "botanical_name": "Tagetes erecta",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "sandy",
+        "clay"
+      ],
+      "color": "Yellow/Orange",
+      "bloom_season": "summer",
+      "height": "6-36in",
+      "spacing": "6-12in",
+      "description": "Cheerful, pest-resistant bloom. Great companion plant.",
+      "image_url": "🌼",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Tagetes_erecta"
+    },
+    {
+      "name": "Begonia",
+      "botanical_name": "Begonia × semperflorens",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Red/Pink/White/Yellow",
+      "bloom_season": "summer",
+      "height": "6-12in",
+      "spacing": "6-8in",
+      "description": "Continuous bloom in shade or part-sun. Glossy foliage.",
+      "image_url": "🌸",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Begonia_x_semperflorens"
+    },
+    {
+      "name": "Coleus",
+      "botanical_name": "Plectranthus scutellarioides",
+      "role": "filler",
+      "zone_min": 10,
+      "zone_max": 11,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Red/Green/Gold/Purple foliage",
+      "bloom_season": "all_season",
+      "height": "8-24in",
+      "spacing": "8-12in",
+      "description": "Stunning colorful foliage. Pinch flowers for bushier growth.",
+      "image_url": "🍃",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Plectranthus_scutellarioides"
+    },
+    {
+      "name": "Impatiens",
+      "botanical_name": "Impatiens walleriana",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Many colors",
+      "bloom_season": "summer",
+      "height": "6-18in",
+      "spacing": "6-12in",
+      "description": "Reliable shade filler, profuse bloomer. New Guinea varieties for sun.",
+      "image_url": "🌺",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Impatiens_walleriana"
+    },
+    {
+      "name": "Zinnia",
+      "botanical_name": "Zinnia elegans",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Many colors",
+      "bloom_season": "summer",
+      "height": "6-36in",
+      "spacing": "6-12in",
+      "description": "Vibrant, long-lasting cut flowers. Butterfly magnet.",
+      "image_url": "🌸",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Zinnia_elegans"
+    },
+    {
+      "name": "Dahlia",
+      "botanical_name": "Dahlia × hortensis",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Many colors",
+      "bloom_season": "summer",
+      "height": "12-48in",
+      "spacing": "12-18in",
+      "description": "Showy dinner-plate blooms. Tuberous, excellent cut flowers.",
+      "image_url": "🌺",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Dahlia_x_hortensis"
+    },
+    {
+      "name": "Calibrachoa",
+      "botanical_name": "Calibrachoa × hybrida",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Many colors",
+      "bloom_season": "summer",
+      "height": "4-8in",
+      "spacing": "6-10in",
+      "description": "Mini petunia, self-cleaning, nonstop blooms. Excellent container filler.",
+      "image_url": "💜",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Calibrachoa_x_hybrida"
+    },
+    {
+      "name": "Vinca",
+      "botanical_name": "Catharanthus roseus",
+      "role": "filler",
+      "zone_min": 10,
+      "zone_max": 11,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained",
+        "loam"
+      ],
+      "color": "White/Pink/Red/Purple",
+      "bloom_season": "summer",
+      "height": "6-18in",
+      "spacing": "6-12in",
+      "description": "Heat-loving, drought-tolerant, disease-resistant. Southern staple.",
+      "image_url": "🌸",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Catharanthus_roseus"
+    },
+    {
+      "name": "Nemesia",
+      "botanical_name": "Nemesia strumosa",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Many colors",
+      "bloom_season": "spring",
+      "height": "6-12in",
+      "spacing": "6-8in",
+      "description": "Cool-season charmer, snaps-like flowers. Spring filler before heat.",
+      "image_url": "💙",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Nemesia_strumosa"
+    },
+    {
+      "name": "Lobelia",
+      "botanical_name": "Lobelia erinus",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Blue/Purple/White",
+      "bloom_season": "summer",
+      "height": "4-8in",
+      "spacing": "4-6in",
+      "description": "True blue flowers. Cool-season loving, performs best in spring.",
+      "image_url": "💙",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lobelia_erinus"
+    },
+    {
+      "name": "Dusty Miller",
+      "botanical_name": "Senecio cineraria",
+      "role": "filler",
+      "zone_min": 8,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained",
+        "loam"
+      ],
+      "color": "Silver/gray foliage",
+      "bloom_season": "all_season",
+      "height": "8-15in",
+      "spacing": "8-12in",
+      "description": "Striking silver foliage, perfect contrast plant. Drought-tolerant.",
+      "image_url": "🤍",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Senecio_cineraria"
+    },
+    {
+      "name": "Pansy",
+      "botanical_name": "Viola × wittrockiana",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 8,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Many colors",
+      "bloom_season": "spring",
+      "height": "6-9in",
+      "spacing": "4-6in",
+      "description": "Cheerful cool-season bloom. Survives light frost.",
+      "image_url": "💛",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Viola_x_wittrockiana"
+    },
+    {
+      "name": "Snapdragon",
+      "botanical_name": "Antirrhinum majus",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Many colors",
+      "bloom_season": "spring",
+      "height": "6-36in",
+      "spacing": "6-12in",
+      "description": "Classic cottage flower, tall spikes. Cool-season performer.",
+      "image_url": "🌸",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Antirrhinum_majus"
+    },
+    {
+      "name": "Ornamental Pepper",
+      "botanical_name": "Capsicum annuum",
+      "role": "filler",
+      "zone_min": 9,
+      "zone_max": 11,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Red/Orange/Yellow/Purple fruit",
+      "bloom_season": "summer",
+      "height": "8-18in",
+      "spacing": "10-12in",
+      "description": "Colorful upright peppers, ornamental and sometimes edible.",
+      "image_url": "🌶️",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Capsicum_annuum"
+    },
+    {
+      "name": "Caladium",
+      "botanical_name": "Caladium bicolor",
+      "role": "filler",
+      "zone_min": 9,
+      "zone_max": 10,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "Red/Pink/White/Green foliage",
+      "bloom_season": "summer",
+      "height": "12-24in",
+      "spacing": "8-12in",
+      "description": "Heart-shaped stained-glass foliage. Shade-loving tropical.",
+      "image_url": "🍃",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Caladium_bicolor"
+    },
+    {
+      "name": "Lavender",
+      "botanical_name": "Lavandula angustifolia",
+      "role": "filler",
+      "zone_min": 5,
+      "zone_max": 9,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Purple",
+      "bloom_season": "summer",
+      "height": "12-24in",
+      "spacing": "12-18in",
+      "description": "Fragrant purple spikes. Classic cottage filler, pollinator magnet.",
+      "image_url": "💜",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lavandula_angustifolia"
+    },
+    {
+      "name": "Coneflower",
+      "botanical_name": "Echinacea purpurea",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 9,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "clay",
+        "welldrained"
+      ],
+      "color": "Purple/Pink/White",
+      "bloom_season": "summer",
+      "height": "18-36in",
+      "spacing": "12-18in",
+      "description": "Native prairie flower. Medicinal, drought tolerant butterfly favorite.",
+      "image_url": "🌸",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Echinacea_purpurea"
+    },
+    {
+      "name": "Black-eyed Susan",
+      "botanical_name": "Rudbeckia hirta",
+      "role": "filler",
+      "zone_min": 3,
+      "zone_max": 7,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "clay",
+        "welldrained"
+      ],
+      "color": "Yellow/Gold",
+      "bloom_season": "summer",
+      "height": "18-36in",
+      "spacing": "12-18in",
+      "description": "Cheerful daisy-like blooms. Native prairie staple.",
+      "image_url": "🌼",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Rudbeckia_hirta"
+    },
+    {
+      "name": "Creeping Jenny",
+      "botanical_name": "Lysimachia nummularia",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 8,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "clay"
+      ],
+      "color": "Golden-yellow foliage",
+      "bloom_season": "all_season",
+      "height": "2-4in",
+      "spacing": "6-12in",
+      "description": "Golden trailing foliage. Vigorous in moist conditions.",
+      "image_url": "💛",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lysimachia_nummularia"
+    },
+    {
+      "name": "Sweet Alyssum",
+      "botanical_name": "Lobularia maritima",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 9,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "sandy",
+        "welldrained"
+      ],
+      "color": "White/Pink/Purple",
+      "bloom_season": "summer",
+      "height": "2-6in",
+      "spacing": "4-6in",
+      "description": "Honey-scented tiny flowers cascading mounds. Self-cleaning.",
+      "image_url": "🤍",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lobularia_maritima"
+    },
+    {
+      "name": "Bacopa",
+      "botanical_name": "Sutera cordata",
+      "role": "spiller",
+      "zone_min": 9,
+      "zone_max": 10,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "welldrained"
+      ],
+      "color": "White/Pink/Blue",
+      "bloom_season": "summer",
+      "height": "3-6in",
+      "spacing": "6-8in",
+      "description": "Delicate trailing flowers. Consistent bloomer, mildew-resistant varieties.",
+      "image_url": "🤍",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Sutera_cordata"
+    },
+    {
+      "name": "Trailing Verbena",
+      "botanical_name": "Verbena × hybrida",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained",
+        "loam"
+      ],
+      "color": "Red/Pink/Purple/White",
+      "bloom_season": "summer",
+      "height": "4-8in",
+      "spacing": "8-12in",
+      "description": "Trailing clusters of flowers. Heat and drought tolerant once established.",
+      "image_url": "💜",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Verbena_x_hybrida"
+    },
+    {
+      "name": "Dichondra Silver Falls",
+      "botanical_name": "Dichondra argentea",
+      "role": "spiller",
+      "zone_min": 10,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Silver foliage",
+      "bloom_season": "all_season",
+      "height": "2-8in",
+      "spacing": "6-12in",
+      "description": "Cascading silver strands. Striking contrast container spiller.",
+      "image_url": "🤍",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Dichondra_argentea"
+    },
+    {
+      "name": "Trailing Ivy",
+      "botanical_name": "Hedera helix",
+      "role": "spiller",
+      "zone_min": 5,
+      "zone_max": 9,
+      "sun": "part_shade",
+      "soils": [
+        "loam"
+      ],
+      "color": "Dark green/Variegated foliage",
+      "bloom_season": "all_season",
+      "height": "4-12in",
+      "spacing": "8-12in",
+      "description": "Classic evergreen trailing vine. Versatile shade spiller.",
+      "image_url": "🌿",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Hedera_helix"
+    },
+    {
+      "name": "Mazus",
+      "botanical_name": "Mazus reptans",
+      "role": "spiller",
+      "zone_min": 5,
+      "zone_max": 8,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "clay"
+      ],
+      "color": "Purple/White tiny flowers",
+      "bloom_season": "spring",
+      "height": "1-3in",
+      "spacing": "8-12in",
+      "description": "Low-growing ground cover with tiny blooms. Foot-traffic tolerant.",
+      "image_url": "💙",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Mazus_reptans"
+    },
+    {
+      "name": "Nasturtium",
+      "botanical_name": "Tropaeolum majus",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Red/Orange/Yellow",
+      "bloom_season": "summer",
+      "height": "6-12in",
+      "spacing": "6-12in",
+      "description": "Edible flowers and peppery leaves. Thrives in poor soil.",
+      "image_url": "🟠",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Tropaeolum_majus"
+    },
+    {
+      "name": "Lemon Thyme",
+      "botanical_name": "Thymus citriodorus",
+      "role": "spiller",
+      "zone_min": 5,
+      "zone_max": 9,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Green/gold foliage, pink flowers",
+      "bloom_season": "summer",
+      "height": "4-8in",
+      "spacing": "8-12in",
+      "description": "Aromatic creeping herb. Pollinator friendly, edible.",
+      "image_url": "💛",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Thymus_citriodorus"
+    },
+    {
+      "name": "Creeping Thyme",
+      "botanical_name": "Thymus serpyllum",
+      "role": "spiller",
+      "zone_min": 4,
+      "zone_max": 9,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Pink/Purple tiny flowers",
+      "bloom_season": "summer",
+      "height": "2-4in",
+      "spacing": "6-10in",
+      "description": "Fragrant mat-forming groundcover. Walkable, bee-friendly.",
+      "image_url": "💜",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Thymus_serpyllum"
+    },
+    {
+      "name": "Scaevola",
+      "botanical_name": "Scaevola aemula",
+      "role": "spiller",
+      "zone_min": 9,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained",
+        "loam"
+      ],
+      "color": "Blue/Purple/White",
+      "bloom_season": "summer",
+      "height": "4-8in",
+      "spacing": "8-12in",
+      "description": "Fan flower with half-faced blooms. Heat-tolerant trailing beauty.",
+      "image_url": "💙",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Scaevola_aemula"
+    },
+    {
+      "name": "Sedum Angelina",
+      "botanical_name": "Sedum rupestre",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 9,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Golden-yellow foliage",
+      "bloom_season": "summer",
+      "height": "4-6in",
+      "spacing": "8-12in",
+      "description": "Drought-proof succulent spiller. Turns bronze in fall.",
+      "image_url": "💛",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Sedum_rupestre"
+    },
+    {
+      "name": "Lotus Vine",
+      "botanical_name": "Lotus berthelotii",
+      "role": "spiller",
+      "zone_min": 9,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Bronze-orange/silver foliage",
+      "bloom_season": "summer",
+      "height": "4-8in",
+      "spacing": "8-12in",
+      "description": "Dramatic cascading succulent with unusual claw-like blooms.",
+      "image_url": "🟠",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lotus_berthelotii"
+    },
+    {
+      "name": "English Ivy",
+      "botanical_name": "Hedera hibernica",
+      "role": "spiller",
+      "zone_min": 5,
+      "zone_max": 9,
+      "sun": "full_shade",
+      "soils": [
+        "loam",
+        "clay"
+      ],
+      "color": "Deep green foliage",
+      "bloom_season": "all_season",
+      "height": "6-12in",
+      "spacing": "12-18in",
+      "description": "Vigorous shade-tolerant vine. Classic cottage garden spiller.",
+      "image_url": "🌿",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Hedera_hibernica"
+    },
+    {
+      "name": "Creeping Jenny Gold",
+      "botanical_name": "Lysimachia nummularia 'Aurea'",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 8,
+      "sun": "full_sun",
+      "soils": [
+        "loam",
+        "clay",
+        "welldrained"
+      ],
+      "color": "Bright gold foliage",
+      "bloom_season": "all_season",
+      "height": "2-4in",
+      "spacing": "6-12in",
+      "description": "Brighter gold in full sun. Vigorous container spiller.",
+      "image_url": "💛",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lysimachia_nummularia"
+    },
+    {
+      "name": "Trailing Rosemary",
+      "botanical_name": "Rosmarinus officinalis 'Prostratus'",
+      "role": "spiller",
+      "zone_min": 7,
+      "zone_max": 10,
+      "sun": "full_sun",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Green foliage, blue flowers",
+      "bloom_season": "spring",
+      "height": "4-8in",
+      "spacing": "12-18in",
+      "description": "Edible herb with fragrant trailing habit. Mediterranean beauty.",
+      "image_url": "🌿",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Salvia_rosmarinus"
+    },
+    {
+      "name": "String of Pearls",
+      "botanical_name": "Senecio rowleyanus",
+      "role": "spiller",
+      "zone_min": 10,
+      "zone_max": 11,
+      "sun": "part_shade",
+      "soils": [
+        "sandy",
+        "welldrained"
+      ],
+      "color": "Green bead-like foliage",
+      "bloom_season": "all_season",
+      "height": "2-4in",
+      "spacing": "6-12in",
+      "description": "Unique cascading bead-like succulent. Best as indoor/outdoor container.",
+      "image_url": "🟢",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Senecio_rowleyanus"
+    },
+    {
+      "name": "Mint",
+      "botanical_name": "Mentha spp.",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 8,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "clay"
+      ],
+      "color": "Green foliage",
+      "bloom_season": "summer",
+      "height": "6-18in",
+      "spacing": "12-18in",
+      "description": "Aggressive spreader, great in containers (contained). Fragrant foliage.",
+      "image_url": "🌿",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Mentha_spp."
+    },
+    {
+      "name": "Vinca Minor",
+      "botanical_name": "Vinca minor",
+      "role": "spiller",
+      "zone_min": 4,
+      "zone_max": 9,
+      "sun": "full_shade",
+      "soils": [
+        "loam",
+        "clay",
+        "welldrained"
+      ],
+      "color": "Purple/blue tiny flowers",
+      "bloom_season": "spring",
+      "height": "3-6in",
+      "spacing": "12-18in",
+      "description": "Evergreen trailing groundcover. Shade-loving with spring blooms.",
+      "image_url": "💜",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Vinca_minor"
+    },
+    {
+      "name": "Sweet Woodruff",
+      "botanical_name": "Galium odoratum",
+      "role": "spiller",
+      "zone_min": 4,
+      "zone_max": 8,
+      "sun": "full_shade",
+      "soils": [
+        "loam"
+      ],
+      "color": "White tiny flowers",
+      "bloom_season": "spring",
+      "height": "6-12in",
+      "spacing": "9-12in",
+      "description": "Delicate whorled foliage with tiny white spring flowers. Fragrant.",
+      "image_url": "🤍",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Galium_odoratum"
+    },
+    {
+      "name": "Ajuga",
+      "botanical_name": "Ajuga reptans",
+      "role": "spiller",
+      "zone_min": 3,
+      "zone_max": 9,
+      "sun": "part_shade",
+      "soils": [
+        "loam",
+        "clay"
+      ],
+      "color": "Blue flower spikes",
+      "bloom_season": "spring",
+      "height": "4-6in",
+      "spacing": "8-12in",
+      "description": "Low-growing shade spiller with purple-bronze foliage and blue spikes.",
+      "image_url": "💙",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Ajuga_reptans"
+    }
+  ]
+}

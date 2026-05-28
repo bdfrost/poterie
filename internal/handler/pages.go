@@ -189,6 +189,14 @@ func (h *Handler) planner(w http.ResponseWriter, r *http.Request) {
 			{"sandy", "Sandy"},
 			{"well_drained", "Well-Drained"},
 		},
+		"Palettes": []struct{ Value, Label, Description string }{
+			{"", "Any Color", "No color restriction"},
+			{"warm", "Warm Sunset", "Reds, oranges, yellows, golds"},
+			{"cool", "Cool & Calm", "Blues, purples, lavenders, whites"},
+			{"pinks", "Romantic Pinks", "Pinks, roses, magentas"},
+			{"monochrome", "Monochrome Green", "Foliage-focused, greens & silvers"},
+			{"jewel", "Jewel Tones", "Deep purples, burgundies, golds, bronzes"},
+		},
 	})
 }
 
@@ -231,21 +239,22 @@ func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 	layoutType := r.FormValue("layout")
 	sun := models.SunType(r.FormValue("sun"))
 	soil := models.SoilType(r.FormValue("soil"))
+	palette := models.ColorPalette(r.FormValue("palette"))
 
 	if !models.IsValidZone(zone) {
 		http.Error(w, "Invalid zone (3-10)", http.StatusBadRequest)
 		return
 	}
 
-	rec, err := h.service.Generate(zone, sun, layoutType, soil)
+	rec, err := h.service.Generate(zone, sun, layoutType, soil, palette)
 	if err != nil {
 		http.Error(w, "Failed to generate recommendation", http.StatusInternalServerError)
 		return
 	}
 	alters := map[string]interface{}{
-		"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
-		"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
-		"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller),
+		"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller, palette),
+		"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller, palette),
+		"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller, palette),
 	}
 
 	h.render(w, "result.html", map[string]interface{}{
@@ -254,6 +263,7 @@ func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 		"Zone":           zone,
 		"Sun":            string(sun),
 		"Soil":           string(soil),
+		"Palette":        string(palette),
 		"Layout":         layoutType,
 		"Alternatives":   alters,
 		"FillerCounts":   countPlants(rec.Fillers),
@@ -269,8 +279,9 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 	layoutType := r.FormValue("layout")
 	sun := models.SunType(r.FormValue("sun"))
 	soil := models.SoilType(r.FormValue("soil"))
+	palette := models.ColorPalette(r.FormValue("palette"))
 
-	rec, err := h.service.Generate(zone, sun, layoutType, soil)
+	rec, err := h.service.Generate(zone, sun, layoutType, soil, palette)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -288,15 +299,16 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 		"Zone":           zone,
 		"Sun":            string(sun),
 		"Soil":           string(soil),
+		"Palette":        string(palette),
 		"Layout":         layoutType,
 		"FillerCounts":   countPlants(rec.Fillers),
 		"SpillerCounts":  countPlants(rec.Spillers),
 		"FilledFillers":  deduplicatePlants(rec.Fillers),
 		"FilledSpillers": deduplicatePlants(rec.Spillers),
 		"Alternatives": map[string]interface{}{
-			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
-			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
-			"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller),
+			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller, palette),
+			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller, palette),
+			"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller, palette),
 		},
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -472,8 +484,9 @@ func (h *Handler) apiAlternatives(w http.ResponseWriter, r *http.Request) {
 	soil := models.SoilType(r.URL.Query().Get("soil"))
 	role := models.FSTRole(r.URL.Query().Get("role"))
 	currentID := parseInt(r.URL.Query().Get("currentId"), 0)
+	palette := models.ColorPalette(r.URL.Query().Get("palette"))
 
-	alternatives, err := h.service.GetAlternatives(zone, sun, soil, role)
+	alternatives, err := h.service.GetAlternatives(zone, sun, soil, role, palette)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -503,6 +516,7 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 	role := models.FSTRole(r.FormValue("swap_role"))
 	newID := parseInt(r.FormValue("swap_id"), 0)
 	slotIdx := parseInt(r.FormValue("swap_slot"), 0)
+	palette := models.ColorPalette(r.FormValue("palette"))
 
 	if newID == 0 {
 		http.Error(w, "missing plant selection", http.StatusBadRequest)
@@ -581,15 +595,16 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 		"Zone":           zone,
 		"Sun":            string(sun),
 		"Soil":           string(soil),
+		"Palette":        string(palette),
 		"Layout":         layout,
 		"FillerCounts":   countPlants(rec.Fillers),
 		"SpillerCounts":  countPlants(rec.Spillers),
 		"FilledFillers":  deduplicatePlants(rec.Fillers),
 		"FilledSpillers": deduplicatePlants(rec.Spillers),
 		"Alternatives": map[string]interface{}{
-			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller),
-			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller),
-			"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller),
+			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller, palette),
+			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller, palette),
+			"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller, palette),
 		},
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -605,6 +620,7 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 	var sun models.SunType
 	var soil models.SoilType
 	var layout string
+	var palette models.ColorPalette
 
 	if r.Method == http.MethodPost {
 		// Build from current plant IDs (preserves swaps)
@@ -616,6 +632,7 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 		sun = models.SunType(r.FormValue("sun"))
 		soil = models.SoilType(r.FormValue("soil"))
 		layout = r.FormValue("layout")
+		palette = models.ColorPalette(r.FormValue("palette"))
 
 		if !models.IsValidZone(zone) || layout == "" {
 			http.Redirect(w, r, "/planner", http.StatusSeeOther)
@@ -661,6 +678,7 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 		layout = r.URL.Query().Get("layout")
 		sun = models.SunType(r.URL.Query().Get("sun"))
 		soil = models.SoilType(r.URL.Query().Get("soil"))
+		palette = models.ColorPalette(r.URL.Query().Get("palette"))
 
 		if !models.IsValidZone(zone) || layout == "" {
 			http.Redirect(w, r, "/planner", http.StatusSeeOther)
@@ -668,7 +686,7 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var err error
-		rec, err = h.service.Generate(zone, sun, layout, soil)
+		rec, err = h.service.Generate(zone, sun, layout, soil, palette)
 		if err != nil {
 			http.Error(w, "Failed to generate recommendation", http.StatusInternalServerError)
 			return
@@ -681,6 +699,7 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 		"Zone":           zone,
 		"Sun":            string(sun),
 		"Soil":           string(soil),
+		"Palette":        string(palette),
 		"Layout":         layout,
 		"FillerCounts":   countPlants(rec.Fillers),
 		"SpillerCounts":  countPlants(rec.Spillers),
@@ -690,7 +709,7 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 }
 
 // fetchAlts is a helper to safely get alternatives without error checking in handlers
-func fetchAlts(svc *service.RecommendationService, zone int, sun models.SunType, soil models.SoilType, role models.FSTRole) []models.Flower {
-	alts, _ := svc.GetAlternatives(zone, sun, soil, role)
+func fetchAlts(svc *service.RecommendationService, zone int, sun models.SunType, soil models.SoilType, role models.FSTRole, palette models.ColorPalette) []models.Flower {
+	alts, _ := svc.GetAlternatives(zone, sun, soil, role, palette)
 	return alts
 }

@@ -1,12 +1,38 @@
 package db
 
 import (
+	_ "embed"
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/bdfrost/poterie/internal/models"
 )
 
-// Seed inserts flower data if the database is empty
+//go:embed catalog-v1.json
+var catalogJSON []byte
+
+// ExportCatalogJSON returns the raw embedded catalog JSON bytes.
+func ExportCatalogJSON() []byte {
+	return catalogJSON
+}
+
+// Catalog holds the versioned flower catalog loaded from JSON.
+type Catalog struct {
+	Version int             `json:"catalog_version"`
+	Flowers []models.Flower `json:"flowers"`
+}
+
+// LoadCatalog parses the embedded catalog JSON.
+func LoadCatalog() (*Catalog, error) {
+	var cat Catalog
+	if err := json.Unmarshal(catalogJSON, &cat); err != nil {
+		return nil, fmt.Errorf("parse catalog: %w", err)
+	}
+	return &cat, nil
+}
+
+// Seed inserts flower data if the database is empty.
 func Seed(d *DB) error {
 	count, err := d.Count()
 	if err != nil {
@@ -16,13 +42,18 @@ func Seed(d *DB) error {
 		return nil // already seeded
 	}
 
+	cat, err := LoadCatalog()
+	if err != nil {
+		return err
+	}
+
 	tx, err := d.Begin()
 	if err != nil {
 		return err
 	}
 	defer tx.Rollback()
 
-	for _, f := range seedFlowers() {
+	for _, f := range cat.Flowers {
 		if _, err := tx.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
 			color, bloom_season, height, spacing, description, image_url, wikipedia_url)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -34,272 +65,32 @@ func Seed(d *DB) error {
 	return tx.Commit()
 }
 
-func seedFlowers() []models.Flower {
-	return []models.Flower{
-		// === THRILLERS ===
-		thriller("Canna Lily", "Canna × generalis", 7, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Red/Orange/Yellow", "summer", "3-6ft", "12-18in",
-			"Bold tropical foliage with vibrant flower spikes. Thrives in hot summer sun.", "🌺"),
-		thriller("Angelonia", "Angelonia angustifolia", 9, 11, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained, models.SoilLoam},
-			"Purple/Blue/White/Pink", "summer", "12-18in", "8-12in",
-			"Heat-tolerant spikes of snapdragon-like flowers. Excellent for containers.", "💜"),
-		thriller("Salvia", "Salvia splendens", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained, models.SoilSandy},
-			"Red", "summer", "12-24in", "10-14in",
-			"Classic vibrant red spikes, long-blooming annual. Hummingbird magnet.", "🔴"),
-		thriller("Celosia", "Celosia argentea", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Red/Orange/Yellow/Pink", "summer", "12-36in", "6-12in",
-			"Flame-like plumes or crested heads. Excellent dried flower.", "🌾"),
-		thriller("Dracaena Spike", "Cordyline australis", 8, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilWellDrained, models.SoilLoam},
-			"Green/Bronze/Purple foliage", "all_season", "2-4ft", "12-18in",
-			"Architectural sword-like foliage. Dramatic container centerpiece.", "🌿"),
-		thriller("Ornamental Grass", "Pennisetum setaceum", 9, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained, models.SoilLoam},
-			"Burgundy/Green", "summer", "2-4ft", "12-24in",
-			"Graceful arching plumes. Adds movement and texture.", "🌾"),
-		thriller("Torenia", "Torenia fournieri", 3, 10, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Blue/Purple/White", "summer", "8-12in", "6-10in",
-			"Wishbone flower with unique tubular blooms. Shade-tolerant thriller.", "💙"),
-		thriller("Castor Bean", "Ricinus communis", 9, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Red/bronze foliage", "all_season", "6-10ft", "24-36in",
-			"Massive tropical leaves, dramatic height. Use in beds, caution: toxic.", "🍃"),
-		thriller("Astilbe", "Astilbe × arendsii", 4, 8, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay},
-			"Pink/Red/White/Purple", "summer", "18-36in", "12-18in",
-			"Feathery plumes above fern-like foliage. Moisture-loving shade thriller.", "💗"),
-		thriller("Foxglove", "Digitalis purpurea", 4, 8, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Purple/Pink/White", "spring", "2-4ft", "12-18in",
-			"Tall elegant spires of tubular flowers. Cottage garden classic.", "💜"),
-		thriller("Delphinium", "Delphinium elatum", 3, 7, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Blue/Purple/White/Pink", "summer", "3-6ft", "12-18in",
-			"Towering flower spikes in rich blues. Classic cottage garden thriller.", "💙"),
-		thriller("Banana Plant", "Musa basjoo", 5, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Green foliage", "all_season", "6-15ft", "36-48in",
-			"Tropical giant leaves for dramatic tropical effect. Hardy banana.", "🌴"),
-		thriller("Hosta", "Hosta spp.", 3, 8, models.SunFullShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay},
-			"Green/Gold/Variegated foliage", "summer", "12-36in", "12-36in",
-			"Architectural foliage plant for shade. Lavender flower scapes add height.", "🌿"),
-		thriller("Japanese Painted Fern", "Athyrium niponicum", 4, 8, models.SunFullShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay, models.SoilWellDrained},
-			"Silver/green/red foliage", "all_season", "8-12in", "12-18in",
-			"Elegant arching fronds with silver and burgundy coloring.", "🌿"),
-		thriller("Hollyhock", "Alcea rosea", 3, 8, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Pink/Red/White/Yellow", "summer", "4-8ft", "18-24in",
-			"Towering cottage classic. Long flower spikes in cottage gardens.", "🌸"),
-		thriller("Sunflower", "Helianthus annuus", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilSandy, models.SoilWellDrained},
-			"Yellow", "summer", "3-10ft", "12-24in",
-			"Iconic tall blooms. Excellent for beds and as a dramatic container thriller.", "🌻"),
-		thriller("Gladiolus", "Gladiolus × hortulanus", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained, models.SoilSandy},
-			"Many colors", "summer", "2-5ft", "6-8in",
-			"Tall dramatic sword-like flower spikes. Excellent cut flowers.", "🌺"),
-
-		// === FILLERS ===
-		filler("Petunia", "Petunia × hybrida", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained, models.SoilSandy},
-			"Many colors", "summer", "6-14in", "6-12in",
-			"Reliable, prolific bloomer in every color. Container bed staple.", "🌸"),
-		filler("Geranium", "Pelargonium × hortorum", 9, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilSandy, models.SoilWellDrained},
-			"Red/Pink/White/Salmon", "summer", "12-18in", "8-12in",
-			"Classic container flower. Long-lasting, heat-tolerant blooms.", "🌺"),
-		filler("Marigold", "Tagetes erecta", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilSandy, models.SoilClay},
-			"Yellow/Orange", "summer", "6-36in", "6-12in",
-			"Cheerful, pest-resistant bloom. Great companion plant.", "🌼"),
-		filler("Begonia", "Begonia × semperflorens", 3, 10, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Red/Pink/White/Yellow", "summer", "6-12in", "6-8in",
-			"Continuous bloom in shade or part-sun. Glossy foliage.", "🌸"),
-		filler("Coleus", "Plectranthus scutellarioides", 10, 11, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Red/Green/Gold/Purple foliage", "all_season", "8-24in", "8-12in",
-			"Stunning colorful foliage. Pinch flowers for bushier growth.", "🍃"),
-		filler("Impatiens", "Impatiens walleriana", 3, 10, models.SunFullShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Many colors", "summer", "6-18in", "6-12in",
-			"Reliable shade filler, profuse bloomer. New Guinea varieties for sun.", "🌺"),
-		filler("Zinnia", "Zinnia elegans", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilSandy, models.SoilWellDrained},
-			"Many colors", "summer", "6-36in", "6-12in",
-			"Vibrant, long-lasting cut flowers. Butterfly magnet.", "🌸"),
-		filler("Dahlia", "Dahlia × hortensis", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Many colors", "summer", "12-48in", "12-18in",
-			"Showy dinner-plate blooms. Tuberous, excellent cut flowers.", "🌺"),
-		filler("Calibrachoa", "Calibrachoa × hybrida", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Many colors", "summer", "4-8in", "6-10in",
-			"Mini petunia, self-cleaning, nonstop blooms. Excellent container filler.", "💜"),
-		filler("Vinca", "Catharanthus roseus", 10, 11, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained, models.SoilLoam},
-			"White/Pink/Red/Purple", "summer", "6-18in", "6-12in",
-			"Heat-loving, drought-tolerant, disease-resistant. Southern staple.", "🌸"),
-		filler("Nemesia", "Nemesia strumosa", 3, 10, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Many colors", "spring", "6-12in", "6-8in",
-			"Cool-season charmer, snaps-like flowers. Spring filler before heat.", "💙"),
-		filler("Lobelia", "Lobelia erinus", 3, 10, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Blue/Purple/White", "summer", "4-8in", "4-6in",
-			"True blue flowers. Cool-season loving, performs best in spring.", "💙"),
-		filler("Dusty Miller", "Senecio cineraria", 8, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained, models.SoilLoam},
-			"Silver/gray foliage", "all_season", "8-15in", "8-12in",
-			"Striking silver foliage, perfect contrast plant. Drought-tolerant.", "🤍"),
-		filler("Pansy", "Viola × wittrockiana", 3, 8, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Many colors", "spring", "6-9in", "4-6in",
-			"Cheerful cool-season bloom. Survives light frost.", "💛"),
-		filler("Snapdragon", "Antirrhinum majus", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Many colors", "spring", "6-36in", "6-12in",
-			"Classic cottage flower, tall spikes. Cool-season performer.", "🌸"),
-		filler("Ornamental Pepper", "Capsicum annuum", 9, 11, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Red/Orange/Yellow/Purple fruit", "summer", "8-18in", "10-12in",
-			"Colorful upright peppers, ornamental and sometimes edible.", "🌶️"),
-		filler("Caladium", "Caladium bicolor", 9, 10, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"Red/Pink/White/Green foliage", "summer", "12-24in", "8-12in",
-			"Heart-shaped stained-glass foliage. Shade-loving tropical.", "🍃"),
-		filler("Lavender", "Lavandula angustifolia", 5, 9, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Purple", "summer", "12-24in", "12-18in",
-			"Fragrant purple spikes. Classic cottage filler, pollinator magnet.", "💜"),
-		filler("Coneflower", "Echinacea purpurea", 3, 9, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilClay, models.SoilWellDrained},
-			"Purple/Pink/White", "summer", "18-36in", "12-18in",
-			"Native prairie flower. Medicinal, drought tolerant butterfly favorite.", "🌸"),
-		filler("Black-eyed Susan", "Rudbeckia hirta", 3, 7, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilClay, models.SoilWellDrained},
-			"Yellow/Gold", "summer", "18-36in", "12-18in",
-			"Cheerful daisy-like blooms. Native prairie staple.", "🌼"),
-
-		// === SPILLERS ===
-		spiller("Creeping Jenny", "Lysimachia nummularia", 3, 8, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay},
-			"Golden-yellow foliage", "all_season", "2-4in", "6-12in",
-			"Golden trailing foliage. Vigorous in moist conditions.", "💛"),
-		spiller("Sweet Alyssum", "Lobularia maritima", 3, 9, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilSandy, models.SoilWellDrained},
-			"White/Pink/Purple", "summer", "2-6in", "4-6in",
-			"Honey-scented tiny flowers cascading mounds. Self-cleaning.", "🤍"),
-		spiller("Bacopa", "Sutera cordata", 9, 10, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilWellDrained},
-			"White/Pink/Blue", "summer", "3-6in", "6-8in",
-			"Delicate trailing flowers. Consistent bloomer, mildew-resistant varieties.", "🤍"),
-		spiller("Trailing Verbena", "Verbena × hybrida", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained, models.SoilLoam},
-			"Red/Pink/Purple/White", "summer", "4-8in", "8-12in",
-			"Trailing clusters of flowers. Heat and drought tolerant once established.", "💜"),
-		spiller("Dichondra Silver Falls", "Dichondra argentea", 10, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Silver foliage", "all_season", "2-8in", "6-12in",
-			"Cascading silver strands. Striking contrast container spiller.", "🤍"),
-		spiller("Trailing Ivy", "Hedera helix", 5, 9, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam},
-			"Dark green/Variegated foliage", "all_season", "4-12in", "8-12in",
-			"Classic evergreen trailing vine. Versatile shade spiller.", "🌿"),
-		spiller("Mazus", "Mazus reptans", 5, 8, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay},
-			"Purple/White tiny flowers", "spring", "1-3in", "8-12in",
-			"Low-growing ground cover with tiny blooms. Foot-traffic tolerant.", "💙"),
-		spiller("Nasturtium", "Tropaeolum majus", 3, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Red/Orange/Yellow", "summer", "6-12in", "6-12in",
-			"Edible flowers and peppery leaves. Thrives in poor soil.", "🟠"),
-		spiller("Lemon Thyme", "Thymus citriodorus", 5, 9, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Green/gold foliage, pink flowers", "summer", "4-8in", "8-12in",
-			"Aromatic creeping herb. Pollinator friendly, edible.", "💛"),
-		spiller("Creeping Thyme", "Thymus serpyllum", 4, 9, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Pink/Purple tiny flowers", "summer", "2-4in", "6-10in",
-			"Fragrant mat-forming groundcover. Walkable, bee-friendly.", "💜"),
-		spiller("Scaevola", "Scaevola aemula", 9, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained, models.SoilLoam},
-			"Blue/Purple/White", "summer", "4-8in", "8-12in",
-			"Fan flower with half-faced blooms. Heat-tolerant trailing beauty.", "💙"),
-		spiller("Sedum Angelina", "Sedum rupestre", 3, 9, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Golden-yellow foliage", "summer", "4-6in", "8-12in",
-			"Drought-proof succulent spiller. Turns bronze in fall.", "💛"),
-		spiller("Lotus Vine", "Lotus berthelotii", 9, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Bronze-orange/silver foliage", "summer", "4-8in", "8-12in",
-			"Dramatic cascading succulent with unusual claw-like blooms.", "🟠"),
-		spiller("English Ivy", "Hedera hibernica", 5, 9, models.SunFullShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay},
-			"Deep green foliage", "all_season", "6-12in", "12-18in",
-			"Vigorous shade-tolerant vine. Classic cottage garden spiller.", "🌿"),
-		spiller("Creeping Jenny Gold", "Lysimachia nummularia 'Aurea'", 3, 8, models.SunFullSun,
-			[]models.SoilType{models.SoilLoam, models.SoilClay, models.SoilWellDrained},
-			"Bright gold foliage", "all_season", "2-4in", "6-12in",
-			"Brighter gold in full sun. Vigorous container spiller.", "💛"),
-		spiller("Trailing Rosemary", "Rosmarinus officinalis 'Prostratus'", 7, 10, models.SunFullSun,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Green foliage, blue flowers", "spring", "4-8in", "12-18in",
-			"Edible herb with fragrant trailing habit. Mediterranean beauty.", "🌿"),
-		spiller("String of Pearls", "Senecio rowleyanus", 10, 11, models.SunPartShade,
-			[]models.SoilType{models.SoilSandy, models.SoilWellDrained},
-			"Green bead-like foliage", "all_season", "2-4in", "6-12in",
-			"Unique cascading bead-like succulent. Best as indoor/outdoor container.", "🟢"),
-		spiller("Mint", "Mentha spp.", 3, 8, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay},
-			"Green foliage", "summer", "6-18in", "12-18in",
-			"Aggressive spreader, great in containers (contained). Fragrant foliage.", "🌿"),
-		spiller("Vinca Minor", "Vinca minor", 4, 9, models.SunFullShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay, models.SoilWellDrained},
-			"Purple/blue tiny flowers", "spring", "3-6in", "12-18in",
-			"Evergreen trailing groundcover. Shade-loving with spring blooms.", "💜"),
-		spiller("Sweet Woodruff", "Galium odoratum", 4, 8, models.SunFullShade,
-			[]models.SoilType{models.SoilLoam},
-			"White tiny flowers", "spring", "6-12in", "9-12in",
-			"Delicate whorled foliage with tiny white spring flowers. Fragrant.", "🤍"),
-		spiller("Ajuga", "Ajuga reptans", 3, 9, models.SunPartShade,
-			[]models.SoilType{models.SoilLoam, models.SoilClay},
-			"Blue flower spikes", "spring", "4-6in", "8-12in",
-			"Low-growing shade spiller with purple-bronze foliage and blue spikes.", "💙"),
+// SeedFromJSON allows seeding from an arbitrary JSON catalog
+// (used by admin import or custom catalogs).
+func SeedFromJSON(d *DB, data []byte) error {
+	var parsed []models.Flower
+	if err := json.Unmarshal(data, &parsed); err != nil {
+		return fmt.Errorf("parse catalog JSON: %w", err)
 	}
-}
 
-// Builder helpers
-func thriller(name, bot string, zmin, zmax int, sun models.SunType, soils []models.SoilType, color, season, h, sp, desc, emoji string) models.Flower {
-	return models.Flower{
-		Name: name, BotanicalName: bot, Role: models.RoleThriller,
-		ZoneMin: zmin, ZoneMax: zmax, Sun: sun, Soils: soils,
-		Color: color, BloomSeason: season, Height: h, Spacing: sp,
-		Description: desc, ImageURL: emoji,
+	tx, err := d.Begin()
+	if err != nil {
+		return err
 	}
-}
+	defer tx.Rollback()
 
-func filler(name, bot string, zmin, zmax int, sun models.SunType, soils []models.SoilType, color, season, h, sp, desc, emoji string) models.Flower {
-	return models.Flower{
-		Name: name, BotanicalName: bot, Role: models.RoleFiller,
-		ZoneMin: zmin, ZoneMax: zmax, Sun: sun, Soils: soils,
-		Color: color, BloomSeason: season, Height: h, Spacing: sp,
-		Description: desc, ImageURL: emoji,
+	for _, f := range parsed {
+		if _, err := tx.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
+			color, bloom_season, height, spacing, description, image_url, wikipedia_url)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, f.SoilsCSV(),
+			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.WikipediaURL); err != nil {
+			// Skip duplicates (by name) during import — allows partial re-imports
+			if strings.Contains(err.Error(), "UNIQUE") {
+				continue
+			}
+			return fmt.Errorf("seed %s: %w", f.Name, err)
+		}
 	}
-}
-
-func spiller(name, bot string, zmin, zmax int, sun models.SunType, soils []models.SoilType, color, season, h, sp, desc, emoji string) models.Flower {
-	return models.Flower{
-		Name: name, BotanicalName: bot, Role: models.RoleSpiller,
-		ZoneMin: zmin, ZoneMax: zmax, Sun: sun, Soils: soils,
-		Color: color, BloomSeason: season, Height: h, Spacing: sp,
-		Description: desc, ImageURL: emoji,
-	}
+	return tx.Commit()
 }

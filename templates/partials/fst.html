@@ -33,6 +33,7 @@
         <input type="hidden" name="zone" value="{{.Zone}}">
         <input type="hidden" name="sun" value="{{.Sun}}">
         <input type="hidden" name="soil" value="{{.Soil}}">
+        <input type="hidden" name="palette" value="{{.Palette}}">
         <input type="hidden" name="layout" value="{{.Layout}}">
         <!-- Preserve current plants across swaps -->
         {{if .Rec.Thriller}}
@@ -51,6 +52,7 @@
         <input type="hidden" name="zone" value="{{.Zone}}">
         <input type="hidden" name="sun" value="{{.Sun}}">
         <input type="hidden" name="soil" value="{{.Soil}}">
+        <input type="hidden" name="palette" value="{{.Palette}}">
         <input type="hidden" name="layout" value="{{.Layout}}">
         {{if .Rec.Thriller}}
         <input type="hidden" name="thriller_id" value="{{.Rec.Thriller.ID}}">
@@ -72,6 +74,7 @@
             <span class="bot-badge">Zone {{.Zone}}</span>
             <span class="bot-badge">{{.Sun}}</span>
             <span class="bot-badge">{{.Soil}}</span>
+            {{if .Palette}}<span class="bot-badge" style="background: rgba(168,85,247,0.15);">🎨 {{.Palette}}</span>{{end}}
         </p>
         <p class="mt-3 bot-text-secondary italic">{{.Rec.Notes}}</p>
     </div>

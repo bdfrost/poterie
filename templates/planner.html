@@ -164,6 +164,19 @@
                 </div>
             </div>
 
+            <!-- Color Palette -->
+            <div>
+                <label class="bot-label">Color Theme</label>
+                <select name="palette" class="bot-select w-full max-w-xs">
+                    {{range .Palettes}}
+                    <option value="{{.Value}}" {{if eq .Value ""}}selected{{end}}
+                            title="{{.Description}}">
+                        {{.Label}}
+                    </option>
+                    {{end}}
+                </select>
+            </div>
+
             <!-- Layout Type -->
             <div>
                 <label class="bot-label">Arrangement Type</label>

@@ -29,7 +29,7 @@ func newTestService(t *testing.T) *RecommendationService {
 func TestGenerate_ContainerFullSun(t *testing.T) {
 	svc := newTestService(t)
 
-	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam)
+	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteNone)
 	require.NoError(t, err)
 
 	assert.Equal(t, "container", rec.LayoutType)
@@ -43,7 +43,7 @@ func TestGenerate_ContainerFullSun(t *testing.T) {
 func TestGenerate_BedPartShade(t *testing.T) {
 	svc := newTestService(t)
 
-	rec, err := svc.Generate(5, models.SunPartShade, "bed", models.SoilClay)
+	rec, err := svc.Generate(5, models.SunPartShade, "bed", models.SoilClay, models.PaletteNone)
 	require.NoError(t, err)
 
 	assert.Equal(t, "bed", rec.LayoutType)
@@ -55,7 +55,7 @@ func TestGenerate_BedPartShade(t *testing.T) {
 func TestGenerate_FullShadeZone4(t *testing.T) {
 	svc := newTestService(t)
 
-	rec, err := svc.Generate(4, models.SunFullShade, "container", models.SoilLoam)
+	rec, err := svc.Generate(4, models.SunFullShade, "container", models.SoilLoam, models.PaletteNone)
 	require.NoError(t, err)
 
 	assert.NotNil(t, rec.Thriller)
@@ -66,10 +66,10 @@ func TestGenerate_FullShadeZone4(t *testing.T) {
 func TestGenerate_InvalidZone(t *testing.T) {
 	svc := newTestService(t)
 
-	_, err := svc.Generate(1, models.SunFullSun, "container", models.SoilLoam)
+	_, err := svc.Generate(1, models.SunFullSun, "container", models.SoilLoam, models.PaletteNone)
 	assert.Error(t, err)
 
-	_, err = svc.Generate(11, models.SunFullSun, "container", models.SoilLoam)
+	_, err = svc.Generate(11, models.SunFullSun, "container", models.SoilLoam, models.PaletteNone)
 	assert.Error(t, err)
 }
 
@@ -77,7 +77,7 @@ func TestGenerate_NoCompatibleFlowers(t *testing.T) {
 	svc := newTestService(t)
 
 	// Zone 10 with full_shade should have few options
-	rec, err := svc.Generate(10, models.SunFullShade, "container", models.SoilLoam)
+	rec, err := svc.Generate(10, models.SunFullShade, "container", models.SoilLoam, models.PaletteNone)
 	require.NoError(t, err)
 	// May or may not find flowers — ensure no crash
 	assert.NotNil(t, rec)
@@ -86,11 +86,11 @@ func TestGenerate_NoCompatibleFlowers(t *testing.T) {
 func TestGenerateContainer_GenerateBed(t *testing.T) {
 	svc := newTestService(t)
 
-	c, err := svc.GenerateContainer(7, models.SunFullSun, models.SoilLoam)
+	c, err := svc.GenerateContainer(7, models.SunFullSun, models.SoilLoam, models.PaletteNone)
 	require.NoError(t, err)
 	assert.Equal(t, "container", c.LayoutType)
 
-	b, err := svc.GenerateBed(7, models.SunFullSun, models.SoilLoam)
+	b, err := svc.GenerateBed(7, models.SunFullSun, models.SoilLoam, models.PaletteNone)
 	require.NoError(t, err)
 	assert.Equal(t, "bed", b.LayoutType)
 }
@@ -160,7 +160,7 @@ func TestUpsertAndDelete(t *testing.T) {
 func TestFilterBySoil(t *testing.T) {
 	// Test that soil filtering works — pick a zone/sun combo with known sandy supporters
 	svc := newTestService(t)
-	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam)
+	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteNone)
 	require.NoError(t, err)
 
 	// All recommended flowers should support loam soil (our most common)
@@ -174,4 +174,33 @@ func TestFilterBySoil(t *testing.T) {
 		}
 		assert.True(t, hasLoam, "Thriller should support loam soil, got %+v", rec.Thriller.Soils)
 	}
+}
+
+func TestFilterByColor(t *testing.T) {
+	svc := newTestService(t)
+
+	// Warm palette should only return flowers with red/orange/yellow/gold
+	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteWarm)
+	require.NoError(t, err)
+
+	if rec.Thriller != nil {
+		assert.True(t, rec.Thriller.MatchesPalette(models.PaletteWarm),
+			"Thriller %s should match warm palette, color=%s", rec.Thriller.Name, rec.Thriller.Color)
+	}
+
+	// Verify filler colors
+	for _, f := range rec.Fillers {
+		assert.True(t, f.MatchesPalette(models.PaletteWarm),
+			"Filler %s should match warm palette, color=%s", f.Name, f.Color)
+	}
+}
+
+func TestColorFallback(t *testing.T) {
+	svc := newTestService(t)
+
+	// PaletteJewel is restrictive — if no matches, should fallback to all
+	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteJewel)
+	require.NoError(t, err)
+	// Should not crash even if palette is empty
+	assert.NotNil(t, rec)
 }

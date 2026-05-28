@@ -66,6 +66,46 @@ func IsValidZone(zone int) bool {
 	return zone >= 3 && zone <= 10
 }
 
+// ColorPalette defines a named set of color keywords for coordinated layouts.
+type ColorPalette string
+
+const (
+	PaletteNone       ColorPalette = ""
+	PaletteWarm       ColorPalette = "warm"       // Red, Orange, Yellow, Gold
+	PaletteCool       ColorPalette = "cool"       // Blue, Purple, Lavender, White, Silver
+	PalettePinks      ColorPalette = "pinks"      // Pink, Rose, Magenta
+	PaletteMonochrome ColorPalette = "monochrome" // Green, Foliage, Silver, Gray
+	PaletteJewel      ColorPalette = "jewel"      // Deep Purple, Burgundy, Navy, Gold, Bronze
+)
+
+// PaletteColors maps each palette to its matching keywords.
+var PaletteColors = map[ColorPalette][]string{
+	PaletteWarm:       {"red", "orange", "yellow", "gold"},
+	PaletteCool:       {"blue", "purple", "lavender", "white", "silver"},
+	PalettePinks:      {"pink", "rose", "magenta"},
+	PaletteMonochrome: {"green", "foliage", "silver", "gray", "bronze"},
+	PaletteJewel:      {"purple", "burgundy", "navy", "gold", "bronze", "deep"},
+}
+
+// MatchesPalette returns true if the flower's color field contains any keyword
+// from the given palette.
+func (f *Flower) MatchesPalette(p ColorPalette) bool {
+	if p == PaletteNone {
+		return true // no filter
+	}
+	keywords, ok := PaletteColors[p]
+	if !ok {
+		return true // unknown palette = no filter
+	}
+	color := strings.ToLower(f.Color)
+	for _, kw := range keywords {
+		if strings.Contains(color, kw) {
+			return true
+		}
+	}
+	return false
+}
+
 // SoilsCSV returns comma-separated soil types
 func (f *Flower) SoilsCSV() string {
 	if len(f.Soils) == 0 {

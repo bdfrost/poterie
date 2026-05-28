@@ -18,7 +18,7 @@ func NewRecommendationService(database *db.DB) *RecommendationService {
 }
 
 // Generate creates an FST recommendation based on user criteria
-func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutType string, soil models.SoilType) (*models.FSTRecommendation, error) {
+func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutType string, soil models.SoilType, palette models.ColorPalette) (*models.FSTRecommendation, error) {
 	if !models.IsValidZone(zone) {
 		return nil, fmt.Errorf("zone %d is out of range (3-10)", zone)
 	}
@@ -35,8 +35,9 @@ func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutTyp
 	if err != nil {
 		return nil, err
 	}
+	thrillers = filterByColor(thrillers, palette)
 	if len(thrillers) == 0 {
-		rec.Notes = "No thrillers found for your zone/sun combo. Try adjusting your selections."
+		rec.Notes = fmt.Sprintf("No thrillers found for your zone/sun/color combo. %sTry adjusting your selections.", noteForPalette(palette))
 		return rec, nil
 	}
 	rec.Thriller = &thrillers[rand.Intn(len(thrillers))]
@@ -47,6 +48,7 @@ func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutTyp
 		return nil, err
 	}
 	fillers = filterBySoil(fillers, soil)
+	fillers = filterByColor(fillers, palette)
 	rec.Fillers = pickMultiple(fillers, 3)
 
 	// Find compatible spillers
@@ -55,6 +57,7 @@ func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutTyp
 		return nil, err
 	}
 	spillers = filterBySoil(spillers, soil)
+	spillers = filterByColor(spillers, palette)
 	rec.Spillers = pickMultiple(spillers, 2)
 
 	rec.Notes = generateNotes(rec)
@@ -62,13 +65,38 @@ func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutTyp
 }
 
 // GenerateBed creates a bed-style FST recommendation (more fillers)
-func (r *RecommendationService) GenerateBed(zone int, sun models.SunType, soil models.SoilType) (*models.FSTRecommendation, error) {
-	return r.Generate(zone, sun, "bed", soil)
+func (r *RecommendationService) GenerateBed(zone int, sun models.SunType, soil models.SoilType, palette models.ColorPalette) (*models.FSTRecommendation, error) {
+	return r.Generate(zone, sun, "bed", soil, palette)
 }
 
 // GenerateContainer creates a container-style FST recommendation
-func (r *RecommendationService) GenerateContainer(zone int, sun models.SunType, soil models.SoilType) (*models.FSTRecommendation, error) {
-	return r.Generate(zone, sun, "container", soil)
+func (r *RecommendationService) GenerateContainer(zone int, sun models.SunType, soil models.SoilType, palette models.ColorPalette) (*models.FSTRecommendation, error) {
+	return r.Generate(zone, sun, "container", soil, palette)
+}
+
+// filterByColor returns flowers whose color matches the given palette.
+func filterByColor(flowers []models.Flower, palette models.ColorPalette) []models.Flower {
+	if palette == models.PaletteNone {
+		return flowers
+	}
+	var filtered []models.Flower
+	for _, f := range flowers {
+		if f.MatchesPalette(palette) {
+			filtered = append(filtered, f)
+		}
+	}
+	if len(filtered) == 0 {
+		return flowers // fallback: return all if palette is too restrictive
+	}
+	return filtered
+}
+
+// noteForPalette returns a helpful suggestion when no matches found.
+func noteForPalette(p models.ColorPalette) string {
+	if p != models.PaletteNone {
+		return "Try a different color theme, or "
+	}
+	return "Try adjusting your zone or sun selection, or "
 }
 
 // filterBySoil returns flowers that support the given soil type.
@@ -131,7 +159,7 @@ func pickMultiple(flowers []models.Flower, n int) []models.Flower {
 
 func generateNotes(rec *models.FSTRecommendation) string {
 	if rec.Thriller == nil {
-		return "Try adjusting your zone or sun selection for more options."
+		return "Try adjusting your zone, sun, or color selection for more options."
 	}
 	return fmt.Sprintf("This %s combination features %s as your dramatic centerpiece, with %d filler(s) to add body and color, and %d spiller(s) to cascade over the edges.",
 		rec.LayoutType, rec.Thriller.Name, len(rec.Fillers), len(rec.Spillers))
@@ -159,7 +187,7 @@ func (r *RecommendationService) DeleteFlower(id int) error {
 
 // GetAlternatives returns compatible flowers for a given role/filter combo
 // (for the dropdown swap feature in the visual layout).
-func (r *RecommendationService) GetAlternatives(zone int, sun models.SunType, soil models.SoilType, role models.FSTRole) ([]models.Flower, error) {
+func (r *RecommendationService) GetAlternatives(zone int, sun models.SunType, soil models.SoilType, role models.FSTRole, palette models.ColorPalette) ([]models.Flower, error) {
 	flowers, err := r.db.FindByCriteria(zone, sun, role)
 	if err != nil {
 		return nil, err
@@ -167,5 +195,21 @@ func (r *RecommendationService) GetAlternatives(zone int, sun models.SunType, so
 	if soil != "" {
 		flowers = filterBySoil(flowers, soil)
 	}
+	flowers = filterByColor(flowers, palette)
 	return flowers, nil
+}
+
+// ExportCatalogJSON returns the embedded catalog as raw JSON bytes.
+func (r *RecommendationService) ExportCatalogJSON() ([]byte, error) {
+	return db.ExportCatalogJSON(), nil
+}
+
+// ImportCatalogJSON seeds the database from a custom catalog.
+func (r *RecommendationService) ImportCatalogJSON(data []byte) error {
+	return db.SeedFromJSON(r.db, data)
+}
+
+// GetCatalogInfo returns metadata about the embedded catalog.
+func (r *RecommendationService) GetCatalogInfo() (*db.Catalog, error) {
+	return db.LoadCatalog()
 }

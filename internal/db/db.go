@@ -32,16 +32,9 @@ func (d *DB) Init() error {
 	if _, err := d.Exec(schemaSQL); err != nil {
 		return fmt.Errorf("schema: %w", err)
 	}
-	// Migration: add wikipedia_url column if it doesn't exist
+	// Back-compat: add wikipedia_url column for pre-1.0.2 databases
 	d.Exec("ALTER TABLE flowers ADD COLUMN wikipedia_url TEXT NOT NULL DEFAULT ''")
-	// Backfill Wikipedia URLs for all seeded flowers
-	if err := migrateFlowerWikipedia(d); err != nil {
-		return fmt.Errorf("wikipedia migration: %w", err)
-	}
-	// Fix known-bad Wikipedia URLs
-	if err := correctFlowerWikipedia(d); err != nil {
-		return fmt.Errorf("wikipedia correction: %w", err)
-	}
+	// Wikipedia URLs and corrections are now baked into the embedded catalog.
 	return nil
 }
 
