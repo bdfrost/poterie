@@ -413,7 +413,121 @@ body.dark .fst-emoji {
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
-/* === Print Styles === */
+/* === Print Page (/planner/print) === */
+.print-page {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  font-family: 'Lora', Georgia, serif;
+  color: #333;
+}
+.print-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #333;
+}
+.print-header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  margin: 0 0 0.5rem;
+}
+.print-meta {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+.badge-z { background: #7FBA63; }
+.badge-s { background: #E1833A; }
+.badge-so { background: #E8B846; color: #333; }
+.badge-l { background: #B4D164; }
+.notes { font-style: italic; color: #666; margin-top: 0.75rem; font-size: 0.9rem; }
+
+.fst-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.fst-card {
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+.fst-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+}
+.thriller-card { border-color: #e8716e; }
+.thriller-card h2 { color: #c04040; }
+.filler-card { border-color: #6aaa6a; }
+.filler-card h2 { color: #3d7a3d; }
+.spiller-card { border-color: #6b9dc2; }
+.spiller-card h2 { color: #4a7ba0; }
+
+.plant-list { text-align: left; }
+.plant-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #eee;
+}
+.plant-entry:last-child { border-bottom: none; }
+.plant-entry .emoji { font-size: 1rem; }
+.plant-entry .name { font-weight: 600; flex: 1; }
+.plant-entry .botanical { font-style: italic; color: #888; font-size: 0.75rem; }
+.plant-entry .qty { font-weight: 700; font-size: 0.85rem; }
+
+.instructions {
+  background: #f9f9f9;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+}
+.instructions h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+  color: #333;
+}
+.instructions ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.7;
+}
+
+footer { text-align: center; color: #999; font-size: 0.8rem; }
+footer .back-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #4a7b50;
+  text-decoration: none;
+  font-weight: 500;
+}
+footer .back-link:hover { text-decoration: underline; }
+
+/* Print-specific: hide navigation/footer, just the page */
+@media print {
+  .bot-nav, footer, .vine-svg, .botanical-decor { display: none !important; }
+  .print-page { max-width: 100%; padding: 0; }
+  .back-link { display: none !important; }
+  body { background: white !important; }
+}
+
+/* === Print Styles (legacy media query from fst.html) === */
 @page {
   margin: 1.5cm;
   size: A4;

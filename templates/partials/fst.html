@@ -168,13 +168,13 @@
     </div>
 
     <!-- Shopping List toggle -->
-    <div class="flex gap-3">
+    <div class="flex gap-3 flex-wrap">
         <button @click="showShoppingList = !showShoppingList" class="bot-btn-secondary">
             <span x-text="showShoppingList ? '🧾 Hide Shopping List' : '🧾 Show Shopping List'"></span>
         </button>
-        <button @click="showShoppingList = true; setTimeout(() => { const el = document.getElementById('shopping-list-print'); if (el) el.querySelector('button')?.click(); }, 100)" class="bot-btn-primary">
+        <a href="/planner/print?zone={{.Zone}}&sun={{.Sun}}&soil={{.Soil}}&layout={{.Layout}}" target="_blank" class="bot-btn-primary">
             🖨️ Print / Save PDF
-        </button>
+        </a>
         <a href="/planner" class="bot-btn-secondary">Start New Plan</a>
     </div>
 

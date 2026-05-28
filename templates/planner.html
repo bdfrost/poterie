@@ -32,16 +32,102 @@
             </div>
 
             <!-- Zone Map Modal -->
-            <div x-show="showZoneMap" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-                 @keydown.escape.window="showZoneMap = false">
-                <div class="bot-bg-card bot-rounded bot-shadow-xl max-w-2xl w-full p-6 relative">
-                    <button @click="showZoneMap = false" class="absolute top-4 right-4 bot-btn-icon">✕</button>
-                    <h3 class="bot-font-serif text-xl bot-text-primary mb-4">USDA Hardiness Zone Map</h3>
-                    <p class="bot-text-secondary mb-4 text-sm">Find your zone by entering your ZIP code on the USDA website:</p>
-                    <a href="https://planthardiness.ars.usda.gov/" target="_blank" rel="noopener"
-                       class="bot-btn-primary inline-block">
-                        🗺️ Open USDA Zone Map →
-                    </a>
+            <div x-show="showZoneMap" x-transition.opacity.duration.300ms
+                 class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+                 @keydown.escape.window="showZoneMap = false"
+                 @click.self="showZoneMap = false"
+                 style="display: none;">
+                <div class="bot-bg-card bot-rounded bot-shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+                    <button @click="showZoneMap = false" class="absolute top-4 right-4 bot-btn-icon p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-2xl">🗺️</span>
+                        <h3 class="bot-font-serif text-xl bot-text-primary font-semibold">USDA Hardiness Zones</h3>
+                    </div>
+                    <p class="bot-text-secondary text-sm mb-4">
+                        Zones are based on average annual minimum winter temperature.
+                        <strong>Enter your ZIP</strong> at
+                        <a href="https://planthardiness.ars.usda.gov/" target="_blank" rel="noopener"
+                           class="bot-link underline">USDA Zone Finder →</a>
+                    </p>
+
+                    <!-- Zone Reference Chart -->
+                    <div class="space-y-2 text-sm">
+                        <!-- Zone 3 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(103,127,186,0.15);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#677FBA;">Z3</span>
+                            <span class="w-28 bot-text-secondary text-xs">-40° to -30°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                🌻 Salvia, Celosia, Delphinium, Hollyhock, Sunflower, Gladiolus, Petunia, Marigold, Zinnia, Dahlia, Calibrachoa, Pansy, Snapdragon, Coneflower, Black-eyed Susan
+                            </span>
+                        </div>
+                        <!-- Zone 4 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(80,153,192,0.12);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#50A9C0;">Z4</span>
+                            <span class="w-28 bot-text-secondary text-xs">-30° to -20°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                All Z3 + 🌿 Astilbe, Foxglove, Hosta, Painted Fern, Trailing Ivy, Creeping Thyme, Pansy
+                            </span>
+                        </div>
+                        <!-- Zone 5 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(127,186,99,0.12);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#7FBA63;">Z5</span>
+                            <span class="w-28 bot-text-secondary text-xs">-20° to -10°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                All Z4 + 🌴 Banana Plant, Lavender, Trailing Ivy, Mazus, Lemon Thyme
+                            </span>
+                        </div>
+                        <!-- Zone 6 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(180,209,100,0.12);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#B4D164;">Z6</span>
+                            <span class="w-28 bot-text-secondary text-xs">-10° to 0°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                All Z5 (no new additions in our catalog)
+                            </span>
+                        </div>
+                        <!-- Zone 7 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(240,224,79,0.12);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#F0E04F;">Z7</span>
+                            <span class="w-28 bot-text-secondary text-xs">0° to 10°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                All Z6 + 🌺 Canna Lily, Sweet Alyssum, Trailing Rosemary
+                            </span>
+                        </div>
+                        <!-- Zone 8 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(232,184,70,0.12);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#E8B846;">Z8</span>
+                            <span class="w-28 bot-text-secondary text-xs">10° to 20°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                All Z7 + 🌿 Dracaena Spike, Dusty Miller
+                            </span>
+                        </div>
+                        <!-- Zone 9 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(225,131,58,0.12);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#E1833A;">Z9</span>
+                            <span class="w-28 bot-text-secondary text-xs">20° to 30°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                All Z8 + 💜 Angelonia, Castor Bean, Ornamental Grass, Geranium, Vinca, Coleus, Bacopa, Dichondra, Caladium, Scaevola, Lotus Vine, Trailing Rosemary, String of Pearls
+                            </span>
+                        </div>
+                        <!-- Zone 10 -->
+                        <div class="flex items-center gap-3 p-2 bot-rounded" style="background: rgba(211,70,58,0.12);">
+                            <span class="font-bold text-white w-12 text-center bot-rounded" style="background:#D3463A;">Z10</span>
+                            <span class="bot-text-secondary text-xs">30° to 40°F</span>
+                            <span class="flex-1 bot-text-secondary text-xs">
+                                All Z9 + 🌶️ Ornamental Pepper, Dichondra Silver Falls
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 bot-border">
+                        <p class="text-xs bot-text-secondary italic">
+                            💡 <strong>Tip:</strong> These are minimum winter temps — summer heat, humidity, and local
+                            microclimates also matter. When in doubt, choose plants rated for your zone or one zone warmer.
+                        </p>
+                    </div>
                 </div>
             </div>
 

@@ -48,6 +48,7 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 	r.Get("/", h.home)
 	r.Get("/planner", h.planner)
 	r.Post("/planner/recommend", h.recommend)
+	r.Get("/planner/print", h.printPlan)
 	r.Get("/guide", h.guide)
 
 	// Admin pages (basic auth)
@@ -470,6 +471,36 @@ func (h *Handler) apiFSTSwap(w http.ResponseWriter, r *http.Request) {
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+// GET /planner/print - printable shopping list page
+func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
+	zone := parseInt(r.URL.Query().Get("zone"), 5)
+	layout := r.URL.Query().Get("layout")
+	sun := models.SunType(r.URL.Query().Get("sun"))
+	soil := models.SoilType(r.URL.Query().Get("soil"))
+
+	if !models.IsValidZone(zone) || layout == "" {
+		http.Redirect(w, r, "/planner", http.StatusSeeOther)
+		return
+	}
+
+	rec, err := h.service.Generate(zone, sun, layout, soil)
+	if err != nil {
+		http.Error(w, "Failed to generate recommendation", http.StatusInternalServerError)
+		return
+	}
+
+	h.render(w, "print.html", map[string]interface{}{
+		"PageTitle":     "Shopping List",
+		"Rec":           rec,
+		"Zone":          zone,
+		"Sun":           string(sun),
+		"Soil":          string(soil),
+		"Layout":        layout,
+		"FillerCounts":  countPlants(rec.Fillers),
+		"SpillerCounts": countPlants(rec.Spillers),
+	})
 }
 
 // fetchAlts is a helper to safely get alternatives without error checking in handlers
