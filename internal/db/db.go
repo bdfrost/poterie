@@ -38,6 +38,10 @@ func (d *DB) Init() error {
 	if err := migrateFlowerWikipedia(d); err != nil {
 		return fmt.Errorf("wikipedia migration: %w", err)
 	}
+	// Fix known-bad Wikipedia URLs
+	if err := correctFlowerWikipedia(d); err != nil {
+		return fmt.Errorf("wikipedia correction: %w", err)
+	}
 	return nil
 }
 
