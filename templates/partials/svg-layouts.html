@@ -15,21 +15,24 @@
     {{end}}
 
     <!-- Fillers (medium, around thriller) -->
-    {{$fillerPositions := slice (slice 110 130) (slice 290 130) (slice 200 90)}}
     {{range $i, $filler := .Rec.Fillers}}
-    {{$pos := index $fillerPositions $i}}
-    <circle cx="{{index $pos 0}}" cy="{{index $pos 1}}" r="35" class="fst-plant-circle"/>
-    <text x="{{index $pos 0}}" y="{{index $pos 1}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
+    {{$cx := 110}}{{$cy := 130}}
+    {{if eq $i 1}}{{$cx = 290}}{{else if eq $i 2}}{{$cx = 200}}{{$cy = 90}}{{end}}
+    <circle cx="{{$cx}}" cy="{{$cy}}" r="35" class="fst-plant-circle"/>
+    <text x="{{$cx}}" y="{{$cy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
     {{end}}
 
     <!-- Spillers (small, at edges) -->
-    {{$spillerPositions := slice (slice 70 200) (slice 330 200) (slice 130 290) (slice 270 290)}}
     {{range $i, $spiller := .Rec.Spillers}}
-    {{$pos := index $spillerPositions $i}}
-    <circle cx="{{index $pos 0}}" cy="{{index $pos 1}}" r="28" class="fst-plant-circle"/>
-    <text x="{{index $pos 0}}" y="{{index $pos 1}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
+    {{$sx := 70}}{{$sy := 200}}
+    {{if eq $i 1}}{{$sx = 330}}{{else if eq $i 2}}{{$sx = 130}}{{$sy = 290}}{{else if eq $i 3}}{{$sx = 270}}{{end}}
+    <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
+    <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
     <!-- Cascade lines (subtle arcs outward) -->
-    <path d="M{{index $pos 0}},{{add (index $pos 1) 28}} Q{{index $pos 0}},{{add (index $pos 1) 45}} {{add (index $pos 0) 5}},{{add (index $pos 1) 55}}" class="fst-cascade"/>
+    {{$syOuter := add $sy 28}}
+    {{$sxOuter := add $sx 5}}
+    {{$syEnd := add $sy 55}}
+    <path d="M{{$sx}},{{$syOuter}} Q{{$sx}},{{add $sy 45}} {{$sxOuter}},{{$syEnd}}" class="fst-cascade"/>
     {{end}}
 
     <!-- Legend -->
@@ -67,21 +70,21 @@
     {{end}}
 
     <!-- Middle row: Fillers -->
-    {{$fillerPositions := slice (slice 160 195) (slice 280 195) (slice 420 195)}}
     {{range $i, $filler := .Rec.Fillers}}
-    {{$pos := index $fillerPositions $i}}
-    <circle cx="{{index $pos 0}}" cy="{{index $pos 1}}" r="35" class="fst-plant-circle"/>
-    <text x="{{index $pos 0}}" y="{{index $pos 1}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
+    {{$cx := 160}}{{$cy := 195}}
+    {{if eq $i 1}}{{$cx = 280}}{{else if eq $i 2}}{{$cx = 420}}{{end}}
+    <circle cx="{{$cx}}" cy="{{$cy}}" r="35" class="fst-plant-circle"/>
+    <text x="{{$cx}}" y="{{$cy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
     {{end}}
 
     <!-- Front row: Spillers -->
-    {{$spillerPositions := slice (slice 100 310) (slice 220 310) (slice 340 310) (slice 460 310)}}
     {{range $i, $spiller := .Rec.Spillers}}
-    {{$pos := index $spillerPositions $i}}
-    <circle cx="{{index $pos 0}}" cy="{{index $pos 1}}" r="28" class="fst-plant-circle"/>
-    <text x="{{index $pos 0}}" y="{{index $pos 1}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
+    {{$sx := 100}}{{$sy := 310}}
+    {{if eq $i 1}}{{$sx = 220}}{{else if eq $i 2}}{{$sx = 340}}{{else if eq $i 3}}{{$sx = 460}}{{end}}
+    <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
+    <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
     <!-- Cascade down -->
-    <path d="M{{index $pos 0}},{{add (index $pos 1) 28}} Q{{add (index $pos 0) 10}},{{add (index $pos 1) 50}} {{index $pos 0}},{{add (index $pos 1) 60}}" class="fst-cascade"/>
+    <path d="M{{$sx}},{{add $sy 28}} Q{{add $sx 10}},{{add $sy 50}} {{$sx}},{{add $sy 60}}" class="fst-cascade"/>
     {{end}}
 
     <!-- Legend -->

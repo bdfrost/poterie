@@ -93,6 +93,12 @@ func (h *Handler) loadTemplates() {
 			}
 			return result
 		},
+		"list": func(items ...interface{}) []interface{} {
+			return items
+		},
+		"intSlice": func(items ...int) []int {
+			return items
+		},
 	}).ParseFS(h.assets,
 		"templates/base.html",
 		"templates/partials/*.html",
