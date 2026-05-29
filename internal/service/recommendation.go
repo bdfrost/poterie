@@ -140,13 +140,27 @@ func filterBySoil(flowers []models.Flower, soil models.SoilType) []models.Flower
 	return flowers
 }
 
-// pickMultiple randomly selects n items (or all if fewer available)
+// pickMultiple randomly selects n items.
+// When the candidate pool is too small (e.g., from strict color filtering),
+// it duplicates randomly from the available set to always return n items.
 func pickMultiple(flowers []models.Flower, n int) []models.Flower {
 	if len(flowers) == 0 {
 		return nil
 	}
 	if len(flowers) <= n {
-		return flowers
+		// Pool is smaller than needed — fill with duplicates
+		result := make([]models.Flower, n)
+		copy(result, flowers)
+		for i := len(flowers); i < n; i++ {
+			result[i] = flowers[rand.Intn(len(flowers))]
+		}
+		// Shuffle the result so duplicates aren't all at the end
+		perm := rand.Perm(n)
+		shuffled := make([]models.Flower, n)
+		for i := 0; i < n; i++ {
+			shuffled[i] = result[perm[i]]
+		}
+		return shuffled
 	}
 	// Shuffle and pick
 	perm := rand.Perm(len(flowers))

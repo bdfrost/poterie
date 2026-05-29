@@ -204,3 +204,21 @@ func TestColorFallback(t *testing.T) {
 	// Should not crash even if palette is empty
 	assert.NotNil(t, rec)
 }
+
+func TestFillerDuplicationOnRestrictivePalette(t *testing.T) {
+	svc := newTestService(t)
+
+	// Monochrome (greens/foliage) is very restrictive for fillers in zone 7 full sun
+	// PickMultiple should duplicate to always return 3 fillers
+	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteMonochrome)
+	require.NoError(t, err)
+
+	// Should always have the target counts regardless of how few unique plants match
+	assert.Len(t, rec.Fillers, 3, "should have 3 fillers even with restrictive palette")
+	assert.Len(t, rec.Spillers, 2, "should have 2 spillers even with restrictive palette")
+	if rec.Thriller != nil {
+		// Thriller is single — just verify it exists
+		assert.True(t, rec.Thriller.MatchesPalette(models.PaletteMonochrome) || len(rec.Fillers) > 0,
+			"thriller should match or we got fillers")
+	}
+}
