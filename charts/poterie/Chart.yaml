@@ -3,11 +3,11 @@ name: poterie
 description: Poterie — design flower arrangements with the Filler-Spiller-Thriller methodology. A single-binary Go app with embedded SQLite.
 type: application
 
-# Chart version tracks the poterie app release it ships.
-# Bump together with appVersion; CI publishes this chart to
-# oci://ghcr.io/bdfrost/charts on every v* tag.
-version: 1.2.0
-appVersion: "1.1.3"
+# Placeholders — CI stamps both from the git tag at publish time
+# (see the publish-chart job in .github/workflows/ci.yml). Do not hand-edit
+# for releases; the tag is the single source of truth.
+version: 0.0.0-dev
+appVersion: 0.0.0-dev
 
 home: https://github.com/bdfrost/poterie
 sources:

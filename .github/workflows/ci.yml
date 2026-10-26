@@ -183,6 +183,12 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4
 
+      - name: Stamp chart version from tag
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"    # v1.3.0 -> 1.3.0
+          sed -i "s/^version:.*/version: ${VERSION}/; s/^appVersion:.*/appVersion: \"${VERSION}\"/" charts/poterie/Chart.yaml
+          grep -E '^(version|appVersion)' charts/poterie/Chart.yaml
+
       - name: Lint chart
         run: helm lint charts/poterie
 

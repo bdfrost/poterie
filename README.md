@@ -100,6 +100,10 @@ kubectl -n poterie create secret generic poterie-admin \
 The chart source lives in `charts/poterie/` in this repo; `values.yaml`
 documents every knob (persistence, ingress, probes, resources, env).
 
+**Chart versioning is automatic** — `Chart.yaml` carries `0.0.0-dev`
+placeholders; the `publish-chart` CI job stamps `version` and `appVersion`
+from the git tag at release time. Never hand-edit them for a release.
+
 ## CI/CD Pipeline
 
 ### Development Cycle
