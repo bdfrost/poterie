@@ -1,0 +1,26 @@
+Poterie {{ .Chart.AppVersion }} has been deployed.
+
+{{- if .Values.ingress.enabled }}
+It should be reachable at:
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}/
+{{- end }}
+{{- else }}
+No ingress is enabled. Reach it via port-forward:
+
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "poterie.fullname" . }} 8080:{{ .Values.service.port }}
+  open http://localhost:8080
+{{- end }}
+
+{{- if not .Values.admin.existingSecret }}
+
+⚠️  No admin secret is configured — the /admin panel uses the app's built-in
+    defaults (admin/changeme). Create a Secret with ADMIN_USER and ADMIN_PASS
+    keys and set admin.existingSecret to its name.
+{{- end }}
+
+{{- if not .Values.persistence.enabled }}
+
+⚠️  Persistence is disabled — the flower database lives in the pod's ephemeral
+    filesystem and is lost on restart. Set persistence.enabled=true for real use.
+{{- end }}
