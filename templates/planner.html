@@ -165,9 +165,46 @@
             </div>
 
             <!-- Color Palette -->
-            <div>
-                <label class="bot-label">Color Theme</label>
-                <select name="palette" class="bot-select w-full max-w-xs">
+            <div x-data="{ palette: '' }">
+                <div class="flex items-center gap-2 mb-2">
+                    <label class="bot-label mb-0">Color Theme</label>
+                    <!-- Live preview of the selected theme's colors -->
+                    <span class="bot-palette-preview" :data-palette="palette">
+                        <span class="bot-swatches bot-swatches-warm">
+                            <span class="bot-swatch" style="background:#C05B5B"></span>
+                            <span class="bot-swatch" style="background:#D98A4E"></span>
+                            <span class="bot-swatch" style="background:#E3C766"></span>
+                            <span class="bot-swatch" style="background:#C9A24B"></span>
+                        </span>
+                        <span class="bot-swatches bot-swatches-cool">
+                            <span class="bot-swatch" style="background:#7B9CC4"></span>
+                            <span class="bot-swatch" style="background:#9A7BB8"></span>
+                            <span class="bot-swatch" style="background:#B3A3CE"></span>
+                            <span class="bot-swatch" style="background:#F5F2EA"></span>
+                            <span class="bot-swatch" style="background:#C4C9C0"></span>
+                        </span>
+                        <span class="bot-swatches bot-swatches-pinks">
+                            <span class="bot-swatch" style="background:#E3A7BF"></span>
+                            <span class="bot-swatch" style="background:#D4899B"></span>
+                            <span class="bot-swatch" style="background:#C46AA0"></span>
+                        </span>
+                        <span class="bot-swatches bot-swatches-monochrome">
+                            <span class="bot-swatch" style="background:#8AAA78"></span>
+                            <span class="bot-swatch" style="background:#7A9A6A"></span>
+                            <span class="bot-swatch" style="background:#C4C9C0"></span>
+                            <span class="bot-swatch" style="background:#B8BDB4"></span>
+                            <span class="bot-swatch" style="background:#B08D57"></span>
+                        </span>
+                        <span class="bot-swatches bot-swatches-jewel">
+                            <span class="bot-swatch" style="background:#9A7BB8"></span>
+                            <span class="bot-swatch" style="background:#8E4A5B"></span>
+                            <span class="bot-swatch" style="background:#5B6B8C"></span>
+                            <span class="bot-swatch" style="background:#C9A24B"></span>
+                            <span class="bot-swatch" style="background:#B08D57"></span>
+                        </span>
+                    </span>
+                </div>
+                <select name="palette" class="bot-select w-full max-w-xs" x-model="palette">
                     {{range .Palettes}}
                     <option value="{{.Value}}" {{if eq .Value ""}}selected{{end}}
                             title="{{.Description}}">

@@ -9,17 +9,27 @@
 
     <!-- Thriller (center, largest) -->
     {{if .Rec.Thriller}}
-    <circle cx="200" cy="190" r="55" class="fst-plant-lg"/>
-    <text x="200" y="185" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
-    <text x="200" y="205" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
+    <g transform="translate(200,190)" class="fst-plant fst-plant-thriller">
+        <circle r="62" class="fst-plant-lg"/>
+        <g transform="translate(-27,-44) scale(1.15)" class="fst-glyph" style="color: {{.Rec.Thriller.ColorHex}}">
+            {{template "partials/glyph-thriller" dict "Hex" .Rec.Thriller.ColorHex "Class" ""}}
+        </g>
+        <text y="34" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
+        <text y="47" text-anchor="middle" class="fst-sublabel">thriller</text>
+    </g>
     {{end}}
 
     <!-- Fillers surround thriller on sides and back -->
     {{range $i, $filler := .Rec.Fillers}}
     {{$cx := 130}}{{$cy := 160}}
     {{if eq $i 1}}{{$cx = 270}}{{else if eq $i 2}}{{$cx = 200}}{{$cy = 100}}{{end}}
-    <circle cx="{{$cx}}" cy="{{$cy}}" r="35" class="fst-plant-circle"/>
-    <text x="{{$cx}}" y="{{$cy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
+    <g transform="translate({{$cx}},{{$cy}})" class="fst-plant fst-plant-filler">
+        <circle r="40" class="fst-plant-circle"/>
+        <g transform="translate(-16,-25) scale(0.72)" class="fst-glyph" style="color: {{$filler.ColorHex}}">
+            {{template "partials/glyph-filler" dict "Hex" $filler.ColorHex "Class" ""}}
+        </g>
+        <text y="22" text-anchor="middle" class="fst-label fst-label-sm">{{$filler.Name}}</text>
+    </g>
     {{end}}
 
     <!-- Spillers hang over front edge (bottom of pot) -->
@@ -30,8 +40,13 @@
         <!-- Cascade path hangs outside rim, going down toward viewer -->
         <path d="M{{$sx}},{{add $sy 28}} C{{$sx}},{{add $sy 50}} {{add $sx 12}},{{add $sy 65}} {{add $sx 8}},{{add $sy 80}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
         <path d="M{{add $sx 15}},{{add $sy 25}} C{{add $sx 20}},{{add $sy 45}} {{add $sx 30}},{{add $sy 55}} {{add $sx 22}},{{add $sy 70}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
-        <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
-        <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
+        <g transform="translate({{$sx}},{{$sy}})" class="fst-plant fst-plant-spiller">
+            <circle r="33" class="fst-plant-circle"/>
+            <g transform="translate(-13,-21) scale(0.62)" class="fst-glyph" style="color: {{$spiller.ColorHex}}">
+                {{template "partials/glyph-spiller" dict "Hex" $spiller.ColorHex "Class" ""}}
+            </g>
+            <text y="19" text-anchor="middle" class="fst-label fst-label-sm">{{$spiller.Name}}</text>
+        </g>
         {{end}}
     </g>
 
@@ -64,25 +79,40 @@
 
     <!-- Back center: Thriller -->
     {{if .Rec.Thriller}}
-    <circle cx="300" cy="100" r="55" class="fst-plant-lg"/>
-    <text x="300" y="95" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{.Rec.Thriller.Name}}</text>
-    <text x="300" y="115" text-anchor="middle" class="fst-sublabel" dominant-baseline="middle">thriller</text>
+    <g transform="translate(300,100)" class="fst-plant fst-plant-thriller">
+        <circle r="62" class="fst-plant-lg"/>
+        <g transform="translate(-27,-44) scale(1.15)" class="fst-glyph" style="color: {{.Rec.Thriller.ColorHex}}">
+            {{template "partials/glyph-thriller" dict "Hex" .Rec.Thriller.ColorHex "Class" ""}}
+        </g>
+        <text y="34" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
+        <text y="47" text-anchor="middle" class="fst-sublabel">thriller</text>
+    </g>
     {{end}}
 
     <!-- Fillers on sides of thriller -->
     {{range $i, $filler := .Rec.Fillers}}
     {{$cx := 180}}{{$cy := 200}}
     {{if eq $i 1}}{{$cx = 420}}{{else if eq $i 2}}{{$cx = 300}}{{$cy = 150}}{{end}}
-    <circle cx="{{$cx}}" cy="{{$cy}}" r="35" class="fst-plant-circle"/>
-    <text x="{{$cx}}" y="{{$cy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$filler.Name}}</text>
+    <g transform="translate({{$cx}},{{$cy}})" class="fst-plant fst-plant-filler">
+        <circle r="40" class="fst-plant-circle"/>
+        <g transform="translate(-16,-25) scale(0.72)" class="fst-glyph" style="color: {{$filler.ColorHex}}">
+            {{template "partials/glyph-filler" dict "Hex" $filler.ColorHex "Class" ""}}
+        </g>
+        <text y="22" text-anchor="middle" class="fst-label fst-label-sm">{{$filler.Name}}</text>
+    </g>
     {{end}}
 
     <!-- Spillers at front edge, cascading down toward viewer -->
     {{range $i, $spiller := .Rec.Spillers}}
     {{$sx := 230}}{{$sy := 295}}
     {{if eq $i 1}}{{$sx = 370}}{{end}}
-    <circle cx="{{$sx}}" cy="{{$sy}}" r="28" class="fst-plant-circle"/>
-    <text x="{{$sx}}" y="{{$sy}}" text-anchor="middle" class="fst-label" dominant-baseline="middle">{{$spiller.Name}}</text>
+    <g transform="translate({{$sx}},{{$sy}})" class="fst-plant fst-plant-spiller">
+        <circle r="33" class="fst-plant-circle"/>
+        <g transform="translate(-13,-21) scale(0.62)" class="fst-glyph" style="color: {{$spiller.ColorHex}}">
+            {{template "partials/glyph-spiller" dict "Hex" $spiller.ColorHex "Class" ""}}
+        </g>
+        <text y="19" text-anchor="middle" class="fst-label fst-label-sm">{{$spiller.Name}}</text>
+    </g>
     <!-- Cascades hang outside bed rim, going down -->
     <path d="M{{$sx}},{{add $sy 28}} C{{$sx}},{{add $sy 45}} {{add $sx 10}},{{add $sy 60}} {{add $sx 6}},{{add $sy 72}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
     <path d="M{{add $sx 12}},{{add $sy 25}} C{{add $sx 18}},{{add $sy 42}} {{add $sx 28}},{{add $sy 52}} {{add $sx 18}},{{add $sy 64}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>

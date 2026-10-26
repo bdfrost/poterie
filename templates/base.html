@@ -30,6 +30,9 @@
       :class="theme"
       class="min-h-screen bot-font-body transition-colors duration-500">
 
+    <!-- Botanical glyph symbol definitions (once, referenced by <use> everywhere) -->
+    {{template "partials/glyph-defs" .}}
+
     <!-- Growing Vines (decorative SVGs) -->
     {{template "partials/vines" .}}
 
