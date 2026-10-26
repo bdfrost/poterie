@@ -1,6 +1,6 @@
 # Binaries
 bin/
-poterie
+/poterie
 
 # Database
 *.db

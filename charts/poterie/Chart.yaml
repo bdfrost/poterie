@@ -1,0 +1,21 @@
+apiVersion: v2
+name: poterie
+description: Poterie — design flower arrangements with the Filler-Spiller-Thriller methodology. A single-binary Go app with embedded SQLite.
+type: application
+
+# Chart version tracks the poterie app release it ships.
+# Bump together with appVersion; CI publishes this chart to
+# oci://ghcr.io/bdfrost/charts on every v* tag.
+version: 1.2.0
+appVersion: "1.1.3"
+
+home: https://github.com/bdfrost/poterie
+sources:
+  - https://github.com/bdfrost/poterie
+keywords:
+  - gardening
+  - flowers
+  - fst
+maintainers:
+  - name: bdfrost
+    url: https://github.com/bdfrost

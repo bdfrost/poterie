@@ -65,11 +65,36 @@ docker run -p 8080:8080 \
 
 ## Kubernetes
 
-Deployed via Helm chart in the ArgoCD GitOps repo (`github.com/bdfrost/argocd`).
+An official Helm chart is published to GHCR as an OCI artifact on every release:
 
 ```bash
-helm install poterie charts/poterie/ -n poterie --create-namespace
+# Minimal install (ephemeral storage, no ingress — good for evaluation)
+helm install poterie oci://ghcr.io/bdfrost/charts/poterie -n poterie --create-namespace
+
+# Production-style install
+helm install poterie oci://ghcr.io/bdfrost/charts/poterie -n poterie --create-namespace \
+  --set persistence.enabled=true \
+  --set persistence.size=2Gi \
+  --set ingress.enabled=true \
+  --set ingress.className=nginx \
+  --set 'ingress.hosts[0].host'=poterie.example.com \
+  --set 'ingress.tls[0].secretName'=poterie-cert \
+  --set 'ingress.tls[0].hosts[0]'=poterie.example.com \
+  --set admin.existingSecret=poterie-admin
 ```
+
+The chart never creates or contains secrets. For the `/admin` panel, create a
+Secret yourself (SealedSecret, ExternalSecrets, SOPS, plain kubectl — your
+choice) with `ADMIN_USER` and `ADMIN_PASS` keys, then point
+`admin.existingSecret` at it:
+
+```bash
+kubectl -n poterie create secret generic poterie-admin \
+  --from-literal=ADMIN_USER=admin --from-literal=ADMIN_PASS='pick-a-good-one'
+```
+
+The chart source lives in `charts/poterie/` in this repo; `values.yaml`
+documents every knob (persistence, ingress, probes, resources, env).
 
 ## CI/CD Pipeline
 
@@ -85,6 +110,7 @@ write → go build → go test → go run (manual test) → git commit → push
 | **smoke-test** | Docker build → start container → verify `/api/health`, `/api/fst`, `/planner` |
 | **build-and-push** | Multi-stage Docker → push to GHCR → **Trivy CVE scan** (reported) |
 | **release** | Auto-create GitHub release |
+| **publish-chart** | `helm lint` + `helm package` → push chart to `oci://ghcr.io/bdfrost/charts` |
 
 ### Release Cycle (tag → prod)
 ```
@@ -121,7 +147,8 @@ git tag v*.X → CI builds/test/push → gitops bump → ArgoCD sync → verify
 ├── static/
 │   ├── css/style.css             # Botanical theme, print styles
 │   └── js/app.js                 # Theme toggle, vine animations
-└── .github/workflows/ci.yml      # CI/CD pipeline
+├── .github/workflows/ci.yml      # CI/CD pipeline
+└── charts/poterie/               # Public Helm chart (published to GHCR OCI on release)
 ```
 
 ## Dev → Prod Release Process

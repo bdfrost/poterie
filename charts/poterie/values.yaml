@@ -1,0 +1,95 @@
+# Poterie — public Helm chart values
+# Everything environment-specific is a value; the chart hardcodes nothing
+# about any particular cluster (no domains, no storage classes, no secrets).
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/bdfrost/poterie
+  # Defaults to .Chart.AppVersion when empty.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  # Container port the app listens on (PORT env is set to match).
+  targetPort: 8080
+
+ingress:
+  enabled: false
+  # e.g. nginx, traefik
+  className: ""
+  annotations: {}
+    # cert-manager.io/cluster-issuer: letsencrypt
+    # external-dns.alpha.kubernetes.io/host: poterie.example.com
+  hosts:
+    - host: poterie.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # One TLS entry per host group; empty list = no TLS.
+  tls: []
+    # - secretName: poterie-cert
+    #   hosts:
+    #     - poterie.example.com
+
+# Admin panel credentials (/admin is basic-auth protected).
+# The chart never creates a Secret — bring your own (SealedSecret,
+# ExternalSecrets, SOPS, whatever your cluster uses).
+admin:
+  # Name of an existing Secret with ADMIN_USER and ADMIN_PASS keys.
+  # Leave empty to skip wiring (admin panel will use the app's built-in
+  # defaults admin/changeme — only acceptable for private testing).
+  existingSecret: ""
+
+persistence:
+  enabled: false
+  # Name of an existing PVC to use instead of creating one.
+  existingClaim: ""
+  # Leave empty to use the cluster default StorageClass.
+  storageClass: ""
+  size: 1Gi
+  accessModes:
+    - ReadWriteOnce
+
+# Extra environment variables for the app container (non-secret).
+# PORT and DB_PATH are managed by the chart; everything else passes through.
+env: {}
+
+# Pod security context. Poterie's image runs as non-root (UID 1000) and
+# needs fsGroup so the data volume is writable.
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext: {}
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+# Probes hit the app's health endpoint.
+probes:
+  readiness:
+    path: /api/health
+    initialDelaySeconds: 3
+    periodSeconds: 5
+  liveness:
+    path: /api/health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+# Deployment update strategy. Recreate is required when persistence is
+# enabled with a ReadWriteOnce volume.
+strategy: Recreate
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
