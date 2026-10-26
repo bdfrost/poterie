@@ -13,7 +13,11 @@
 - **Botanical Theme** — Redouté-inspired design with growing vine scrollwork and watercolor parchment background
 - **Shopping List** — Clean A4 print layout with 3-column breakdown, deduplicated plants, and planting instructions
 - **Plant Swap** — Swap individual flowers via dropdown while preserving positional layout and color theme
-- **Flower Catalog** — Versioned JSON catalog (externalized from code) with 58+ flowers, Wikipedia links, and full plant data
+- **Shuffle** — Re-roll the whole arrangement with the same criteria in one click
+- **Shareable Plans** — Copy a `/plan?...` link that reproduces your exact arrangement (survives swaps)
+- **Bloom-Season Awareness** — Refined per-flower bloom windows (spring/summer/fall, incl. cool-season plants); the engine prefers picks that flower together and the notes call out succession bloomers
+- **Public Catalog** — Browse all 58+ flowers at `/catalog` (filter by role), with a detail page per flower at `/flowers/{id}` (zones, sun, soil, bloom window, height, spacing, Wikipedia link)
+- **Flower Catalog Data** — Versioned JSON catalog (externalized from code), Wikipedia links, and full plant data
 - **Admin Panel** — Full CRUD for the flower database + catalog import/export (basic auth protected at `/admin`)
 - **Zero Dependencies** — Single Go binary with embedded SQLite and templates
 

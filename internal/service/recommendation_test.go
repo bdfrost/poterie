@@ -222,3 +222,34 @@ func TestFillerDuplicationOnRestrictivePalette(t *testing.T) {
 			"thriller should match or we got fillers")
 	}
 }
+
+func TestPreferSeasonOverlap(t *testing.T) {
+	svc := newTestService(t)
+	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteNone)
+	require.NoError(t, err)
+	require.NotNil(t, rec.Thriller)
+
+	// With a sufficiently large candidate pool, picks should overlap the
+	// thriller's bloom season. Run a few times to smooth over randomness.
+	for i := 0; i < 5; i++ {
+		rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteNone)
+		require.NoError(t, err)
+		if rec.Thriller == nil {
+			continue
+		}
+		for _, f := range rec.Fillers {
+			assert.True(t, f.OverlapsSeason(rec.Thriller),
+				"filler %s (%s) should overlap thriller %s (%s)",
+				f.Name, f.BloomSeason, rec.Thriller.Name, rec.Thriller.BloomSeason)
+		}
+	}
+}
+
+func TestGenerateNotesIncludesBloomSeason(t *testing.T) {
+	svc := newTestService(t)
+	rec, err := svc.Generate(7, models.SunFullSun, "container", models.SoilLoam, models.PaletteNone)
+	require.NoError(t, err)
+	if rec.Thriller != nil {
+		assert.Contains(t, rec.Notes, "blooms", "notes should mention bloom window: %s", rec.Notes)
+	}
+}

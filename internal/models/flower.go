@@ -155,6 +155,54 @@ func (f *Flower) MatchesPalette(p ColorPalette) bool {
 	return false
 }
 
+// BloomSeasons returns the individual seasons the flower blooms in,
+// expanding composite values ("summer_fall" -> ["summer","fall"]).
+// "all_season" expands to all three. Foliage-only plants are typically
+// cataloged as all_season (structural interest year-round).
+func (f *Flower) BloomSeasons() []string {
+	s := strings.ToLower(strings.TrimSpace(f.BloomSeason))
+	if s == "" || s == "all_season" {
+		return []string{"spring", "summer", "fall"}
+	}
+	return strings.Split(s, "_")
+}
+
+// BloomSeasonLabel returns a human-readable bloom season string,
+// e.g. "Summer–Fall", "Spring", "Year-round".
+func (f *Flower) BloomSeasonLabel() string {
+	seasons := f.BloomSeasons()
+	if len(seasons) == 3 {
+		return "Year-round"
+	}
+	title := func(s string) string {
+		if s == "" {
+			return s
+		}
+		return strings.ToUpper(s[:1]) + s[1:]
+	}
+	labels := make([]string, len(seasons))
+	for i, s := range seasons {
+		labels[i] = title(s)
+	}
+	return strings.Join(labels, "–")
+}
+
+// OverlapsSeason returns true if this flower shares at least one bloom
+// season with another.
+func (f *Flower) OverlapsSeason(other *Flower) bool {
+	mine := f.BloomSeasons()
+	theirs := map[string]bool{}
+	for _, s := range other.BloomSeasons() {
+		theirs[s] = true
+	}
+	for _, s := range mine {
+		if theirs[s] {
+			return true
+		}
+	}
+	return false
+}
+
 // SoilsCSV returns comma-separated soil types
 func (f *Flower) SoilsCSV() string {
 	if len(f.Soils) == 0 {
