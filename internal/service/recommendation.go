@@ -3,16 +3,13 @@ package service
 import (
 	"fmt"
 	"math/rand"
-	"time"
 
 	"github.com/bdfrost/poterie/internal/db"
 	"github.com/bdfrost/poterie/internal/models"
 )
 
-func init() {
-	// Go <1.20 does not auto-seed; harmless no-op on 1.20+.
-	rand.Seed(time.Now().UnixNano())
-}
+// Note: math/rand's global source is auto-seeded on Go 1.20+ (go.mod targets
+// 1.22), so no explicit Seed call — each process gets a fresh shuffle order.
 
 // RecommendationService generates FST recommendations
 type RecommendationService struct {
