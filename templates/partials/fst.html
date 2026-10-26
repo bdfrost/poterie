@@ -27,6 +27,8 @@
 {{end}}
 
 {{define "partials/result-card"}}
+<!-- Glyph defs must be present after HTMX swaps replace this fragment -->
+{{template "partials/glyph-defs" .}}
 <div x-data="{ showShoppingList: false }" class="space-y-8">
     <!-- Hidden form for HTMX swap requests -->
     <form id="fst-hidden-form" class="hidden">
@@ -137,8 +139,9 @@
     <div class="grid md:grid-cols-3 gap-6">
         <!-- Thriller -->
         <div class="bot-bg-card bot-rounded bot-shadow p-5 border-l-4 bot-border-thriller">
-            <div class="flex items-center gap-2 mb-3">
-                <h4 class="bot-font-serif text-lg bot-text-thriller font-semibold">🎯 Thriller</h4>
+            <div class="flex items-center gap-2 mb-3 glyph-role glyph-thriller">
+                {{template "partials/glyph-thriller" dict "Hex" .Rec.Thriller.ColorHex "Class" "w-7 h-7"}}
+                <h4 class="bot-font-serif text-lg bot-text-thriller font-semibold">Thriller</h4>
             </div>
             {{if .Rec.Thriller}}
             <p class="bot-font-serif italic bot-text-primary">{{if .Rec.Thriller.WikipediaURL}}<a href="{{.Rec.Thriller.WikipediaURL}}" target="_blank" rel="noopener" class="hover:underline">{{.Rec.Thriller.Name}}</a>{{else}}{{.Rec.Thriller.Name}}{{end}}</p>
@@ -155,8 +158,9 @@
 
         <!-- Fillers -->
         <div class="bot-bg-card bot-rounded bot-shadow p-5 border-l-4 bot-border-filler">
-            <div class="flex items-center gap-2 mb-3">
-                <h4 class="bot-font-serif text-lg bot-text-filler font-semibold">🌿 Filler{{if gt (len .FilledFillers) 1}}s{{end}}</h4>
+            <div class="flex items-center gap-2 mb-3 glyph-role glyph-filler">
+                {{template "partials/glyph-filler" dict "Hex" "#8AAA78" "Class" "w-7 h-7"}}
+                <h4 class="bot-font-serif text-lg bot-text-filler font-semibold">Filler{{if gt (len .FilledFillers) 1}}s{{end}}</h4>
             </div>
             {{if .FilledFillers}}
             <ul class="space-y-3">
@@ -175,8 +179,9 @@
 
         <!-- Spillers -->
         <div class="bot-bg-card bot-rounded bot-shadow p-5 border-l-4 bot-border-spiller">
-            <div class="flex items-center gap-2 mb-3">
-                <h4 class="bot-font-serif text-lg bot-text-spiller font-semibold">💧 Spiller{{if gt (len .FilledSpillers) 1}}s{{end}}</h4>
+            <div class="flex items-center gap-2 mb-3 glyph-role glyph-spiller">
+                {{template "partials/glyph-spiller" dict "Hex" "#7B9CC4" "Class" "w-7 h-7"}}
+                <h4 class="bot-font-serif text-lg bot-text-spiller font-semibold">Spiller{{if gt (len .FilledSpillers) 1}}s{{end}}</h4>
             </div>
             {{if .FilledSpillers}}
             <ul class="space-y-3">

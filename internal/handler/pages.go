@@ -107,6 +107,14 @@ func (h *Handler) loadTemplates() {
 		"intSlice": func(items ...int) []int {
 			return items
 		},
+		"dict": func(pairs ...interface{}) map[string]interface{} {
+			m := make(map[string]interface{}, len(pairs)/2)
+			for i := 0; i+1 < len(pairs); i += 2 {
+				key, _ := pairs[i].(string)
+				m[key] = pairs[i+1]
+			}
+			return m
+		},
 	}).ParseFS(h.assets,
 		"templates/base.html",
 		"templates/partials/*.html",

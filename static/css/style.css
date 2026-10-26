@@ -66,6 +66,11 @@ body.light {
 body.dark {
   background-color: var(--bg-page);
   color: var(--text-primary);
+  /* Dark parchment: same watercolor wash as light mode, tuned way down */
+  background-image:
+    radial-gradient(ellipse at 15% 25%, rgba(120, 105, 85, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 75%, rgba(105, 95, 80, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 55% 15%, rgba(115, 100, 85, 0.06) 0%, transparent 50%);
 }
 
 /* === Utility === */
@@ -356,6 +361,55 @@ body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
   stroke: var(--border-color);
 }
 
+/* === Botanical Glyphs === */
+/* Glyph stems/leaves draw from the role accent color; petals from the
+   flower's own color hex set inline via style="color: ...". */
+.fst-glyph .glyph-stem,
+.fst-glyph .glyph-leaf {
+  color: var(--text-accent);
+}
+.fst-plant-thriller .fst-glyph .glyph-stem,
+.fst-plant-thriller .fst-glyph .glyph-leaf { color: var(--text-thriller); }
+.fst-plant-filler .fst-glyph .glyph-stem,
+.fst-plant-filler .fst-glyph .glyph-leaf { color: var(--text-filler); }
+.fst-plant-spiller .fst-glyph .glyph-stem,
+.fst-plant-spiller .fst-glyph .glyph-leaf { color: var(--text-spiller); }
+
+.fst-label-sm { font-size: 8.5px; }
+
+/* Standalone glyph (used outside the FST mockup, e.g. cards) */
+.glyph-role .glyph-stem,
+.glyph-role .glyph-leaf { color: var(--text-accent); }
+.glyph-role.glyph-thriller .glyph-stem,
+.glyph-role.glyph-thriller .glyph-leaf { color: var(--text-thriller); }
+.glyph-role.glyph-filler .glyph-stem,
+.glyph-role.glyph-filler .glyph-leaf { color: var(--text-filler); }
+.glyph-role.glyph-spiller .glyph-stem,
+.glyph-role.glyph-spiller .glyph-leaf { color: var(--text-spiller); }
+
+/* === Palette Swatch Dots === */
+.bot-swatches {
+  display: inline-flex;
+  gap: 3px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.bot-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+body.dark .bot-swatch { border-color: rgba(255,255,255,0.2); }
+/* Show the swatches of the currently selected theme next to the label */
+.bot-palette-preview .bot-swatches { display: none; }
+.bot-palette-preview[data-palette="warm"] .bot-swatches-warm,
+.bot-palette-preview[data-palette="cool"] .bot-swatches-cool,
+.bot-palette-preview[data-palette="pinks"] .bot-swatches-pinks,
+.bot-palette-preview[data-palette="monochrome"] .bot-swatches-monochrome,
+.bot-palette-preview[data-palette="jewel"] .bot-swatches-jewel { display: inline-flex; }
+
 /* === Vine Animations === */
 .vine-path {
   stroke: var(--vine-color);
@@ -395,15 +449,16 @@ body.dark .fst-pot-soil, body.dark .fst-bed-soil { fill-opacity: 0.15; }
 /* Alpine.js handles the spinner visibility — see planner.html x-data */
 .htmx-request {} /* HTMX marker class, no default style */
 
-/* Dark-mode SVG text readability */
+/* Dark-mode SVG text readability — keep labels soft, no harsh halos */
 body.dark .fst-label {
-  fill: #f0f4f0;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
-  font-weight: 700;
+  fill: #e6ece6;
+  stroke: var(--bg-card);
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.25));
+  font-weight: 500;
 }
 body.dark .fst-sublabel {
-  fill: #c5d5c5;
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4));
+  fill: #b5c5b5;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
 }
 body.dark .fst-plant-circle {
   fill: rgba(58, 74, 58, 0.7);

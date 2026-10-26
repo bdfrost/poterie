@@ -87,6 +87,55 @@ var PaletteColors = map[ColorPalette][]string{
 	PaletteJewel:      {"purple", "burgundy", "navy", "gold", "bronze", "deep"},
 }
 
+// colorHex maps color keywords to representative hex values (Redouté palette:
+// soft, slightly muted watercolor tones rather than saturated primaries).
+var colorHex = map[string]string{
+	"red":      "#C05B5B",
+	"orange":   "#D98A4E",
+	"yellow":   "#E3C766",
+	"gold":     "#C9A24B",
+	"pink":     "#E3A7BF",
+	"rose":     "#D4899B",
+	"magenta":  "#C46AA0",
+	"blue":     "#7B9CC4",
+	"purple":   "#9A7BB8",
+	"lavender": "#B3A3CE",
+	"violet":   "#9A7BB8",
+	"white":    "#F5F2EA",
+	"silver":   "#C4C9C0",
+	"gray":     "#B8BDB4",
+	"green":    "#8AAA78",
+	"foliage":  "#7A9A6A",
+	"bronze":   "#B08D57",
+	"burgundy": "#8E4A5B",
+	"navy":     "#5B6B8C",
+	"deep":     "#7A5B8E",
+	"coral":    "#E08A7A",
+	"peach":    "#EDB894",
+	"cream":    "#F0E8D0",
+	"chartreuse": "#B8C46A",
+	"apricot":  "#E8A870",
+	"crimson":  "#B04850",
+	"scarlet":  "#C05050",
+}
+
+// ColorHex returns a representative CSS hex color derived from the flower's
+// color description (e.g. "Pink" -> soft pink hex). Falls back to sage green.
+// Multi-color descriptions use the first recognized keyword.
+func (f *Flower) ColorHex() string {
+	lower := strings.ToLower(f.Color)
+	best, bestIdx := "", len(lower)+1
+	for kw, hex := range colorHex {
+		if i := strings.Index(lower, kw); i >= 0 && i < bestIdx {
+			best, bestIdx = hex, i
+		}
+	}
+	if best == "" {
+		return "#8AAA78" // sage green default
+	}
+	return best
+}
+
 // MatchesPalette returns true if the flower's color field contains any keyword
 // from the given palette.
 func (f *Flower) MatchesPalette(p ColorPalette) bool {
