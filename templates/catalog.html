@@ -1,0 +1,35 @@
+{{define "content"}}
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <div class="text-center mb-10">
+        <h1 class="bot-font-serif text-3xl md:text-4xl bot-text-primary font-bold mb-3">Flower Catalog</h1>
+        <p class="bot-text-secondary text-lg">{{len .Flowers}} of {{.Total}} flowers{{if .Role}} · {{.Role}}s{{end}}</p>
+    </div>
+
+    <!-- Role filter -->
+    <div class="flex justify-center gap-3 mb-10 flex-wrap">
+        <a href="/catalog" class="{{if eq .Role ""}}bot-btn-primary{{else}}bot-btn-secondary{{end}} bot-btn-sm">All</a>
+        <a href="/catalog?role=thriller" class="{{if eq .Role "thriller"}}bot-btn-primary{{else}}bot-btn-secondary{{end}} bot-btn-sm">🎯 Thrillers</a>
+        <a href="/catalog?role=filler" class="{{if eq .Role "filler"}}bot-btn-primary{{else}}bot-btn-secondary{{end}} bot-btn-sm">🌿 Fillers</a>
+        <a href="/catalog?role=spiller" class="{{if eq .Role "spiller"}}bot-btn-primary{{else}}bot-btn-secondary{{end}} bot-btn-sm">💧 Spillers</a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {{range .Flowers}}
+        <a href="/flowers/{{.ID}}" class="bot-bg-card bot-rounded bot-shadow p-5 block hover:bot-shadow-xl transition-shadow border-l-4 bot-border-{{.Role}}">
+            <div class="flex items-start justify-between gap-3">
+                <div>
+                    <h3 class="bot-font-serif text-lg bot-text-primary font-semibold">{{.Name}}</h3>
+                    <p class="text-xs bot-text-secondary italic">{{.BotanicalName}}</p>
+                </div>
+                <span class="bot-badge bot-badge-{{.Role}} flex-shrink-0">{{.Role}}</span>
+            </div>
+            <p class="text-sm bot-text-secondary mt-3 line-clamp-2">{{.Description}}</p>
+            <div class="mt-3 flex flex-wrap gap-1">
+                <span class="bot-badge">Zones {{.ZoneMin}}–{{.ZoneMax}}</span>
+                <span class="bot-badge">🌸 {{.BloomSeasonLabel}}</span>
+            </div>
+        </a>
+        {{end}}
+    </div>
+</section>
+{{end}}

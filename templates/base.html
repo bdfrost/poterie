@@ -49,6 +49,7 @@
                 <div class="hidden md:flex items-center gap-6">
                     <a href="/" class="bot-link">Home</a>
                     <a href="/planner" class="bot-link">Planner</a>
+                    <a href="/catalog" class="bot-link">Catalog</a>
                     <a href="/guide" class="bot-link">FST Guide</a>
                     <a href="/admin" class="bot-link opacity-60 hover:opacity-100" title="Admin">🔒</a>
                     <button @click="theme = theme === 'light' ? 'dark' : 'light'; localStorage.setItem('poterie-theme', theme)"
@@ -83,6 +84,7 @@
             <div class="px-4 py-3 space-y-2">
                 <a href="/" class="bot-link block py-2" @click="navOpen = false">Home</a>
                 <a href="/planner" class="bot-link block py-2" @click="navOpen = false">Planner</a>
+                <a href="/catalog" class="bot-link block py-2" @click="navOpen = false">Catalog</a>
                 <a href="/guide" class="bot-link block py-2" @click="navOpen = false">FST Guide</a>
                 <a href="/admin" class="bot-link block py-2 opacity-60 hover:opacity-100" @click="navOpen = false">🔒 Admin</a>
                 <button @click="theme = theme === 'light' ? 'dark' : 'light'; localStorage.setItem('poterie-theme', theme)"

@@ -52,6 +52,12 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 	r.Post("/planner/print", h.printPlan)
 	r.Get("/planner/print", h.printPlan)
 	r.Get("/guide", h.guide)
+	r.Get("/catalog", h.catalog)
+	r.Get("/flowers/{id}", h.flowerDetail)
+
+	// Shareable plan link — mirrors printPlan's POST assembly but renders
+	// the full result page from query params.
+	r.Get("/plan", h.sharedPlan)
 
 	// Admin pages (basic auth)
 	r.Group(func(r chi.Router) {
@@ -331,6 +337,113 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) guide(w http.ResponseWriter, r *http.Request) {
 	h.render(w, "guide.html", map[string]interface{}{
 		"PageTitle": "FST Guide - Filler, Spiller, Thriller",
+	})
+}
+
+// Page: public flower catalog browser
+func (h *Handler) catalog(w http.ResponseWriter, r *http.Request) {
+	flowers, err := h.service.GetAllFlowers()
+	if err != nil {
+		http.Error(w, "Failed to load catalog", http.StatusInternalServerError)
+		return
+	}
+	role := r.URL.Query().Get("role")
+	var filtered []models.Flower
+	for _, f := range flowers {
+		if role == "" || string(f.Role) == role {
+			filtered = append(filtered, f)
+		}
+	}
+	h.render(w, "catalog.html", map[string]interface{}{
+		"PageTitle": "Flower Catalog",
+		"Flowers":   filtered,
+		"Total":     len(flowers),
+		"Role":      role,
+	})
+}
+
+// Page: single flower detail
+func (h *Handler) flowerDetail(w http.ResponseWriter, r *http.Request) {
+	id := parseInt(chi.URLParam(r, "id"), 0)
+	if id == 0 {
+		http.Error(w, "Invalid flower ID", http.StatusBadRequest)
+		return
+	}
+	f, err := h.service.GetFlowerByID(id)
+	if err != nil {
+		http.Error(w, "Flower not found", http.StatusNotFound)
+		return
+	}
+	h.render(w, "flower.html", map[string]interface{}{
+		"PageTitle": f.Name,
+		"Flower":    f,
+	})
+}
+
+// Page: shareable plan link (/plan?zone=..&sun=..&soil=..&layout=..&palette=..&thriller_id=..&filler_0=..)
+func (h *Handler) sharedPlan(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+	zone := parseInt(q.Get("zone"), 0)
+	sun := models.SunType(q.Get("sun"))
+	soil := models.SoilType(q.Get("soil"))
+	layout := q.Get("layout")
+	palette := models.ColorPalette(q.Get("palette"))
+
+	if !models.IsValidZone(zone) || layout == "" {
+		http.Redirect(w, r, "/planner", http.StatusSeeOther)
+		return
+	}
+
+	rec := &models.FSTRecommendation{
+		LayoutType: layout,
+		Zone:       zone,
+		Sun:        sun,
+		Soils:      []models.SoilType{soil},
+	}
+	if tid := parseInt(q.Get("thriller_id"), 0); tid > 0 {
+		if f, err := h.service.GetFlowerByID(tid); err == nil {
+			rec.Thriller = f
+		}
+	}
+	for i := 0; i < 3; i++ {
+		if fid := parseInt(q.Get(fmt.Sprintf("filler_%d", i)), 0); fid > 0 {
+			if f, err := h.service.GetFlowerByID(fid); err == nil {
+				rec.Fillers = append(rec.Fillers, *f)
+			}
+		}
+	}
+	for i := 0; i < 2; i++ {
+		if fid := parseInt(q.Get(fmt.Sprintf("spiller_%d", i)), 0); fid > 0 {
+			if f, err := h.service.GetFlowerByID(fid); err == nil {
+				rec.Spillers = append(rec.Spillers, *f)
+			}
+		}
+	}
+	if rec.Thriller != nil && (len(rec.Fillers) > 0 || len(rec.Spillers) > 0) {
+		rec.Notes = fmt.Sprintf("Your custom %s features %s as the centerpiece, %d filler(s) for body, and %d spiller(s) for trailing edges.",
+			layout, rec.Thriller.Name, len(rec.Fillers), len(rec.Spillers))
+	} else {
+		http.Redirect(w, r, "/planner", http.StatusSeeOther)
+		return
+	}
+
+	h.render(w, "result.html", map[string]interface{}{
+		"PageTitle":      "Shared FST Arrangement",
+		"Rec":            rec,
+		"Zone":           zone,
+		"Sun":            string(sun),
+		"Soil":           string(soil),
+		"Palette":        string(palette),
+		"Layout":         layout,
+		"FillerCounts":   countPlants(rec.Fillers),
+		"SpillerCounts":  countPlants(rec.Spillers),
+		"FilledFillers":  deduplicatePlants(rec.Fillers),
+		"FilledSpillers": deduplicatePlants(rec.Spillers),
+		"Alternatives": map[string]interface{}{
+			"Thrillers": fetchAlts(h.service, zone, sun, soil, models.RoleThriller, palette),
+			"Fillers":   fetchAlts(h.service, zone, sun, soil, models.RoleFiller, palette),
+			"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller, palette),
+		},
 	})
 }
 

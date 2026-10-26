@@ -1,0 +1,60 @@
+{{define "content"}}
+{{with .Flower}}
+<section class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <a href="/catalog" class="bot-link text-sm">← Back to catalog</a>
+
+    <div class="bot-bg-card bot-rounded bot-shadow p-6 md:p-8 mt-4 border-l-4 bot-border-{{.Role}}">
+        <div class="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+                <h1 class="bot-font-serif text-3xl bot-text-primary font-bold">{{.Name}}</h1>
+                <p class="bot-text-secondary italic text-lg">{{.BotanicalName}}</p>
+            </div>
+            <span class="bot-badge bot-badge-{{.Role}}">{{.Role}}</span>
+        </div>
+
+        <p class="bot-text-secondary mt-4 leading-relaxed">{{.Description}}</p>
+
+        <dl class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+            <div class="bot-bg-accent-subtle bot-rounded p-3">
+                <dt class="text-xs bot-text-secondary uppercase tracking-wide">USDA Zones</dt>
+                <dd class="bot-font-serif bot-text-primary font-semibold">{{.ZoneMin}}–{{.ZoneMax}}</dd>
+            </div>
+            <div class="bot-bg-accent-subtle bot-rounded p-3">
+                <dt class="text-xs bot-text-secondary uppercase tracking-wide">Sun</dt>
+                <dd class="bot-font-serif bot-text-primary font-semibold">{{.Sun}}</dd>
+            </div>
+            <div class="bot-bg-accent-subtle bot-rounded p-3">
+                <dt class="text-xs bot-text-secondary uppercase tracking-wide">Bloom</dt>
+                <dd class="bot-font-serif bot-text-primary font-semibold">{{.BloomSeasonLabel}}</dd>
+            </div>
+            <div class="bot-bg-accent-subtle bot-rounded p-3">
+                <dt class="text-xs bot-text-secondary uppercase tracking-wide">Height</dt>
+                <dd class="bot-font-serif bot-text-primary font-semibold">{{.Height}}</dd>
+            </div>
+            <div class="bot-bg-accent-subtle bot-rounded p-3">
+                <dt class="text-xs bot-text-secondary uppercase tracking-wide">Spacing</dt>
+                <dd class="bot-font-serif bot-text-primary font-semibold">{{.Spacing}}</dd>
+            </div>
+            <div class="bot-bg-accent-subtle bot-rounded p-3">
+                <dt class="text-xs bot-text-secondary uppercase tracking-wide">Color</dt>
+                <dd class="bot-font-serif bot-text-primary font-semibold">{{.Color}}</dd>
+            </div>
+        </dl>
+
+        <div class="mt-6">
+            <dt class="text-xs bot-text-secondary uppercase tracking-wide mb-2">Soil Types</dt>
+            <div class="flex flex-wrap gap-1">
+                {{range .Soils}}<span class="bot-badge">{{.}}</span>{{end}}
+            </div>
+        </div>
+
+        <div class="mt-8 pt-6 bot-border border-t flex gap-3 flex-wrap">
+            {{if .WikipediaURL}}
+            <a href="{{.WikipediaURL}}" target="_blank" rel="noopener" class="bot-btn-secondary bot-btn-sm">📖 Wikipedia</a>
+            {{end}}
+            <a href="/planner" class="bot-btn-primary bot-btn-sm">🌱 Plan an arrangement</a>
+        </div>
+    </div>
+</section>
+{{end}}
+{{end}}

@@ -3,10 +3,16 @@ package service
 import (
 	"fmt"
 	"math/rand"
+	"time"
 
 	"github.com/bdfrost/poterie/internal/db"
 	"github.com/bdfrost/poterie/internal/models"
 )
+
+func init() {
+	// Go <1.20 does not auto-seed; harmless no-op on 1.20+.
+	rand.Seed(time.Now().UnixNano())
+}
 
 // RecommendationService generates FST recommendations
 type RecommendationService struct {
@@ -49,6 +55,10 @@ func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutTyp
 	}
 	fillers = filterBySoil(fillers, soil)
 	fillers = filterByColor(fillers, palette)
+	// Prefer fillers whose bloom season overlaps the thriller's, so the
+	// arrangement actually flowers together. Falls back to the full pool
+	// when the overlap is too small to fill the slots.
+	fillers = preferSeasonOverlap(fillers, rec.Thriller, 3)
 	rec.Fillers = pickMultiple(fillers, 3)
 
 	// Find compatible spillers
@@ -58,6 +68,7 @@ func (r *RecommendationService) Generate(zone int, sun models.SunType, layoutTyp
 	}
 	spillers = filterBySoil(spillers, soil)
 	spillers = filterByColor(spillers, palette)
+	spillers = preferSeasonOverlap(spillers, rec.Thriller, 2)
 	rec.Spillers = pickMultiple(spillers, 2)
 
 	rec.Notes = generateNotes(rec)
@@ -140,6 +151,26 @@ func filterBySoil(flowers []models.Flower, soil models.SoilType) []models.Flower
 	return flowers
 }
 
+// preferSeasonOverlap narrows candidates to flowers whose bloom season
+// overlaps the thriller's. Returns the narrowed pool only if it can fill n
+// slots; otherwise returns the original pool (graceful degradation — an
+// arrangement that blooms in sequence beats no arrangement).
+func preferSeasonOverlap(flowers []models.Flower, thriller *models.Flower, n int) []models.Flower {
+	if thriller == nil || len(flowers) <= n {
+		return flowers
+	}
+	var overlap []models.Flower
+	for i := range flowers {
+		if flowers[i].OverlapsSeason(thriller) {
+			overlap = append(overlap, flowers[i])
+		}
+	}
+	if len(overlap) >= n {
+		return overlap
+	}
+	return flowers
+}
+
 // pickMultiple randomly selects n items.
 // When the candidate pool is too small (e.g., from strict color filtering),
 // it duplicates randomly from the available set to always return n items.
@@ -175,8 +206,46 @@ func generateNotes(rec *models.FSTRecommendation) string {
 	if rec.Thriller == nil {
 		return "Try adjusting your zone, sun, or color selection for more options."
 	}
-	return fmt.Sprintf("This %s combination features %s as your dramatic centerpiece, with %d filler(s) to add body and color, and %d spiller(s) to cascade over the edges.",
+	notes := fmt.Sprintf("This %s combination features %s as your dramatic centerpiece, with %d filler(s) to add body and color, and %d spiller(s) to cascade over the edges.",
 		rec.LayoutType, rec.Thriller.Name, len(rec.Fillers), len(rec.Spillers))
+
+	// Bloom-season summary: the union of seasons across all picks.
+	present := map[string]bool{}
+	all := append(append([]models.Flower{*rec.Thriller}, rec.Fillers...), rec.Spillers...)
+	for _, f := range all {
+		for _, s := range f.BloomSeasons() {
+			present[s] = true
+		}
+	}
+	var seasons []string
+	for _, s := range []string{"spring", "summer", "fall"} {
+		if present[s] {
+			seasons = append(seasons, s)
+		}
+	}
+	if len(seasons) > 0 {
+		notes += fmt.Sprintf(" Expect blooms %s.", bloomPhrase(seasons))
+	}
+	// Warn when a pick doesn't overlap the thriller (succession planting).
+	for _, f := range all[1:] {
+		if !f.OverlapsSeason(rec.Thriller) {
+			notes += fmt.Sprintf(" Note: %s (%s) blooms outside the thriller's season — it'll carry the pot when %s rests.",
+				f.Name, f.BloomSeasonLabel(), rec.Thriller.Name)
+			break
+		}
+	}
+	return notes
+}
+
+// bloomPhrase renders ["spring","summer"] as "from spring through summer".
+func bloomPhrase(seasons []string) string {
+	if len(seasons) == 3 {
+		return "nearly year-round"
+	}
+	if len(seasons) == 1 {
+		return "in " + seasons[0]
+	}
+	return "from " + seasons[0] + " through " + seasons[len(seasons)-1]
 }
 
 // GetAllFlowers returns all flowers in the database (for admin)
