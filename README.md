@@ -125,7 +125,12 @@ write → go build → go test → go run (manual test) → git commit → push
 git tag v*.X → CI builds/test/push → gitops bump → ArgoCD sync → verify
 ```
 
-1. **Pre-tag:** `go test ./...` and `go build ./...` pass locally
+1. **Pre-tag:** `go test ./...` and `go build ./...` pass locally. **If the
+   catalog data changed** (new flowers, photos, zone/bloom fixes), bump
+   `catalog_version` in both `data/catalog-v1.json` and
+   `internal/db/catalog-v1.json` — existing installs auto-upgrade their
+   flower database to the new catalog on startup (user-customized flowers
+   are never overwritten).
 2. **Tag push:** `git tag vX.Y.Z && git push origin main vX.Y.Z`
 3. **CI gates:** test + staticcheck + smoke test pass (Trivy scan reports but doesn't block)
 4. **GitOps bump:** Update `image` tag in `charts/poterie/values.yaml` → push to argocd repo

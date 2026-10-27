@@ -17,8 +17,12 @@ type Flower struct {
 	Height        string     `json:"height"`    // e.g. "12-18in", "6-12in"
 	Spacing       string     `json:"spacing"`   // e.g. "8-12in"
 	Description   string     `json:"description"`
-	ImageURL      string     `json:"image_url"` // emoji or URL
-	WikipediaURL  string     `json:"wikipedia_url"` // link to Wikipedia
+	ImageURL       string     `json:"image_url"` // emoji or URL
+	ImageCredit    string     `json:"image_credit"`     // photo artist (attribution)
+	ImageLicense   string     `json:"image_license"`    // e.g. "CC BY-SA 4.0"
+	ImageCreditURL string     `json:"image_credit_url"` // link to the file page
+	WikipediaURL   string     `json:"wikipedia_url"`    // link to Wikipedia
+	Customized     bool       `json:"-"`                // true when edited via the admin panel (excluded from catalog auto-upgrades)
 }
 
 // FSTRole is the Filler/Spiller/Thriller role
@@ -201,6 +205,24 @@ func (f *Flower) OverlapsSeason(other *Flower) bool {
 		}
 	}
 	return false
+}
+
+// HasPhoto reports whether ImageURL holds a real photo URL (as opposed to
+// the emoji placeholders used by older catalog versions or hand edits).
+func (f *Flower) HasPhoto() bool {
+	return strings.HasPrefix(f.ImageURL, "http://") || strings.HasPrefix(f.ImageURL, "https://")
+}
+
+// PhotoCredit returns a short attribution string for the photo,
+// e.g. "John Doe, CC BY-SA 4.0" — empty when no photo or no credit known.
+func (f *Flower) PhotoCredit() string {
+	if !f.HasPhoto() || f.ImageCredit == "" {
+		return ""
+	}
+	if f.ImageLicense == "" || f.ImageLicense == "See file page" {
+		return f.ImageCredit
+	}
+	return f.ImageCredit + ", " + f.ImageLicense
 }
 
 // SoilsCSV returns comma-separated soil types

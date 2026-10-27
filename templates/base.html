@@ -25,6 +25,18 @@
             }
         }
     </script>
+    <script>
+    // Flash-highlight freshly swapped content (plant cards). The whole
+    // #result-area swap is visually obvious already, so skip it.
+    document.addEventListener('htmx:afterSwap', function (e) {
+        var target = e.detail && e.detail.target;
+        if (!target || target.id === 'result-area') return;
+        var card = target.closest('li') || target.closest('.bot-rounded') || target;
+        card.classList.remove('card-settled');
+        void card.offsetWidth; // restart the animation on rapid consecutive swaps
+        card.classList.add('card-settled');
+    });
+    </script>
 </head>
 <body x-data="{ theme: localStorage.getItem('poterie-theme') || 'light', showZoneMap: false, navOpen: false }"
       :class="theme"
@@ -126,7 +138,9 @@
                 </div>
             </div>
             <div class="bot-border border-t mt-6 pt-4 text-center text-sm bot-text-secondary">
-                <p>&copy; <span x-text="new Date().getFullYear()"></span> Poterie — Built with care 🌱 <span class="ml-1 opacity-50 text-xs">{{.Version}}</span></p>
+                <p>&copy; <span x-text="new Date().getFullYear()"></span> Poterie — Built with care 🌱 <span class="ml-1 opacity-50 text-xs">{{.Version}}</span>
+                   <span class="mx-1 opacity-40">·</span>
+                   <a href="/attributions" class="bot-link text-xs opacity-70 hover:opacity-100">Image credits</a></p>
             </div>
         </div>
     </footer>

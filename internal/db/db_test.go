@@ -134,3 +134,62 @@ func TestUpsertAndDelete(t *testing.T) {
 	_, err = d.FindByID(f.ID)
 	assert.Error(t, err)
 }
+
+func TestCatalogUpgrade(t *testing.T) {
+	d := newTestDB(t)
+	require.NoError(t, Seed(d))
+	assert.Equal(t, "2", d.GetMeta("catalog_version"))
+
+	// Simulate an old-version DB: wipe a photo field + reset meta
+	d.Exec("UPDATE flowers SET image_url = '🌺', image_credit = '' WHERE name = 'Canna Lily'")
+	require.NoError(t, d.SetMeta("catalog_version", "1"))
+
+	// User-customized flower must be preserved
+	d.Exec("UPDATE flowers SET description = 'my custom desc', customized = 1 WHERE name = 'Salvia'")
+
+	// User-created flower must be untouched
+	d.Exec(`INSERT INTO flowers (name, role, zone_min, zone_max, sun, soils, customized)
+	        VALUES ('My Special Flower', 'filler', 3, 10, 'full_sun', 'loam', 1)`)
+
+	require.NoError(t, Seed(d)) // triggers upgrade 1 -> 2
+
+	cat, _ := LoadCatalog()
+	canna, err := d.FindByID(1)
+	require.NoError(t, err)
+	// Canna got its photo back from the catalog
+	for _, f := range cat.Flowers {
+		if f.Name == "Canna Lily" {
+			assert.Equal(t, f.ImageURL, canna.ImageURL)
+			assert.Equal(t, f.ImageCredit, canna.ImageCredit)
+		}
+	}
+
+	// Customized Salvia preserved
+	var desc string
+	require.NoError(t, d.QueryRow("SELECT description FROM flowers WHERE name = 'Salvia'").Scan(&desc))
+	assert.Equal(t, "my custom desc", desc)
+
+	// User flower survived
+	var n int
+	require.NoError(t, d.QueryRow("SELECT COUNT(*) FROM flowers WHERE name = 'My Special Flower'").Scan(&n))
+	assert.Equal(t, 1, n)
+
+	// Meta bumped, second run is a no-op
+	assert.Equal(t, "2", d.GetMeta("catalog_version"))
+	require.NoError(t, Seed(d))
+}
+
+func TestAdminUpsertMarksCustomized(t *testing.T) {
+	d := newTestDB(t)
+	require.NoError(t, Seed(d))
+	f, err := d.FindByID(1)
+	require.NoError(t, err)
+	assert.False(t, f.Customized)
+
+	f.Description = "edited"
+	require.NoError(t, d.Upsert(f))
+
+	got, err := d.FindByID(1)
+	require.NoError(t, err)
+	assert.True(t, got.Customized)
+}

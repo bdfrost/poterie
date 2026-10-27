@@ -12,6 +12,21 @@
             <span class="bot-badge bot-badge-{{.Role}}">{{.Role}}</span>
         </div>
 
+        {{if .HasPhoto}}
+        <figure class="mt-5">
+            <img src="{{.ImageURL}}" alt="{{.Name}}" loading="lazy"
+                 class="w-full max-h-80 object-cover bot-rounded bot-shadow"
+                 onerror="this.closest('figure').style.display='none'">
+            <figcaption class="text-xs bot-text-secondary mt-1 text-right">
+                {{if .PhotoCredit}}
+                Photo: {{if .ImageCreditURL}}<a href="{{.ImageCreditURL}}" target="_blank" rel="noopener" class="bot-link">{{.PhotoCredit}}</a>{{else}}{{.PhotoCredit}}{{end}} via Wikimedia Commons
+                {{else}}
+                Photo: Wikimedia Commons
+                {{end}}
+            </figcaption>
+        </figure>
+        {{end}}
+
         <p class="bot-text-secondary mt-4 leading-relaxed">{{.Description}}</p>
 
         <dl class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">

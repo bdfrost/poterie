@@ -54,6 +54,7 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 	r.Get("/guide", h.guide)
 	r.Get("/catalog", h.catalog)
 	r.Get("/flowers/{id}", h.flowerDetail)
+	r.Get("/attributions", h.attributions)
 
 	// Shareable plan link — mirrors printPlan's POST assembly but renders
 	// the full result page from query params.
@@ -377,6 +378,19 @@ func (h *Handler) flowerDetail(w http.ResponseWriter, r *http.Request) {
 	h.render(w, "flower.html", map[string]interface{}{
 		"PageTitle": f.Name,
 		"Flower":    f,
+	})
+}
+
+// Page: image attributions (CC license compliance)
+func (h *Handler) attributions(w http.ResponseWriter, r *http.Request) {
+	flowers, err := h.service.GetAllFlowers()
+	if err != nil {
+		http.Error(w, "Failed to load catalog", http.StatusInternalServerError)
+		return
+	}
+	h.render(w, "attributions.html", map[string]interface{}{
+		"PageTitle": "Image Attributions",
+		"Flowers":   flowers,
 	})
 }
 
