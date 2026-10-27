@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="referrer" content="no-referrer">
     <title>{{.Title}}</title>
     <script src="https://cdn.tailwindcss.com?v=3.4.0"></script>
     <script defer src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
@@ -12,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="/static/css/style.css"/>
     <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    {{template "csrfMeta" .}}
     <script>
         // Tailwind config with botanical theme
         tailwind.config = {
@@ -132,7 +134,7 @@
                 <div>
                     <h3 class="bot-font-serif bot-text-primary text-lg font-semibold mb-2">Connect</h3>
                     <ul class="space-y-1 text-sm">
-                        <li><a href="https://github.com/bdfrost/poterie" class="bot-link" target="_blank" rel="noopener">📦 GitHub Repository</a></li>
+                        <li><a href="https://github.com/bdfrost/poterie" class="bot-link" target="_blank" rel="noopener noreferrer">📦 GitHub Repository</a></li>
                         <li><a href="mailto:bfrost@brainboy.com" class="bot-link">✉️ bfrost@brainboy.com</a></li>
                     </ul>
                 </div>

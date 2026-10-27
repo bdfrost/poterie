@@ -1,0 +1,6 @@
+apiVersion: v2
+name: poterie
+description: Poterie — FST Garden Planner for flower arrangements
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

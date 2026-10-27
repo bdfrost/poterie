@@ -1,11 +1,14 @@
 package handler
 
 import (
+	"context"
+	"crypto/subtle"
 	"embed"
 	"fmt"
 	"html/template"
 	"io"
 	"net/http"
+	"regexp"
 	"strings"
 	"sync"
 
@@ -15,6 +18,7 @@ import (
 	"github.com/bdfrost/poterie/internal/service"
 	"github.com/go-chi/chi/v5"
 	chilog "github.com/go-chi/chi/v5/middleware"
+	"github.com/gorilla/csrf"
 )
 
 type Handler struct {
@@ -25,6 +29,21 @@ type Handler struct {
 	// preloaded templates: base + partials (no page-specific content)
 	baseTemplates *template.Template
 	tmplMu        sync.Mutex
+}
+
+// csrfTokenKey is the context key for storing the CSRF token
+type csrfTokenKey struct{}
+
+// csrfContextMiddleware stores the CSRF token in request context for templates
+func csrfContextMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token := csrf.Token(r)
+		if token != "" {
+			ctx := context.WithValue(r.Context(), csrfTokenKey{}, token)
+			r = r.WithContext(ctx)
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
@@ -60,9 +79,15 @@ func NewRouter(database *db.DB, cfg *config.Config, assets embed.FS) *chi.Mux {
 	// the full result page from query params.
 	r.Get("/plan", h.sharedPlan)
 
-	// Admin pages (basic auth)
+	// Admin pages (basic auth + CSRF)
+	csrfMiddleware := csrf.Protect([]byte(cfg.CSRFSecret),
+		csrf.Secure(false), // TLS terminates at proxy
+		csrf.FieldName("_csrf_token"),
+	)
 	r.Group(func(r chi.Router) {
+		r.Use(csrfContextMiddleware)
 		r.Use(adminAuth(cfg.AdminUser, cfg.AdminPass))
+		r.Use(csrfMiddleware)
 		r.Get("/admin", h.admin)
 		r.Get("/admin/flowers", h.adminFlowers)
 		r.Get("/admin/flowers/{id}/edit", h.adminEditFlower)
@@ -91,6 +116,19 @@ func (h *Handler) loadTemplates() {
 	}
 	h.baseTemplates = template.Must(template.New("").Funcs(template.FuncMap{
 		"safeCSS": func(s string) template.CSS {
+			// Sanitize: reject characters that could enable CSS injection
+			s = strings.Map(func(r rune) rune {
+				switch r {
+				case '<', '>', ':', ';', '{', '}', '(', ')', '\\', '/', '@', '\'', '"':
+					return -1
+				default:
+					return r
+				}
+			}, s)
+			s = strings.TrimSpace(s)
+			if s == "" {
+				return "none"
+			}
 			return template.CSS(s)
 		},
 		"add": func(a, b int) int {
@@ -128,7 +166,7 @@ func (h *Handler) loadTemplates() {
 	))
 }
 
-func (h *Handler) render(w http.ResponseWriter, pagename string, data map[string]interface{}) {
+func (h *Handler) render(w http.ResponseWriter, r *http.Request, pagename string, data map[string]interface{}) {
 	h.loadTemplates()
 	if h.baseTemplates == nil {
 		http.Error(w, "templates failed to initialize", http.StatusInternalServerError)
@@ -139,6 +177,11 @@ func (h *Handler) render(w http.ResponseWriter, pagename string, data map[string
 		data["Title"] = title
 	}
 	data["Version"] = h.cfg.Version
+
+	// Inject CSRF token if available in context
+	if tok, ok := r.Context().Value(csrfTokenKey{}).(string); ok && tok != "" {
+		data["CSRFToken"] = tok
+	}
 
 	// Clone the preloaded base+partials template set and add this page.
 	// Parsing only one page at a time avoids the "content" namespace collision
@@ -170,6 +213,13 @@ func adminAuth(user, pass string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			u, p, ok := r.BasicAuth()
+			if ok {
+				// Constant-time comparison to prevent timing attacks
+				if subtle.ConstantTimeCompare([]byte(u), []byte(user)) != 1 ||
+					subtle.ConstantTimeCompare([]byte(p), []byte(pass)) != 1 {
+					u, p = "", ""
+				}
+			}
 			if !ok || u != user || p != pass {
 				w.Header().Set("WWW-Authenticate", `Basic realm="Admin"`)
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -187,14 +237,14 @@ func (h *Handler) health(w http.ResponseWriter, r *http.Request) {
 
 // Page: Home
 func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
-	h.render(w, "home.html", map[string]interface{}{
+	h.render(w, r, "home.html", map[string]interface{}{
 		"PageTitle": "Design Your Perfect Flower Arrangement",
 	})
 }
 
 // Page: Planner
 func (h *Handler) planner(w http.ResponseWriter, r *http.Request) {
-	h.render(w, "planner.html", map[string]interface{}{
+	h.render(w, r, "planner.html", map[string]interface{}{
 		"PageTitle": "FST Planner",
 		"Zones":     []int{3, 4, 5, 6, 7, 8, 9, 10},
 		"SunTypes": []struct{ Value, Label string }{
@@ -276,7 +326,7 @@ func (h *Handler) recommend(w http.ResponseWriter, r *http.Request) {
 		"Spillers":  fetchAlts(h.service, zone, sun, soil, models.RoleSpiller, palette),
 	}
 
-	h.render(w, "result.html", map[string]interface{}{
+	h.render(w, r, "result.html", map[string]interface{}{
 		"PageTitle":      "Your FST Arrangement",
 		"Rec":            rec,
 		"Zone":           zone,
@@ -336,7 +386,7 @@ func (h *Handler) apiFST(w http.ResponseWriter, r *http.Request) {
 
 // Page: FST Guide
 func (h *Handler) guide(w http.ResponseWriter, r *http.Request) {
-	h.render(w, "guide.html", map[string]interface{}{
+	h.render(w, r, "guide.html", map[string]interface{}{
 		"PageTitle": "FST Guide - Filler, Spiller, Thriller",
 	})
 }
@@ -355,7 +405,7 @@ func (h *Handler) catalog(w http.ResponseWriter, r *http.Request) {
 			filtered = append(filtered, f)
 		}
 	}
-	h.render(w, "catalog.html", map[string]interface{}{
+	h.render(w, r, "catalog.html", map[string]interface{}{
 		"PageTitle": "Flower Catalog",
 		"Flowers":   filtered,
 		"Total":     len(flowers),
@@ -375,7 +425,7 @@ func (h *Handler) flowerDetail(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Flower not found", http.StatusNotFound)
 		return
 	}
-	h.render(w, "flower.html", map[string]interface{}{
+	h.render(w, r, "flower.html", map[string]interface{}{
 		"PageTitle": f.Name,
 		"Flower":    f,
 	})
@@ -388,7 +438,7 @@ func (h *Handler) attributions(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to load catalog", http.StatusInternalServerError)
 		return
 	}
-	h.render(w, "attributions.html", map[string]interface{}{
+	h.render(w, r, "attributions.html", map[string]interface{}{
 		"PageTitle": "Image Attributions",
 		"Flowers":   flowers,
 	})
@@ -441,7 +491,7 @@ func (h *Handler) sharedPlan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.render(w, "result.html", map[string]interface{}{
+	h.render(w, r, "result.html", map[string]interface{}{
 		"PageTitle":      "Shared FST Arrangement",
 		"Rec":            rec,
 		"Zone":           zone,
@@ -474,7 +524,7 @@ func (h *Handler) admin(w http.ResponseWriter, r *http.Request) {
 		counts[string(f.Role)]++
 	}
 
-	h.render(w, "admin.html", map[string]interface{}{
+	h.render(w, r, "admin.html", map[string]interface{}{
 		"PageTitle": "Admin Dashboard",
 		"Flowers":   flowers,
 		"Counts":    counts,
@@ -488,7 +538,7 @@ func (h *Handler) adminFlowers(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to load flowers", http.StatusInternalServerError)
 		return
 	}
-	h.render(w, "admin.html", map[string]interface{}{
+	h.render(w, r, "admin.html", map[string]interface{}{
 		"PageTitle": "Admin - All Flowers",
 		"Flowers":   flowers,
 	})
@@ -516,12 +566,18 @@ func (h *Handler) adminCatalogImport(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, _, err := r.FormFile("catalog")
+	file, header, err := r.FormFile("catalog")
 	if err != nil {
 		http.Error(w, "Failed to read file: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
+
+	// Validate filename to prevent path traversal
+	if header.Filename == "" || strings.Contains(header.Filename, "..") || strings.Contains(header.Filename, "/") {
+		http.Error(w, "Invalid filename", http.StatusBadRequest)
+		return
+	}
 
 	data, err := io.ReadAll(io.LimitReader(file, 512*1024))
 	if err != nil {
@@ -543,13 +599,59 @@ func (h *Handler) adminNewFlower(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Validate required fields
+	if err := validateFlowerField(r.FormValue("name"), "Name"); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := validateFlowerField(r.FormValue("botanical_name"), "Botanical name"); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := validateFlowerField(r.FormValue("description"), "Description"); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Validate URL fields
+	if err := validateURL(r.FormValue("image_url")); err != nil {
+		http.Error(w, "Invalid image URL: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := validateURL(r.FormValue("wikipedia_url")); err != nil {
+		http.Error(w, "Invalid Wikipedia URL: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Validate role is a known FST role
+	role := models.FSTRole(r.FormValue("role"))
+	if role != models.RoleThriller && role != models.RoleFiller && role != models.RoleSpiller {
+		http.Error(w, "Invalid flower role", http.StatusBadRequest)
+		return
+	}
+
+	// Validate zone range
+	zoneMin := parseInt(r.FormValue("zone_min"), 3)
+	zoneMax := parseInt(r.FormValue("zone_max"), 10)
+	if !models.IsValidZone(zoneMin) || !models.IsValidZone(zoneMax) || zoneMin > zoneMax {
+		http.Error(w, "Invalid zone range", http.StatusBadRequest)
+		return
+	}
+
+	// Validate sun type
+	sun := models.SunType(r.FormValue("sun"))
+	if sun != models.SunFullSun && sun != models.SunPartShade && sun != models.SunFullShade {
+		http.Error(w, "Invalid sun type", http.StatusBadRequest)
+		return
+	}
+
 	f := &models.Flower{
-		Name:          r.FormValue("name"),
-		BotanicalName: r.FormValue("botanical_name"),
-		Role:          models.FSTRole(r.FormValue("role")),
-		ZoneMin:       parseInt(r.FormValue("zone_min"), 3),
-		ZoneMax:       parseInt(r.FormValue("zone_max"), 10),
-		Sun:           models.SunType(r.FormValue("sun")),
+		Name:          strings.TrimSpace(r.FormValue("name")),
+		BotanicalName: strings.TrimSpace(r.FormValue("botanical_name")),
+		Role:          role,
+		ZoneMin:       zoneMin,
+		ZoneMax:       zoneMax,
+		Sun:           sun,
 		Color:         r.FormValue("color"),
 		BloomSeason:   r.FormValue("bloom_season"),
 		Height:        r.FormValue("height"),
@@ -563,7 +665,10 @@ func (h *Handler) adminNewFlower(w http.ResponseWriter, r *http.Request) {
 	soilsStr := r.FormValue("soils")
 	if soilsStr != "" {
 		for _, s := range strings.Split(soilsStr, ",") {
-			f.Soils = append(f.Soils, models.SoilType(strings.TrimSpace(s)))
+			st := strings.TrimSpace(s)
+			if st != "" {
+				f.Soils = append(f.Soils, models.SoilType(st))
+			}
 		}
 	}
 
@@ -602,7 +707,7 @@ func (h *Handler) adminEditFlower(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Flower not found", http.StatusNotFound)
 		return
 	}
-	h.render(w, "admin_edit.html", map[string]interface{}{
+	h.render(w, r, "admin_edit.html", map[string]interface{}{
 		"PageTitle": "Edit Flower",
 		"Flower":    f,
 	})
@@ -616,14 +721,65 @@ func (h *Handler) adminUpdateFlower(w http.ResponseWriter, r *http.Request) {
 	}
 
 	id := parseInt(chi.URLParam(r, "id"), 0)
+	if id == 0 {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	// Validate required fields
+	if err := validateFlowerField(r.FormValue("name"), "Name"); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := validateFlowerField(r.FormValue("botanical_name"), "Botanical name"); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := validateFlowerField(r.FormValue("description"), "Description"); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Validate URL fields
+	if err := validateURL(r.FormValue("image_url")); err != nil {
+		http.Error(w, "Invalid image URL: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := validateURL(r.FormValue("wikipedia_url")); err != nil {
+		http.Error(w, "Invalid Wikipedia URL: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Validate role is a known FST role
+	role := models.FSTRole(r.FormValue("role"))
+	if role != models.RoleThriller && role != models.RoleFiller && role != models.RoleSpiller {
+		http.Error(w, "Invalid flower role", http.StatusBadRequest)
+		return
+	}
+
+	// Validate zone range
+	zoneMin := parseInt(r.FormValue("zone_min"), 3)
+	zoneMax := parseInt(r.FormValue("zone_max"), 10)
+	if !models.IsValidZone(zoneMin) || !models.IsValidZone(zoneMax) || zoneMin > zoneMax {
+		http.Error(w, "Invalid zone range", http.StatusBadRequest)
+		return
+	}
+
+	// Validate sun type
+	sun := models.SunType(r.FormValue("sun"))
+	if sun != models.SunFullSun && sun != models.SunPartShade && sun != models.SunFullShade {
+		http.Error(w, "Invalid sun type", http.StatusBadRequest)
+		return
+	}
+
 	f := &models.Flower{
 		ID:            id,
-		Name:          r.FormValue("name"),
-		BotanicalName: r.FormValue("botanical_name"),
-		Role:          models.FSTRole(r.FormValue("role")),
-		ZoneMin:       parseInt(r.FormValue("zone_min"), 3),
-		ZoneMax:       parseInt(r.FormValue("zone_max"), 10),
-		Sun:           models.SunType(r.FormValue("sun")),
+		Name:          strings.TrimSpace(r.FormValue("name")),
+		BotanicalName: strings.TrimSpace(r.FormValue("botanical_name")),
+		Role:          role,
+		ZoneMin:       zoneMin,
+		ZoneMax:       zoneMax,
+		Sun:           sun,
 		Color:         r.FormValue("color"),
 		BloomSeason:   r.FormValue("bloom_season"),
 		Height:        r.FormValue("height"),
@@ -636,7 +792,10 @@ func (h *Handler) adminUpdateFlower(w http.ResponseWriter, r *http.Request) {
 	soilsStr := r.FormValue("soils")
 	if soilsStr != "" {
 		for _, s := range strings.Split(soilsStr, ",") {
-			f.Soils = append(f.Soils, models.SoilType(strings.TrimSpace(s)))
+			st := strings.TrimSpace(s)
+			if st != "" {
+				f.Soils = append(f.Soils, models.SoilType(st))
+			}
 		}
 	}
 
@@ -875,7 +1034,7 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	h.render(w, "print.html", map[string]interface{}{
+	h.render(w, r, "print.html", map[string]interface{}{
 		"PageTitle":      "Shopping List",
 		"Rec":            rec,
 		"Zone":           zone,
@@ -894,4 +1053,61 @@ func (h *Handler) printPlan(w http.ResponseWriter, r *http.Request) {
 func fetchAlts(svc *service.RecommendationService, zone int, sun models.SunType, soil models.SoilType, role models.FSTRole, palette models.ColorPalette) []models.Flower {
 	alts, _ := svc.GetAlternatives(zone, sun, soil, role, palette)
 	return alts
+}
+
+// Valid URL schemes - only allow safe protocols
+var validURLScheme = regexp.MustCompile(`^(https?|data):`)
+
+// validateURL checks if a string is a valid URL with an allowed scheme.
+// Empty strings are considered valid (field is optional).
+func validateURL(s string) error {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return nil
+	}
+	if !validURLScheme.MatchString(s) {
+		return fmt.Errorf("invalid URL scheme (only http, https, and data URIs are allowed)")
+	}
+	// Enforce reasonable max length to prevent DoS
+	if len(s) > 2048 {
+		return fmt.Errorf("URL too long")
+	}
+	return nil
+}
+
+// validateFlowerField checks name/botanical name/description for length and XSS patterns.
+func validateFlowerField(s, field string) error {
+	s = strings.TrimSpace(s)
+	if field == "Name" && s == "" {
+		return fmt.Errorf("flower name is required")
+	}
+	if len([]rune(s)) > 200 {
+		return fmt.Errorf("%s exceeds 200 characters", field)
+	}
+	// Strip any HTML tags as defense-in-depth
+	sanitized := sanitizeHTML(s)
+	if sanitized != s {
+		// Field contained HTML - reject it
+		return fmt.Errorf("HTML characters not allowed in %s", field)
+	}
+	return nil
+}
+
+// sanitizeHTML removes HTML tags from a string.
+func sanitizeHTML(s string) string {
+	result := strings.Builder{}
+	inTag := false
+	for _, r := range s {
+		switch r {
+		case '<':
+			inTag = true
+		case '>':
+			inTag = false
+		default:
+			if !inTag {
+				result.WriteRune(r)
+			}
+		}
+	}
+	return result.String()
 }

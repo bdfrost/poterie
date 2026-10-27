@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNewDefaults(t *testing.T) {
@@ -21,6 +22,24 @@ func TestNewDefaults(t *testing.T) {
 	assert.Equal(t, "admin", cfg.AdminUser)
 	assert.Equal(t, "changeme", cfg.AdminPass)
 	assert.Equal(t, "", cfg.ExternalURL)
+}
+
+func TestValidateRejectsDefaultPass(t *testing.T) {
+	os.Unsetenv("ADMIN_PASS")
+	cfg := New()
+	err := cfg.Validate()
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "ADMIN_PASS")
+}
+
+func TestValidateAcceptsCustomPass(t *testing.T) {
+	os.Unsetenv("ADMIN_PASS")
+	os.Setenv("ADMIN_PASS", "a-strong-password")
+	defer os.Unsetenv("ADMIN_PASS")
+
+	cfg := New()
+	assert.Equal(t, "a-strong-password", cfg.AdminPass)
+	assert.NoError(t, cfg.Validate())
 }
 
 func TestNewFromEnv(t *testing.T) {
