@@ -38,9 +38,21 @@ func LoadCatalog() (*Catalog, error) {
 // customized via the admin panel (customized=1) are never overwritten;
 // user-created flowers (names not in the embedded catalog) are untouched.
 func Seed(d *DB) error {
+	// Validate catalog before doing anything.
 	cat, err := LoadCatalog()
 	if err != nil {
-		return err
+		return fmt.Errorf("load catalog: %w", err)
+	}
+	if len(cat.Flowers) == 0 {
+		return fmt.Errorf("seed: catalog is empty")
+	}
+	if cat.Version < 1 {
+		return fmt.Errorf("seed: unsupported catalog version %d", cat.Version)
+	}
+
+	// Safety cap: refuse to seed more than 1000 flowers.
+	if len(cat.Flowers) > 1000 {
+		return fmt.Errorf("seed: catalog contains %d flowers (max 1000)", len(cat.Flowers))
 	}
 
 	count, err := d.Count()

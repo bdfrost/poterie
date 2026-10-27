@@ -18,7 +18,7 @@
 - **Bloom-Season Awareness** — Refined per-flower bloom windows (spring/summer/fall, incl. cool-season plants); the engine prefers picks that flower together and the notes call out succession bloomers
 - **Public Catalog** — Browse all 58+ flowers at `/catalog` (filter by role), with a detail page per flower at `/flowers/{id}` (zones, sun, soil, bloom window, height, spacing, Wikipedia link)
 - **Flower Catalog Data** — Versioned JSON catalog (externalized from code), Wikipedia links, and full plant data
-- **Admin Panel** — Full CRUD for the flower database + catalog import/export (basic auth protected at `/admin`)
+- **Admin Panel** — Full CRUD for the flower database + catalog import/export (basic auth + CSRF protected at `/admin`)
 - **Zero Dependencies** — Single Go binary with embedded SQLite and templates
 
 ## Tech Stack
@@ -31,6 +31,7 @@
 | **Styling** | Tailwind CSS (CDN) + custom botanical CSS |
 | **Visualization** | Inline SVG with Redouté aesthetics |
 | **Container** | Multi-stage Docker → Alpine |
+| **Security** | CSRF tokens, CSP headers, rate limiting |
 | **CI/CD** | GitHub Actions → GHCR → ArgoCD |
 | **DNS/Ingress** | cloudflared tunnel (HTTPS via Cloudflare) |
 | **Kubernetes** | Helm chart, PVC via Synology CSI |
@@ -52,10 +53,19 @@ Open `http://localhost:8080`
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | `8080` | HTTP listen port |
-| `DB_PATH` | `/data/poterie.db` | SQLite database path |
+| `DB_PATH` | `/data/poterie.db` | SQLite database path (must be a writable location) |
 | `VERSION` | `dev` | Application version |
 | `ADMIN_USER` | `admin` | Admin panel username |
-| `ADMIN_PASS` | `changeme` | Admin panel password |
+| `ADMIN_PASS` | **Required** | Admin panel password — **must not be the default**. The app will refuse to start if `changeme` is used. |
+| `CSRF_SECRET` | auto-generated | 32-byte key for CSRF HMAC (set to a random string in production) |
+
+## Security
+
+- **CSRF Protection**: All admin POST endpoints require a CSRF token via hidden form field.
+- **Rate Limiting**: 120 requests per minute per client IP across all endpoints.
+- **CSP Headers**: Content-Security-Policy restricts script/style sources to known CDNs and the app's own static files.
+- **No-clickjacking**: `X-Frame-Options: DENY` and CSP `frame-ancestors 'none'` prevent embedding in iframes.
+- **Strong credentials enforced**: The app refuses to start with the default `changeme` password.
 
 ## Docker
 
@@ -63,7 +73,8 @@ Open `http://localhost:8080`
 docker build -t ghcr.io/bdfrost/poterie:latest .
 docker run -p 8080:8080 \
   -v poterie-data:/data \
-  -e ADMIN_USER=admin -e ADMIN_PASS=changeme \
+  -e ADMIN_USER=admin -e ADMIN_PASS=your-strong-password \
+  -e CSRF_SECRET=random-32-byte-string-here \
   ghcr.io/bdfrost/poterie:latest
 ```
 
@@ -143,7 +154,7 @@ git tag v*.X → CI builds/test/push → gitops bump → ArgoCD sync → verify
 ├── main.go                       # Entry point, router init
 ├── data/catalog-v1.json          # Versioned flower catalog (externalized data)
 ├── internal/
-│   ├── config/config.go          # Env vars, defaults
+│   ├── config/config.go          # Env vars, defaults, validation
 │   ├── db/                       # SQLite schema, catalog loader, seed
 │   ├── handler/pages.go          # HTTP handlers (pages + API + admin)
 │   ├── models/flower.go          # Flower structs, enums, color palettes

@@ -1,0 +1,42 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/bdfrost/poterie
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: poterie.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Persistent volume for SQLite
+persistence:
+  enabled: true
+  storageClass: "synology-csi-iscsi-delete"
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
+# Admin credentials
+admin:
+  user: admin
+  pass: changeme  # Change this or use SealedSecrets
