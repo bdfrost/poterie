@@ -7,57 +7,46 @@
     <!-- Soil fill - light -->
     <circle cx="200" cy="200" r="168" class="fst-pot-soil" fill-opacity="0.04"/>
 
-    <!-- Thriller (center, largest) -->
+    <!-- Thriller (center, focal — only plant that keeps a halo) -->
     {{if .Rec.Thriller}}
-    <g transform="translate(200,190)" class="fst-plant fst-plant-thriller">
-        <circle r="62" class="fst-plant-lg"/>
-        <g transform="translate(-27,-44) scale(1.15)" class="fst-glyph" style="color: {{.Rec.Thriller.ColorHex}}">
+    <g transform="translate(200,178)" class="fst-plant fst-plant-thriller">
+        <circle r="52" class="fst-plant-lg"/>
+        <g transform="translate(-24,-24)" class="fst-glyph" style="color: {{.Rec.Thriller.ColorHex}}">
             {{template "partials/glyph-thriller" dict "Hex" .Rec.Thriller.ColorHex "Class" ""}}
         </g>
-        <text y="34" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
-        <text y="47" text-anchor="middle" class="fst-sublabel">thriller</text>
+        <text y="30" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
+        <text y="42" text-anchor="middle" class="fst-sublabel">thriller</text>
     </g>
     {{end}}
 
-    <!-- Fillers surround thriller on sides and back -->
-    {{range $i, $filler := .Rec.Fillers}}
-    {{$cx := 130}}{{$cy := 160}}
-    {{if eq $i 1}}{{$cx = 270}}{{else if eq $i 2}}{{$cx = 200}}{{$cy = 100}}{{end}}
+    <!-- Fillers surround thriller on sides and back (deduplicated — a
+         duplicated species renders once, labeled with its quantity) -->
+    {{range $i, $f := .FilledFillers}}
+    {{$cx := 122}}{{$cy := 176}}
+    {{if eq $i 1}}{{$cx = 278}}{{else if eq $i 2}}{{$cx = 200}}{{$cy = 90}}{{end}}
     <g transform="translate({{$cx}},{{$cy}})" class="fst-plant fst-plant-filler">
-        <circle r="40" class="fst-plant-circle"/>
-        <g transform="translate(-16,-25) scale(0.72)" class="fst-glyph" style="color: {{$filler.ColorHex}}">
-            {{template "partials/glyph-filler" dict "Hex" $filler.ColorHex "Class" ""}}
+        <g transform="translate(-17.3,-17.3) scale(0.72)" class="fst-glyph" style="color: {{$f.Flower.ColorHex}}">
+            {{template "partials/glyph-filler" dict "Hex" $f.Flower.ColorHex "Class" ""}}
         </g>
-        <text y="22" text-anchor="middle" class="fst-label fst-label-sm">{{$filler.Name}}</text>
+        <text y="24" text-anchor="middle" class="fst-label fst-label-sm">{{$f.Flower.Name}}{{if gt $f.Qty 1}} ×{{$f.Qty}}{{end}}</text>
     </g>
     {{end}}
 
-    <!-- Spillers hang over front edge (bottom of pot) -->
-    <g>
-        {{range $i, $spiller := .Rec.Spillers}}
-        {{$sx := 140}}{{$sy := 290}}
-        {{if eq $i 1}}{{$sx = 260}}{{end}}
-        <!-- Cascade path hangs outside rim, going down toward viewer -->
-        <path d="M{{$sx}},{{add $sy 28}} C{{$sx}},{{add $sy 50}} {{add $sx 12}},{{add $sy 65}} {{add $sx 8}},{{add $sy 80}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
-        <path d="M{{add $sx 15}},{{add $sy 25}} C{{add $sx 20}},{{add $sy 45}} {{add $sx 30}},{{add $sy 55}} {{add $sx 22}},{{add $sy 70}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
-        <g transform="translate({{$sx}},{{$sy}})" class="fst-plant fst-plant-spiller">
-            <circle r="33" class="fst-plant-circle"/>
-            <g transform="translate(-13,-21) scale(0.62)" class="fst-glyph" style="color: {{$spiller.ColorHex}}">
-                {{template "partials/glyph-spiller" dict "Hex" $spiller.ColorHex "Class" ""}}
-            </g>
-            <text y="19" text-anchor="middle" class="fst-label fst-label-sm">{{$spiller.Name}}</text>
+    <!-- Spillers hang over front edge (bottom of pot), spread wide so their
+         cascades don't fight each other -->
+    {{range $i, $s := .FilledSpillers}}
+    {{$sx := 110}}{{$sy := 302}}
+    {{if eq $i 1}}{{$sx = 290}}{{end}}
+    <!-- Cascade path hangs outside rim, going down toward viewer -->
+    <path d="M{{$sx}},{{add $sy 26}} C{{$sx}},{{add $sy 48}} {{add $sx 12}},{{add $sy 62}} {{add $sx 8}},{{add $sy 76}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
+    <path d="M{{add $sx 15}},{{add $sy 23}} C{{add $sx 20}},{{add $sy 43}} {{add $sx 30}},{{add $sy 53}} {{add $sx 22}},{{add $sy 66}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
+    <g transform="translate({{$sx}},{{$sy}})" class="fst-plant fst-plant-spiller">
+        <g transform="translate(-14.9,-14.9) scale(0.62)" class="fst-glyph" style="color: {{$s.Flower.ColorHex}}">
+            {{template "partials/glyph-spiller" dict "Hex" $s.Flower.ColorHex "Class" ""}}
         </g>
-        {{end}}
+        <text y="21" text-anchor="middle" class="fst-label fst-label-sm">{{$s.Flower.Name}}{{if gt $s.Qty 1}} ×{{$s.Qty}}{{end}}</text>
     </g>
-
-    <!-- Legend -->
-    <rect x="280" y="340" width="90" height="55" rx="6" class="fst-legend-bg"/>
-    <circle cx="295" cy="355" r="5" class="fst-legend-thriller"/>
-    <text x="305" y="358" class="fst-legend-label">Thriller</text>
-    <circle cx="295" cy="370" r="5" class="fst-legend-filler"/>
-    <text x="305" y="373" class="fst-legend-label">Filler</text>
-    <circle cx="295" cy="385" r="5" class="fst-legend-spiller"/>
-    <text x="305" y="388" class="fst-legend-label">Spiller</text>
+    {{end}}
 </svg>
 {{end}}
 
@@ -77,57 +66,62 @@
         <line x1="30" y1="250" x2="565" y2="250"/>
     </g>
 
-    <!-- Back center: Thriller -->
+    <!-- Back center: Thriller (focal — only plant that keeps a halo) -->
     {{if .Rec.Thriller}}
-    <g transform="translate(300,100)" class="fst-plant fst-plant-thriller">
-        <circle r="62" class="fst-plant-lg"/>
-        <g transform="translate(-27,-44) scale(1.15)" class="fst-glyph" style="color: {{.Rec.Thriller.ColorHex}}">
+    <g transform="translate(300,98)" class="fst-plant fst-plant-thriller">
+        <circle r="52" class="fst-plant-lg"/>
+        <g transform="translate(-24,-24)" class="fst-glyph" style="color: {{.Rec.Thriller.ColorHex}}">
             {{template "partials/glyph-thriller" dict "Hex" .Rec.Thriller.ColorHex "Class" ""}}
         </g>
-        <text y="34" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
-        <text y="47" text-anchor="middle" class="fst-sublabel">thriller</text>
+        <text y="30" text-anchor="middle" class="fst-label">{{.Rec.Thriller.Name}}</text>
+        <text y="42" text-anchor="middle" class="fst-sublabel">thriller</text>
     </g>
     {{end}}
 
-    <!-- Fillers on sides of thriller -->
-    {{range $i, $filler := .Rec.Fillers}}
-    {{$cx := 180}}{{$cy := 200}}
-    {{if eq $i 1}}{{$cx = 420}}{{else if eq $i 2}}{{$cx = 300}}{{$cy = 150}}{{end}}
+    <!-- Fillers on sides of thriller (deduplicated, labeled with quantity) -->
+    {{range $i, $f := .FilledFillers}}
+    {{$cx := 172}}{{$cy := 205}}
+    {{if eq $i 1}}{{$cx = 428}}{{else if eq $i 2}}{{$cx = 300}}{{$cy = 165}}{{end}}
     <g transform="translate({{$cx}},{{$cy}})" class="fst-plant fst-plant-filler">
-        <circle r="40" class="fst-plant-circle"/>
-        <g transform="translate(-16,-25) scale(0.72)" class="fst-glyph" style="color: {{$filler.ColorHex}}">
-            {{template "partials/glyph-filler" dict "Hex" $filler.ColorHex "Class" ""}}
+        <g transform="translate(-17.3,-17.3) scale(0.72)" class="fst-glyph" style="color: {{$f.Flower.ColorHex}}">
+            {{template "partials/glyph-filler" dict "Hex" $f.Flower.ColorHex "Class" ""}}
         </g>
-        <text y="22" text-anchor="middle" class="fst-label fst-label-sm">{{$filler.Name}}</text>
+        <text y="24" text-anchor="middle" class="fst-label fst-label-sm">{{$f.Flower.Name}}{{if gt $f.Qty 1}} ×{{$f.Qty}}{{end}}</text>
     </g>
     {{end}}
 
     <!-- Spillers at front edge, cascading down toward viewer -->
-    {{range $i, $spiller := .Rec.Spillers}}
-    {{$sx := 230}}{{$sy := 295}}
-    {{if eq $i 1}}{{$sx = 370}}{{end}}
+    {{range $i, $s := .FilledSpillers}}
+    {{$sx := 218}}{{$sy := 302}}
+    {{if eq $i 1}}{{$sx = 382}}{{end}}
     <g transform="translate({{$sx}},{{$sy}})" class="fst-plant fst-plant-spiller">
-        <circle r="33" class="fst-plant-circle"/>
-        <g transform="translate(-13,-21) scale(0.62)" class="fst-glyph" style="color: {{$spiller.ColorHex}}">
-            {{template "partials/glyph-spiller" dict "Hex" $spiller.ColorHex "Class" ""}}
+        <g transform="translate(-14.9,-14.9) scale(0.62)" class="fst-glyph" style="color: {{$s.Flower.ColorHex}}">
+            {{template "partials/glyph-spiller" dict "Hex" $s.Flower.ColorHex "Class" ""}}
         </g>
-        <text y="19" text-anchor="middle" class="fst-label fst-label-sm">{{$spiller.Name}}</text>
+        <text y="21" text-anchor="middle" class="fst-label fst-label-sm">{{$s.Flower.Name}}{{if gt $s.Qty 1}} ×{{$s.Qty}}{{end}}</text>
     </g>
     <!-- Cascades hang outside bed rim, going down -->
-    <path d="M{{$sx}},{{add $sy 28}} C{{$sx}},{{add $sy 45}} {{add $sx 10}},{{add $sy 60}} {{add $sx 6}},{{add $sy 72}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
-    <path d="M{{add $sx 12}},{{add $sy 25}} C{{add $sx 18}},{{add $sy 42}} {{add $sx 28}},{{add $sy 52}} {{add $sx 18}},{{add $sy 64}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M{{$sx}},{{add $sy 26}} C{{$sx}},{{add $sy 43}} {{add $sx 10}},{{add $sy 58}} {{add $sx 6}},{{add $sy 70}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
+    <path d="M{{add $sx 12}},{{add $sy 23}} C{{add $sx 18}},{{add $sy 40}} {{add $sx 28}},{{add $sy 50}} {{add $sx 18}},{{add $sy 62}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
     {{end}}
-
-    <!-- Legend -->
-    <rect x="450" y="340" width="80" height="55" rx="6" class="fst-legend-bg"/>
-    <circle cx="465" cy="355" r="5" class="fst-legend-thriller"/>
-    <text x="475" y="358" class="fst-legend-label">Thriller</text>
-    <circle cx="465" cy="370" r="5" class="fst-legend-filler"/>
-    <text x="475" y="373" class="fst-legend-label">Filler</text>
-    <circle cx="465" cy="385" r="5" class="fst-legend-spiller"/>
-    <text x="475" y="388" class="fst-legend-label">Spiller</text>
 
     <!-- Bed label -->
     <text x="300" y="385" text-anchor="middle" class="fst-bed-label">Garden Bed — Top View</text>
 </svg>
+{{end}}
+
+{{/* Legend rendered as HTML below the SVG (no longer inside the viewBox,
+     where it fought the second spiller's cascade for space) */}}
+{{define "partials/svg-legend"}}
+<div class="flex justify-center gap-5 mt-2 text-sm bot-text-secondary">
+    <span class="inline-flex items-center gap-1.5">
+        <span class="inline-block w-2.5 h-2.5 rounded-full" style="background-color: var(--border-thriller)"></span>Thriller
+    </span>
+    <span class="inline-flex items-center gap-1.5">
+        <span class="inline-block w-2.5 h-2.5 rounded-full" style="background-color: var(--border-filler)"></span>Filler
+    </span>
+    <span class="inline-flex items-center gap-1.5">
+        <span class="inline-block w-2.5 h-2.5 rounded-full" style="background-color: var(--border-spiller)"></span>Spiller
+    </span>
+</div>
 {{end}}

@@ -83,13 +83,15 @@
 
     <!-- FST Visual SVG Mockup -->
     <div class="bot-bg-card bot-rounded bot-shadow p-6">
-        <div class="flex justify-center mb-6">
+        <div class="flex justify-center mb-2">
             {{if eq .Layout "bed"}}
                 {{template "partials/svg-bed" .}}
             {{else}}
                 {{template "partials/svg-pot" .}}
             {{end}}
         </div>
+        {{template "partials/svg-legend" .}}
+        <div class="mb-4"></div>
 
         <!-- Plant Swap Controls -->
         <div class="flex flex-wrap justify-center gap-4 pt-4 bot-border">
