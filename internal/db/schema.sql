@@ -13,5 +13,8 @@ CREATE TABLE IF NOT EXISTS flowers (
 	spacing TEXT NOT NULL DEFAULT '',
 	description TEXT NOT NULL DEFAULT '',
 	image_url TEXT NOT NULL DEFAULT '',
+	image_credit TEXT NOT NULL DEFAULT '',
+	image_license TEXT NOT NULL DEFAULT '',
+	image_credit_url TEXT NOT NULL DEFAULT '',
 	wikipedia_url TEXT NOT NULL DEFAULT ''
 );

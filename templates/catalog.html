@@ -17,9 +17,16 @@
         {{range .Flowers}}
         <a href="/flowers/{{.ID}}" class="bot-bg-card bot-rounded bot-shadow p-5 block hover:bot-shadow-xl transition-shadow border-l-4 bot-border-{{.Role}}">
             <div class="flex items-start justify-between gap-3">
-                <div>
-                    <h3 class="bot-font-serif text-lg bot-text-primary font-semibold">{{.Name}}</h3>
-                    <p class="text-xs bot-text-secondary italic">{{.BotanicalName}}</p>
+                <div class="flex items-start gap-3">
+                    {{if .HasPhoto}}
+                    <img src="{{.ImageURL}}" alt="" loading="lazy"
+                         class="w-12 h-12 rounded-full object-cover flex-shrink-0 bot-shadow"
+                         onerror="this.style.display='none'">
+                    {{end}}
+                    <div>
+                        <h3 class="bot-font-serif text-lg bot-text-primary font-semibold">{{.Name}}</h3>
+                        <p class="text-xs bot-text-secondary italic">{{.BotanicalName}}</p>
+                    </div>
                 </div>
                 <span class="bot-badge bot-badge-{{.Role}} flex-shrink-0">{{.Role}}</span>
             </div>

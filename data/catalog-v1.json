@@ -17,8 +17,11 @@
       "height": "3-6ft",
       "spacing": "12-18in",
       "description": "Bold tropical foliage with vibrant flower spikes. Thrives in hot summer sun.",
-      "image_url": "\ud83c\udf3a",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Canna_(plant)"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Canna_sp.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Canna_(plant)",
+      "image_credit": "Muhammad Mahdi Karim, edited by Fir0002",
+      "image_license": "GFDL 1.2",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Canna_sp.jpg"
     },
     {
       "name": "Angelonia",
@@ -37,8 +40,11 @@
       "height": "12-18in",
       "spacing": "8-12in",
       "description": "Heat-tolerant spikes of snapdragon-like flowers. Excellent for containers.",
-      "image_url": "\ud83d\udc9c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Angelonia_angustifolia"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Summersnapdragon.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Angelonia_angustifolia",
+      "image_credit": "GooseSpoon",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Summersnapdragon.jpg"
     },
     {
       "name": "Salvia",
@@ -57,8 +63,11 @@
       "height": "12-24in",
       "spacing": "10-14in",
       "description": "Classic vibrant red spikes, long-blooming annual. Hummingbird magnet.",
-      "image_url": "\ud83d\udd34",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Salvia_splendens"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Mudas_de_alegrias-de-jardim%2C_ou_s%C3%A1lvia_01.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Salvia_splendens",
+      "image_credit": "Gabriel Collares",
+      "image_license": "CC BY 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Mudas_de_alegrias-de-jardim,_ou_s%C3%A1lvia_01.jpg"
     },
     {
       "name": "Celosia",
@@ -76,8 +85,11 @@
       "height": "12-36in",
       "spacing": "6-12in",
       "description": "Flame-like plumes or crested heads. Excellent dried flower.",
-      "image_url": "\ud83c\udf3e",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Celosia_argentea"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Celosia_argentea_flowering_q1.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Celosia_argentea",
+      "image_credit": "Quadell (talk) (Uploads)",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Celosia_argentea_flowering_q1.jpg"
     },
     {
       "name": "Dracaena Spike",
@@ -95,8 +107,11 @@
       "height": "2-4ft",
       "spacing": "12-18in",
       "description": "Architectural sword-like foliage. Dramatic container centerpiece.",
-      "image_url": "\ud83c\udf3f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Cordyline_australis"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/CabbageTreeKaihoka.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Cordyline_australis",
+      "image_credit": "Jade",
+      "image_license": "CC BY-SA 2.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:CabbageTreeKaihoka.jpg"
     },
     {
       "name": "Ornamental Grass",
@@ -115,8 +130,11 @@
       "height": "2-4ft",
       "spacing": "12-24in",
       "description": "Graceful arching plumes. Adds movement and texture.",
-      "image_url": "\ud83c\udf3e",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Pennisetum_setaceum"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Tender_Fountain_Grass_%28405627220%29.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Pennisetum_setaceum",
+      "image_credit": "Dinesh Valke from Thane, India",
+      "image_license": "CC BY-SA 2.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Tender_Fountain_Grass_(405627220).jpg"
     },
     {
       "name": "Torenia",
@@ -134,8 +152,11 @@
       "height": "8-12in",
       "spacing": "6-10in",
       "description": "Wishbone flower with unique tubular blooms. Shade-tolerant thriller.",
-      "image_url": "\ud83d\udc99",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Torenia_fournieri"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/45/Torenia_fournieri_in_Kudayathoor.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Torenia_fournieri",
+      "image_credit": "Jeevan Jose, Kerala, India",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Torenia_fournieri_in_Kudayathoor.jpg"
     },
     {
       "name": "Castor Bean",
@@ -153,8 +174,11 @@
       "height": "6-10ft",
       "spacing": "24-36in",
       "description": "Massive tropical leaves, dramatic height. Use in beds, caution: toxic.",
-      "image_url": "\ud83c\udf43",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Ricinus_communis"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Ricin_commun.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Ricinus_communis",
+      "image_credit": "Filo g\u00e8n'",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Ricin_commun.jpg"
     },
     {
       "name": "Astilbe",
@@ -172,8 +196,11 @@
       "height": "18-36in",
       "spacing": "12-18in",
       "description": "Feathery plumes above fern-like foliage. Moisture-loving shade thriller.",
-      "image_url": "\ud83d\udc97",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Astilbe_x_arendsii"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Astilbe-arendsii-total.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Astilbe_x_arendsii",
+      "image_credit": "Sten Porse",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Astilbe-arendsii-total.JPG"
     },
     {
       "name": "Foxglove",
@@ -191,8 +218,11 @@
       "height": "2-4ft",
       "spacing": "12-18in",
       "description": "Tall elegant spires of tubular flowers. Cottage garden classic.",
-      "image_url": "\ud83d\udc9c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Digitalis_purpurea"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Digitalis_purpurea_LC0101.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Digitalis_purpurea",
+      "image_credit": "J\u00f6rg Hempel",
+      "image_license": "CC BY-SA 3.0 de",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Digitalis_purpurea_LC0101.jpg"
     },
     {
       "name": "Delphinium",
@@ -210,8 +240,11 @@
       "height": "3-6ft",
       "spacing": "12-18in",
       "description": "Towering flower spikes in rich blues. Classic cottage garden thriller.",
-      "image_url": "\ud83d\udc99",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Delphinium_elatum"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Delphinium_elatum_-_panoramio.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Delphinium_elatum",
+      "image_credit": "Bj\u00f6rn S.",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Delphinium_elatum_-_panoramio.jpg"
     },
     {
       "name": "Banana Plant",
@@ -229,8 +262,11 @@
       "height": "6-15ft",
       "spacing": "36-48in",
       "description": "Tropical giant leaves for dramatic tropical effect. Hardy banana.",
-      "image_url": "\ud83c\udf34",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Musa_basjoo"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Musa_basjooSochi1.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Musa_basjoo",
+      "image_credit": "Materialscientist",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Musa_basjooSochi1.JPG"
     },
     {
       "name": "Hosta",
@@ -248,8 +284,11 @@
       "height": "12-36in",
       "spacing": "12-36in",
       "description": "Architectural foliage plant for shade. Lavender flower scapes add height.",
-      "image_url": "\ud83c\udf3f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Hosta_spp."
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Hosta_spp_%282943603031%29.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Hosta_spp.",
+      "image_credit": "Alex Lomas",
+      "image_license": "CC BY 2.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Hosta_spp_(2943603031).jpg"
     },
     {
       "name": "Japanese Painted Fern",
@@ -268,8 +307,11 @@
       "height": "8-12in",
       "spacing": "12-18in",
       "description": "Elegant arching fronds with silver and burgundy coloring.",
-      "image_url": "\ud83c\udf3f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Athyrium_niponicum"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Japanese_Painted_Fern_Athyrium_nipponicum_%27Pictum%27_Leaf_1500px.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Athyrium_niponicum",
+      "image_credit": "Photo (c)2006 Derek Ramsey (Ram-Man)",
+      "image_license": "CC BY-SA 2.5",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Japanese_Painted_Fern_Athyrium_nipponicum_%27Pictum%27_Leaf_1500px.jpg"
     },
     {
       "name": "Hollyhock",
@@ -287,8 +329,11 @@
       "height": "4-8ft",
       "spacing": "18-24in",
       "description": "Towering cottage classic. Long flower spikes in cottage gardens.",
-      "image_url": "\ud83c\udf38",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Alcea_rosea"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Alcea_rosea_purple.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Alcea_rosea",
+      "image_credit": "PJDespa",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Alcea_rosea_purple.jpg"
     },
     {
       "name": "Sunflower",
@@ -307,8 +352,11 @@
       "height": "3-10ft",
       "spacing": "12-24in",
       "description": "Iconic tall blooms. Excellent for beds and as a dramatic container thriller.",
-      "image_url": "\ud83c\udf3b",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Helianthus_annuus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Sunflower_macro_wide.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Helianthus_annuus",
+      "image_credit": "Muhammad Mahdi Karim",
+      "image_license": "GFDL 1.2",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Sunflower_macro_wide.jpg"
     },
     {
       "name": "Gladiolus",
@@ -327,8 +375,11 @@
       "height": "2-5ft",
       "spacing": "6-8in",
       "description": "Tall dramatic sword-like flower spikes. Excellent cut flowers.",
-      "image_url": "\ud83c\udf3a",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Gladiolus_x_hortulanus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Gladiolus_hortulanus_%27Trader_Horn%27-IMG_9259.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Gladiolus_x_hortulanus",
+      "image_credit": "C T Johansson",
+      "image_license": "CC BY 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Gladiolus_hortulanus_%27Trader_Horn%27-IMG_9259.jpg"
     },
     {
       "name": "Petunia",
@@ -347,8 +398,11 @@
       "height": "6-14in",
       "spacing": "6-12in",
       "description": "Reliable, prolific bloomer in every color. Container bed staple.",
-      "image_url": "\ud83c\udf38",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Petunia_x_hybrida"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Petunia_%C3%97_hybrida_-_Karlsruhe.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Petunia_x_hybrida",
+      "image_credit": "H. Zell",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Petunia_%C3%97_hybrida_-_Karlsruhe.jpg"
     },
     {
       "name": "Geranium",
@@ -367,8 +421,11 @@
       "height": "12-18in",
       "spacing": "8-12in",
       "description": "Classic container flower. Long-lasting, heat-tolerant blooms.",
-      "image_url": "\ud83c\udf3a",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Pelargonium_x_hortorum"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Pelargonium_graveolens_in_Hel.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Pelargonium_x_hortorum",
+      "image_credit": "\u2014DerHexer (Talk)",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Pelargonium_graveolens_in_Hel.jpg"
     },
     {
       "name": "Marigold",
@@ -387,8 +444,11 @@
       "height": "6-36in",
       "spacing": "6-12in",
       "description": "Cheerful, pest-resistant bloom. Great companion plant.",
-      "image_url": "\ud83c\udf3c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Tagetes_erecta"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Tagetes_x_erecta1.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Tagetes_erecta",
+      "image_credit": "Unknown author",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Tagetes_x_erecta1.jpg"
     },
     {
       "name": "Begonia",
@@ -406,8 +466,11 @@
       "height": "6-12in",
       "spacing": "6-8in",
       "description": "Continuous bloom in shade or part-sun. Glossy foliage.",
-      "image_url": "\ud83c\udf38",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Begonia_x_semperflorens"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Semperflorens-Begonien_--_2021_--_3957.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Begonia_x_semperflorens",
+      "image_credit": "Dietmar Rabich",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Semperflorens-Begonien_--_2021_--_3957.jpg"
     },
     {
       "name": "Coleus",
@@ -425,8 +488,11 @@
       "height": "8-24in",
       "spacing": "8-12in",
       "description": "Stunning colorful foliage. Pinch flowers for bushier growth.",
-      "image_url": "\ud83c\udf43",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Plectranthus_scutellarioides"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Plectranthus_scutellarioides_NBG_LR.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Plectranthus_scutellarioides",
+      "image_credit": "PumpkinSky",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Plectranthus_scutellarioides_NBG_LR.jpg"
     },
     {
       "name": "Impatiens",
@@ -444,8 +510,11 @@
       "height": "6-18in",
       "spacing": "6-12in",
       "description": "Reliable shade filler, profuse bloomer. New Guinea varieties for sun.",
-      "image_url": "\ud83c\udf3a",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Impatiens_walleriana"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/28/Impatienswalleriana.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Impatiens_walleriana",
+      "image_credit": "Thegreenj",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Impatienswalleriana.jpg"
     },
     {
       "name": "Zinnia",
@@ -464,8 +533,11 @@
       "height": "6-36in",
       "spacing": "6-12in",
       "description": "Vibrant, long-lasting cut flowers. Butterfly magnet.",
-      "image_url": "\ud83c\udf38",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Zinnia_elegans"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Zinnienbl%C3%BCte_Zinnia_elegans_stack15_20190722-RM-7222254.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Zinnia_elegans",
+      "image_credit": "Ermell",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Zinnienbl%C3%BCte_Zinnia_elegans_stack15_20190722-RM-7222254.jpg"
     },
     {
       "name": "Dahlia",
@@ -483,8 +555,11 @@
       "height": "12-48in",
       "spacing": "12-18in",
       "description": "Showy dinner-plate blooms. Tuberous, excellent cut flowers.",
-      "image_url": "\ud83c\udf3a",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Dahlia_x_hortensis"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Dahlia_x_hortensis%2C_jard%C3%ADn_bot%C3%A1nico_de_Tallinn%2C_Estonia%2C_2012-08-13%2C_DD_02.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Dahlia_x_hortensis",
+      "image_credit": "Diego Delso",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Dahlia_x_hortensis,_jard%C3%ADn_bot%C3%A1nico_de_Tallinn,_Estonia,_2012-08-13,_DD_02.JPG"
     },
     {
       "name": "Calibrachoa",
@@ -502,8 +577,11 @@
       "height": "4-8in",
       "spacing": "6-10in",
       "description": "Mini petunia, self-cleaning, nonstop blooms. Excellent container filler.",
-      "image_url": "\ud83d\udc9c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Calibrachoa_x_hybrida"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Basket_of_Calibrachoa_parviflora_by_A_-_2020-06-18.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Calibrachoa_x_hybrida",
+      "image_credit": "A",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Basket_of_Calibrachoa_parviflora_by_A_-_2020-06-18.jpg"
     },
     {
       "name": "Vinca",
@@ -522,8 +600,11 @@
       "height": "6-18in",
       "spacing": "6-12in",
       "description": "Heat-loving, drought-tolerant, disease-resistant. Southern staple.",
-      "image_url": "\ud83c\udf38",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Catharanthus_roseus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Vinca_%28Catharanthus_roseus%29_cultivada_em_Bag%C3%A9%2C_RS%2C_Brasil_-_55231652268.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Catharanthus_roseus",
+      "image_credit": "O Tupin\u00f3logo",
+      "image_license": "CC BY 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Vinca_(Catharanthus_roseus)_cultivada_em_Bag%C3%A9,_RS,_Brasil_-_55231652268.jpg"
     },
     {
       "name": "Nemesia",
@@ -541,8 +622,11 @@
       "height": "6-12in",
       "spacing": "6-8in",
       "description": "Cool-season charmer, snaps-like flowers. Spring filler before heat.",
-      "image_url": "\ud83d\udc99",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Nemesia_strumosa"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6e/%E9%BE%8D%E9%9D%A2%E8%8A%B1%28%E5%9B%8A%E8%B7%9D%E8%8A%B1%29_Nemesia_strumosa_KLM_-%E4%B8%8A%E6%B5%B7%E5%85%B1%E9%9D%92%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9C%92_Shanghai%2C_China-_%289255261062%29.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Nemesia_strumosa",
+      "image_credit": "\u963f\u6a4b HQ",
+      "image_license": "CC BY-SA 2.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:%E9%BE%8D%E9%9D%A2%E8%8A%B1(%E5%9B%8A%E8%B7%9D%E8%8A%B1)_Nemesia_strumosa_KLM_-%E4%B8%8A%E6%B5%B7%E5%85%B1%E9%9D%92%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9C%92_Shanghai,_China-_(9255261062).jpg"
     },
     {
       "name": "Lobelia",
@@ -560,8 +644,11 @@
       "height": "4-8in",
       "spacing": "4-6in",
       "description": "True blue flowers. Cool-season loving, performs best in spring.",
-      "image_url": "\ud83d\udc99",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Lobelia_erinus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Lobelia_close-up_%28aka%29.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lobelia_erinus",
+      "image_credit": "Andr\u00e9 Karwath aka Aka",
+      "image_license": "CC BY-SA 2.5",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Lobelia_close-up_(aka).jpg"
     },
     {
       "name": "Dusty Miller",
@@ -580,8 +667,11 @@
       "height": "8-15in",
       "spacing": "8-12in",
       "description": "Striking silver foliage, perfect contrast plant. Drought-tolerant.",
-      "image_url": "\ud83e\udd0d",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Senecio_cineraria"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/35/Manneporte_en_soir.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Senecio_cineraria",
+      "image_credit": "J\u00f6rg Braukmann",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Manneporte_en_soir.jpg"
     },
     {
       "name": "Pansy",
@@ -599,8 +689,11 @@
       "height": "6-9in",
       "spacing": "4-6in",
       "description": "Cheerful cool-season bloom. Survives light frost.",
-      "image_url": "\ud83d\udc9b",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Viola_x_wittrockiana"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Pansy_viola_x_wittrockiana_blue.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Viola_x_wittrockiana",
+      "image_credit": "Noumenon",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Pansy_viola_x_wittrockiana_blue.jpg"
     },
     {
       "name": "Snapdragon",
@@ -618,8 +711,11 @@
       "height": "6-36in",
       "spacing": "6-12in",
       "description": "Classic cottage flower, tall spikes. Cool-season performer.",
-      "image_url": "\ud83c\udf38",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Antirrhinum_majus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Antirrhinum_majus_BCBG_%2802%29.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Antirrhinum_majus",
+      "image_credit": "Craig Franklin",
+      "image_license": "CC BY-SA 3.0 au",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Antirrhinum_majus_BCBG_(02).jpg"
     },
     {
       "name": "Ornamental Pepper",
@@ -637,8 +733,11 @@
       "height": "8-18in",
       "spacing": "10-12in",
       "description": "Colorful upright peppers, ornamental and sometimes edible.",
-      "image_url": "\ud83c\udf36\ufe0f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Capsicum_annuum"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Capsicum_annuum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-027.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Capsicum_annuum",
+      "image_credit": "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen",
+      "image_license": "Public domain",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Capsicum_annuum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-027.jpg"
     },
     {
       "name": "Caladium",
@@ -656,8 +755,11 @@
       "height": "12-24in",
       "spacing": "8-12in",
       "description": "Heart-shaped stained-glass foliage. Shade-loving tropical.",
-      "image_url": "\ud83c\udf43",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Caladium_bicolor"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Caladium_bicolor_2.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Caladium_bicolor",
+      "image_credit": "Nativeplants garden",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Caladium_bicolor_2.jpg"
     },
     {
       "name": "Lavender",
@@ -675,8 +777,11 @@
       "height": "12-24in",
       "spacing": "12-18in",
       "description": "Fragrant purple spikes. Classic cottage filler, pollinator magnet.",
-      "image_url": "\ud83d\udc9c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Lavandula_angustifolia"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Lavandula_angustifolia_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-087.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lavandula_angustifolia",
+      "image_credit": "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen",
+      "image_license": "Public domain",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Lavandula_angustifolia_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-087.jpg"
     },
     {
       "name": "Coneflower",
@@ -695,8 +800,11 @@
       "height": "18-36in",
       "spacing": "12-18in",
       "description": "Native prairie flower. Medicinal, drought tolerant butterfly favorite.",
-      "image_url": "\ud83c\udf38",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Echinacea_purpurea"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Echinacea_purpurea_Grandview_Prairie.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Echinacea_purpurea",
+      "image_credit": "Eric Hunt",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Echinacea_purpurea_Grandview_Prairie.jpg"
     },
     {
       "name": "Black-eyed Susan",
@@ -715,8 +823,11 @@
       "height": "18-36in",
       "spacing": "12-18in",
       "description": "Cheerful daisy-like blooms. Native prairie staple.",
-      "image_url": "\ud83c\udf3c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Rudbeckia_hirta"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Rudbeckia_hirta_kz03.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Rudbeckia_hirta",
+      "image_credit": "Krzysztof Ziarnek, Kenraiz",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Rudbeckia_hirta_kz03.jpg"
     },
     {
       "name": "Creeping Jenny",
@@ -734,8 +845,11 @@
       "height": "2-4in",
       "spacing": "6-12in",
       "description": "Golden trailing foliage. Vigorous in moist conditions.",
-      "image_url": "\ud83d\udc9b",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Lysimachia_nummularia"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Lysimachia_nummularia0.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lysimachia_nummularia",
+      "image_credit": "Kurt St\u00fcber [1]",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Lysimachia_nummularia0.jpg"
     },
     {
       "name": "Sweet Alyssum",
@@ -754,8 +868,11 @@
       "height": "2-6in",
       "spacing": "4-6in",
       "description": "Honey-scented tiny flowers cascading mounds. Self-cleaning.",
-      "image_url": "\ud83e\udd0d",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Lobularia_maritima"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Smagliczka_nadmorska_1.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lobularia_maritima",
+      "image_credit": "w0zny",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Smagliczka_nadmorska_1.jpg"
     },
     {
       "name": "Bacopa",
@@ -773,8 +890,11 @@
       "height": "3-6in",
       "spacing": "6-8in",
       "description": "Delicate trailing flowers. Consistent bloomer, mildew-resistant varieties.",
-      "image_url": "\ud83e\udd0d",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Sutera_cordata"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/56/Hosta_met_Sutera_cordata.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Sutera_cordata",
+      "image_credit": "Dominicus Johannes Bergsma",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Hosta_met_Sutera_cordata.JPG"
     },
     {
       "name": "Trailing Verbena",
@@ -793,8 +913,11 @@
       "height": "4-8in",
       "spacing": "8-12in",
       "description": "Trailing clusters of flowers. Heat and drought tolerant once established.",
-      "image_url": "\ud83d\udc9c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Verbena_x_hybrida"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/77/Verbena_hybrida_3.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Verbena_x_hybrida",
+      "image_credit": "Jwitos",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Verbena_hybrida_3.JPG"
     },
     {
       "name": "Dichondra Silver Falls",
@@ -812,8 +935,11 @@
       "height": "2-8in",
       "spacing": "6-12in",
       "description": "Cascading silver strands. Striking contrast container spiller.",
-      "image_url": "\ud83e\udd0d",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Dichondra_argentea"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Dichondra_%27Silver_Falls%27_Pot_1600px.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Dichondra_argentea",
+      "image_credit": "Photo by and (c)2006 Derek Ramsey (Ram-Man). Location credit to the Chanticleer Garden.",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Dichondra_%27Silver_Falls%27_Pot_1600px.jpg"
     },
     {
       "name": "Trailing Ivy",
@@ -830,8 +956,11 @@
       "height": "4-12in",
       "spacing": "8-12in",
       "description": "Classic evergreen trailing vine. Versatile shade spiller.",
-      "image_url": "\ud83c\udf3f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Hedera_helix"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Hedera_helix_Dover.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Hedera_helix",
+      "image_credit": "kallerna",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Hedera_helix_Dover.jpg"
     },
     {
       "name": "Mazus",
@@ -849,8 +978,11 @@
       "height": "1-3in",
       "spacing": "8-12in",
       "description": "Low-growing ground cover with tiny blooms. Foot-traffic tolerant.",
-      "image_url": "\ud83d\udc99",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Mazus_reptans"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Mazus_reptans_001.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Mazus_reptans",
+      "image_credit": "User:SB_Johnny",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Mazus_reptans_001.JPG"
     },
     {
       "name": "Nasturtium",
@@ -868,8 +1000,11 @@
       "height": "6-12in",
       "spacing": "6-12in",
       "description": "Edible flowers and peppery leaves. Thrives in poor soil.",
-      "image_url": "\ud83d\udfe0",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Tropaeolum_majus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/87/Tropaeolum_majus_2005_G1.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Tropaeolum_majus",
+      "image_credit": "George Chernilevsky",
+      "image_license": "Public domain",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Tropaeolum_majus_2005_G1.jpg"
     },
     {
       "name": "Lemon Thyme",
@@ -887,8 +1022,11 @@
       "height": "4-8in",
       "spacing": "8-12in",
       "description": "Aromatic creeping herb. Pollinator friendly, edible.",
-      "image_url": "\ud83d\udc9b",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Thymus_citriodorus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Starr_070906-8846_Thymus_citriodorus.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Thymus_citriodorus",
+      "image_credit": "Forest &amp; Kim Starr",
+      "image_license": "CC BY 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Starr_070906-8846_Thymus_citriodorus.jpg"
     },
     {
       "name": "Creeping Thyme",
@@ -906,8 +1044,11 @@
       "height": "2-4in",
       "spacing": "6-10in",
       "description": "Fragrant mat-forming groundcover. Walkable, bee-friendly.",
-      "image_url": "\ud83d\udc9c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Thymus_serpyllum"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Thymus_serpyllum1.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Thymus_serpyllum",
+      "image_credit": "Unknown author",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Thymus_serpyllum1.jpg"
     },
     {
       "name": "Scaevola",
@@ -926,8 +1067,11 @@
       "height": "4-8in",
       "spacing": "8-12in",
       "description": "Fan flower with half-faced blooms. Heat-tolerant trailing beauty.",
-      "image_url": "\ud83d\udc99",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Scaevola_aemula"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Scaevola_aemula_Botanical_Garden_Heidelberg.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Scaevola_aemula",
+      "image_credit": "Nemracc",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Scaevola_aemula_Botanical_Garden_Heidelberg.JPG"
     },
     {
       "name": "Sedum Angelina",
@@ -945,8 +1089,11 @@
       "height": "4-6in",
       "spacing": "8-12in",
       "description": "Drought-proof succulent spiller. Turns bronze in fall.",
-      "image_url": "\ud83d\udc9b",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Sedum_rupestre"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/00/Sedum_rupestre_01_ies.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Sedum_rupestre",
+      "image_credit": "Frank Vincentz",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Sedum_rupestre_01_ies.jpg"
     },
     {
       "name": "Lotus Vine",
@@ -964,8 +1111,11 @@
       "height": "4-8in",
       "spacing": "8-12in",
       "description": "Dramatic cascading succulent with unusual claw-like blooms.",
-      "image_url": "\ud83d\udfe0",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Lotus_berthelotii"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Lotus_berthelotii_IMGP5869.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lotus_berthelotii",
+      "image_credit": "No machine-readable author provided. Juanillo1976 assumed (based on copyright claims).",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Lotus_berthelotii_IMGP5869.jpg"
     },
     {
       "name": "English Ivy",
@@ -983,8 +1133,11 @@
       "height": "6-12in",
       "spacing": "12-18in",
       "description": "Vigorous shade-tolerant vine. Classic cottage garden spiller.",
-      "image_url": "\ud83c\udf3f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Hedera_hibernica"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Hedera_hibernica1.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Hedera_hibernica",
+      "image_credit": "MPF at English Wikipedia",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Hedera_hibernica1.jpg"
     },
     {
       "name": "Creeping Jenny Gold",
@@ -1003,8 +1156,11 @@
       "height": "2-4in",
       "spacing": "6-12in",
       "description": "Brighter gold in full sun. Vigorous container spiller.",
-      "image_url": "\ud83d\udc9b",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Lysimachia_nummularia"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Lysimachia_nummularia0.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Lysimachia_nummularia",
+      "image_credit": "Kurt St\u00fcber [1]",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Lysimachia_nummularia0.jpg"
     },
     {
       "name": "Trailing Rosemary",
@@ -1022,8 +1178,11 @@
       "height": "4-8in",
       "spacing": "12-18in",
       "description": "Edible herb with fragrant trailing habit. Mediterranean beauty.",
-      "image_url": "\ud83c\udf3f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Salvia_rosmarinus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Rosmarinus_officinalis_prostratus_0zz.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Salvia_rosmarinus",
+      "image_credit": "Photo by David J. Stang",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Rosmarinus_officinalis_prostratus_0zz.jpg"
     },
     {
       "name": "String of Pearls",
@@ -1041,8 +1200,11 @@
       "height": "2-4in",
       "spacing": "6-12in",
       "description": "Unique cascading bead-like succulent. Best as indoor/outdoor container.",
-      "image_url": "\ud83d\udfe2",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Senecio_rowleyanus"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Curio_rowleyanus_syn._Senecio_rowleyanus_2019-04-14_02.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Senecio_rowleyanus",
+      "image_credit": "Agnieszka Kwiecie\u0144, Nova",
+      "image_license": "CC BY-SA 4.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Curio_rowleyanus_syn._Senecio_rowleyanus_2019-04-14_02.jpg"
     },
     {
       "name": "Mint",
@@ -1060,8 +1222,11 @@
       "height": "6-18in",
       "spacing": "12-18in",
       "description": "Aggressive spreader, great in containers (contained). Fragrant foliage.",
-      "image_url": "\ud83c\udf3f",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Mentha_spp."
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/27/Kr%C3%A4uterbutter1.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Mentha_spp.",
+      "image_credit": "Kersti (talk) 15:31, 10 May 2014 (UTC)",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Kr%C3%A4uterbutter1.JPG"
     },
     {
       "name": "Vinca Minor",
@@ -1080,8 +1245,11 @@
       "height": "3-6in",
       "spacing": "12-18in",
       "description": "Evergreen trailing groundcover. Shade-loving with spring blooms.",
-      "image_url": "\ud83d\udc9c",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Vinca_minor"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Vinca_minor_Nashville.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Vinca_minor",
+      "image_credit": "Ryan Kaldari",
+      "image_license": "Public domain",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Vinca_minor_Nashville.jpg"
     },
     {
       "name": "Sweet Woodruff",
@@ -1098,8 +1266,11 @@
       "height": "6-12in",
       "spacing": "9-12in",
       "description": "Delicate whorled foliage with tiny white spring flowers. Fragrant.",
-      "image_url": "\ud83e\udd0d",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Galium_odoratum"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/32/Waldmeister%28Mai%29.JPG",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Galium_odoratum",
+      "image_credit": "Hajotthu 13:34, 11. Mai 2009 (CEST)",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Waldmeister(Mai).JPG"
     },
     {
       "name": "Ajuga",
@@ -1117,8 +1288,11 @@
       "height": "4-6in",
       "spacing": "8-12in",
       "description": "Low-growing shade spiller with purple-bronze foliage and blue spikes.",
-      "image_url": "\ud83d\udc99",
-      "wikipedia_url": "https://en.wikipedia.org/wiki/Ajuga_reptans"
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/65/Ajuga_reptans_20070429_132711_1.jpg",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Ajuga_reptans",
+      "image_credit": "G. Edward Johnson",
+      "image_license": "CC BY-SA 3.0",
+      "image_credit_url": "https://commons.wikimedia.org/wiki/File:Ajuga_reptans_20070429_132711_1.jpg"
     }
   ]
 }

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	_ "embed"
 	"encoding/json"
 	"fmt"
@@ -54,11 +55,7 @@ func Seed(d *DB) error {
 	defer tx.Rollback()
 
 	for _, f := range cat.Flowers {
-		if _, err := tx.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
-			color, bloom_season, height, spacing, description, image_url, wikipedia_url)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-			f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, f.SoilsCSV(),
-			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.WikipediaURL); err != nil {
+		if err := insertFlowerTx(tx, &f); err != nil {
 			return fmt.Errorf("seed %s: %w", f.Name, err)
 		}
 	}
@@ -79,18 +76,27 @@ func SeedFromJSON(d *DB, data []byte) error {
 	}
 	defer tx.Rollback()
 
-	for _, f := range parsed {
-		if _, err := tx.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
-			color, bloom_season, height, spacing, description, image_url, wikipedia_url)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-			f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, f.SoilsCSV(),
-			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.WikipediaURL); err != nil {
+	for i := range parsed {
+		if err := insertFlowerTx(tx, &parsed[i]); err != nil {
 			// Skip duplicates (by name) during import — allows partial re-imports
 			if strings.Contains(err.Error(), "UNIQUE") {
 				continue
 			}
-			return fmt.Errorf("seed %s: %w", f.Name, err)
+			return fmt.Errorf("seed %s: %w", parsed[i].Name, err)
 		}
 	}
 	return tx.Commit()
+}
+
+// insertFlowerTx inserts a flower inside an existing transaction.
+// Keep column list in sync with flowerColumns and Upsert.
+func insertFlowerTx(tx *sql.Tx, f *models.Flower) error {
+	_, err := tx.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
+		color, bloom_season, height, spacing, description, image_url,
+		image_credit, image_license, image_credit_url, wikipedia_url)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, f.SoilsCSV(),
+		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
+		f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL)
+	return err
 }

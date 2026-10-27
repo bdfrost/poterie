@@ -13,6 +13,12 @@ import (
 //go:embed schema.sql
 var schemaSQL string
 
+// flowerColumns is the single column list used by all SELECT/INSERT/UPDATE
+// statements — keep in sync with scanFlowerRaw and schema.sql.
+const flowerColumns = `id, name, botanical_name, role, zone_min, zone_max, sun, soils,
+	color, bloom_season, height, spacing, description, image_url,
+	image_credit, image_license, image_credit_url, wikipedia_url`
+
 type DB struct {
 	*sql.DB
 }
@@ -32,9 +38,11 @@ func (d *DB) Init() error {
 	if _, err := d.Exec(schemaSQL); err != nil {
 		return fmt.Errorf("schema: %w", err)
 	}
-	// Back-compat: add wikipedia_url column for pre-1.0.2 databases
+	// Back-compat migrations for older databases (no-op when columns exist).
 	d.Exec("ALTER TABLE flowers ADD COLUMN wikipedia_url TEXT NOT NULL DEFAULT ''")
-	// Wikipedia URLs and corrections are now baked into the embedded catalog.
+	d.Exec("ALTER TABLE flowers ADD COLUMN image_credit TEXT NOT NULL DEFAULT ''")
+	d.Exec("ALTER TABLE flowers ADD COLUMN image_license TEXT NOT NULL DEFAULT ''")
+	d.Exec("ALTER TABLE flowers ADD COLUMN image_credit_url TEXT NOT NULL DEFAULT ''")
 	return nil
 }
 
@@ -45,8 +53,7 @@ func (d *DB) Count() (int, error) {
 }
 
 func (d *DB) FindByCriteria(zone int, sun models.SunType, role models.FSTRole) ([]models.Flower, error) {
-	rows, err := d.Query(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url, wikipedia_url
+	rows, err := d.Query(`SELECT `+flowerColumns+`
 		FROM flowers WHERE ? BETWEEN zone_min AND zone_max AND sun = ? AND role = ?
 		ORDER BY name`, zone, sun, role)
 	if err != nil {
@@ -66,8 +73,7 @@ func (d *DB) FindByCriteria(zone int, sun models.SunType, role models.FSTRole) (
 }
 
 func (d *DB) FindAll() ([]models.Flower, error) {
-	rows, err := d.Query(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url, wikipedia_url
+	rows, err := d.Query(`SELECT `+flowerColumns+`
 		FROM flowers ORDER BY role, name`)
 	if err != nil {
 		return nil, fmt.Errorf("query: %w", err)
@@ -86,8 +92,7 @@ func (d *DB) FindAll() ([]models.Flower, error) {
 }
 
 func (d *DB) FindByRole(role models.FSTRole) ([]models.Flower, error) {
-	rows, err := d.Query(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url, wikipedia_url
+	rows, err := d.Query(`SELECT `+flowerColumns+`
 		FROM flowers WHERE role = ? ORDER BY name`, role)
 	if err != nil {
 		return nil, fmt.Errorf("query: %w", err)
@@ -106,8 +111,7 @@ func (d *DB) FindByRole(role models.FSTRole) ([]models.Flower, error) {
 }
 
 func (d *DB) FindByID(id int) (*models.Flower, error) {
-	row := d.QueryRow(`SELECT id, name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url, wikipedia_url
+	row := d.QueryRow(`SELECT `+flowerColumns+`
 		FROM flowers WHERE id = ?`, id)
 	return scanFlowerRowPtr(row)
 }
@@ -116,10 +120,12 @@ func (d *DB) Upsert(f *models.Flower) error {
 	soils := soilsCSV(f.Soils)
 	if f.ID == 0 {
 		result, err := d.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
-			color, bloom_season, height, spacing, description, image_url, wikipedia_url)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			color, bloom_season, height, spacing, description, image_url,
+			image_credit, image_license, image_credit_url, wikipedia_url)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, soils,
-			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.WikipediaURL)
+			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
+			f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL)
 		if err != nil {
 			return err
 		}
@@ -130,10 +136,12 @@ func (d *DB) Upsert(f *models.Flower) error {
 		return nil
 	}
 	_, err := d.Exec(`UPDATE flowers SET name=?, botanical_name=?, role=?, zone_min=?, zone_max=?,
-		sun=?, soils=?, color=?, bloom_season=?, height=?, spacing=?, description=?, image_url=?, wikipedia_url=?
+		sun=?, soils=?, color=?, bloom_season=?, height=?, spacing=?, description=?, image_url=?,
+		image_credit=?, image_license=?, image_credit_url=?, wikipedia_url=?
 		WHERE id=?`,
 		f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, soils,
-		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL, f.WikipediaURL, f.ID)
+		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
+		f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL, f.ID)
 	return err
 }
 
@@ -158,7 +166,8 @@ func scanFlowerRaw(r interface{ Scan(...interface{}) error }) (models.Flower, er
 	var soilsStr string
 	err := r.Scan(&f.ID, &f.Name, &f.BotanicalName, &f.Role, &f.ZoneMin, &f.ZoneMax,
 		&f.Sun, &soilsStr, &f.Color, &f.BloomSeason, &f.Height, &f.Spacing,
-		&f.Description, &f.ImageURL, &f.WikipediaURL)
+		&f.Description, &f.ImageURL, &f.ImageCredit, &f.ImageLicense,
+		&f.ImageCreditURL, &f.WikipediaURL)
 	if err != nil {
 		return f, err
 	}

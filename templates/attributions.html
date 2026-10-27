@@ -1,0 +1,26 @@
+{{define "content"}}
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <h1 class="bot-font-serif text-3xl bot-text-primary font-bold mb-3">Image Attributions</h1>
+    <p class="bot-text-secondary mb-8">
+        Flower photographs are courtesy of their respective authors via
+        <a href="https://commons.wikimedia.org" target="_blank" rel="noopener" class="bot-link">Wikimedia Commons</a>,
+        under the licenses noted below. Click any credit for the original file page.
+    </p>
+
+    <ul class="space-y-2">
+        {{range .Flowers}}
+        {{if .HasPhoto}}
+        <li class="flex items-baseline gap-2 text-sm border-b bot-border pb-2">
+            <a href="/flowers/{{.ID}}" class="bot-font-serif bot-text-primary font-medium hover:underline whitespace-nowrap">{{.Name}}</a>
+            <span class="bot-text-secondary">—</span>
+            {{if .PhotoCredit}}
+            <a href="{{.ImageCreditURL}}" target="_blank" rel="noopener" class="bot-link">{{.PhotoCredit}}</a>
+            {{else}}
+            <span class="bot-text-secondary">Wikimedia Commons</span>
+            {{end}}
+        </li>
+        {{end}}
+        {{end}}
+    </ul>
+</section>
+{{end}}

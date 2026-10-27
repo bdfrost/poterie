@@ -447,7 +447,41 @@ body.dark .bot-swatch { border-color: rgba(255,255,255,0.2); }
 
 /* === HTMX Loading Indicator === */
 /* Alpine.js handles the spinner visibility — see planner.html x-data */
-.htmx-request {} /* HTMX marker class, no default style */
+
+/* While an HTMX request is in flight: dim the triggering control and show
+   the wait cursor. Applies to swap selects, shuffle, and other buttons. */
+.htmx-request {
+    opacity: 0.55;
+    cursor: wait;
+    pointer-events: none;
+}
+
+/* Keep the swap select readable while its card reloads. */
+select.htmx-request {
+    background-image: none; /* dropdown arrow flickers during load otherwise */
+}
+
+/* Brief highlight on freshly swapped content, toggled from htmx:afterSwap. */
+@keyframes card-settle {
+    0%   { box-shadow: 0 0 0 3px var(--accent-leaf); background-color: var(--accent-leaf-light, rgba(90,143,94,0.12)); }
+    100% { box-shadow: none; background-color: transparent; }
+}
+.card-settled {
+    animation: card-settle 0.9s ease-out;
+    border-radius: 0.5rem;
+}
+
+/* Subtle fade for the result area while it swaps (generation + shuffle). */
+#result-area {
+    transition: opacity 0.2s ease-out;
+}
+#result-area.htmx-swapping {
+    opacity: 0.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-settled { animation: none; }
+}
 
 /* Dark-mode SVG text readability — keep labels soft, no harsh halos */
 body.dark .fst-label {
