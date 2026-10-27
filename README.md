@@ -43,7 +43,10 @@
 go run .
 
 # Or with Docker
-docker run -p 8080:8080 ghcr.io/bdfrost/poterie:latest
+docker run -p 8080:8080 -e ADMIN_PASS=your-strong-password ghcr.io/bdfrost/poterie:latest
+
+# Or with Docker Compose
+docker compose up -d
 ```
 
 Open `http://localhost:8080`
@@ -77,6 +80,25 @@ docker run -p 8080:8080 \
   -e CSRF_SECRET=random-32-byte-string-here \
   ghcr.io/bdfrost/poterie:latest
 ```
+
+### Docker Compose
+
+A `compose.yml` ships in the repo root for a one-command setup:
+
+```bash
+# 1. Edit compose.yml and set a strong ADMIN_PASS (required — the app
+#    refuses to start with the default password).
+# 2. Start it:
+docker compose up -d
+```
+
+The compose file mounts a named volume (`poterie-data`) at `/data` for the
+SQLite database, sets a healthcheck on `/api/health`, and restarts the
+container unless stopped. To use a different host port, change the left side
+of the port mapping (e.g. `"8081:8080"`).
+
+> **Note:** The container runs as UID 1000. If you swap the named volume for
+> a bind mount, make sure the host directory is writable by that user.
 
 ## Kubernetes
 
@@ -152,6 +174,7 @@ git tag v*.X → CI builds/test/push → gitops bump → ArgoCD sync → verify
 
 ```
 ├── main.go                       # Entry point, router init
+├── compose.yml                   # Docker Compose for self-hosters
 ├── data/catalog-v1.json          # Versioned flower catalog (externalized data)
 ├── internal/
 │   ├── config/config.go          # Env vars, defaults, validation
