@@ -17,7 +17,13 @@ var schemaSQL string
 // statements — keep in sync with scanFlowerRaw and schema.sql.
 const flowerColumns = `id, name, botanical_name, role, zone_min, zone_max, sun, soils,
 	color, bloom_season, height, spacing, description, image_url,
-	image_credit, image_license, image_credit_url, wikipedia_url`
+	image_credit, image_license, image_credit_url, wikipedia_url, customized`
+
+// insertFlowerSQL inserts all catalog-managed fields (not id, not customized).
+const insertFlowerSQL = `INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
+	color, bloom_season, height, spacing, description, image_url,
+	image_credit, image_license, image_credit_url, wikipedia_url)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 type DB struct {
 	*sql.DB
@@ -43,7 +49,21 @@ func (d *DB) Init() error {
 	d.Exec("ALTER TABLE flowers ADD COLUMN image_credit TEXT NOT NULL DEFAULT ''")
 	d.Exec("ALTER TABLE flowers ADD COLUMN image_license TEXT NOT NULL DEFAULT ''")
 	d.Exec("ALTER TABLE flowers ADD COLUMN image_credit_url TEXT NOT NULL DEFAULT ''")
+	d.Exec("ALTER TABLE flowers ADD COLUMN customized INTEGER NOT NULL DEFAULT 0")
 	return nil
+}
+
+// GetMeta returns a meta value ("" when unset).
+func (d *DB) GetMeta(key string) string {
+	var v string
+	d.QueryRow("SELECT value FROM meta WHERE key = ?", key).Scan(&v)
+	return v
+}
+
+// SetMeta upserts a meta value.
+func (d *DB) SetMeta(key, value string) error {
+	_, err := d.Exec("INSERT INTO meta (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", key, value)
+	return err
 }
 
 func (d *DB) Count() (int, error) {
@@ -117,13 +137,9 @@ func (d *DB) FindByID(id int) (*models.Flower, error) {
 }
 
 func (d *DB) Upsert(f *models.Flower) error {
-	soils := soilsCSV(f.Soils)
 	if f.ID == 0 {
-		result, err := d.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
-			color, bloom_season, height, spacing, description, image_url,
-			image_credit, image_license, image_credit_url, wikipedia_url)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-			f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, soils,
+		result, err := d.Exec(insertFlowerSQL,
+			f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, soilsCSV(f.Soils),
 			f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
 			f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL)
 		if err != nil {
@@ -135,13 +151,12 @@ func (d *DB) Upsert(f *models.Flower) error {
 		}
 		return nil
 	}
-	_, err := d.Exec(`UPDATE flowers SET name=?, botanical_name=?, role=?, zone_min=?, zone_max=?,
-		sun=?, soils=?, color=?, bloom_season=?, height=?, spacing=?, description=?, image_url=?,
-		image_credit=?, image_license=?, image_credit_url=?, wikipedia_url=?
-		WHERE id=?`,
-		f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, soils,
-		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
-		f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL, f.ID)
+	if err := d.updateFlower(f); err != nil {
+		return err
+	}
+	// Rows written through the admin panel are user data — flag them so
+	// catalog auto-upgrades never overwrite them.
+	_, err := d.Exec("UPDATE flowers SET customized = 1 WHERE id = ?", f.ID)
 	return err
 }
 
@@ -164,10 +179,12 @@ func scanFlowerRowPtr(r interface{ Scan(...interface{}) error }) (*models.Flower
 func scanFlowerRaw(r interface{ Scan(...interface{}) error }) (models.Flower, error) {
 	var f models.Flower
 	var soilsStr string
+	var customized int
 	err := r.Scan(&f.ID, &f.Name, &f.BotanicalName, &f.Role, &f.ZoneMin, &f.ZoneMax,
 		&f.Sun, &soilsStr, &f.Color, &f.BloomSeason, &f.Height, &f.Spacing,
 		&f.Description, &f.ImageURL, &f.ImageCredit, &f.ImageLicense,
-		&f.ImageCreditURL, &f.WikipediaURL)
+		&f.ImageCreditURL, &f.WikipediaURL, &customized)
+	f.Customized = customized != 0
 	if err != nil {
 		return f, err
 	}

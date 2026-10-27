@@ -1,3 +1,8 @@
+CREATE TABLE IF NOT EXISTS meta (
+	key TEXT PRIMARY KEY,
+	value TEXT NOT NULL DEFAULT ''
+);
+
 CREATE TABLE IF NOT EXISTS flowers (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
@@ -16,5 +21,6 @@ CREATE TABLE IF NOT EXISTS flowers (
 	image_credit TEXT NOT NULL DEFAULT '',
 	image_license TEXT NOT NULL DEFAULT '',
 	image_credit_url TEXT NOT NULL DEFAULT '',
-	wikipedia_url TEXT NOT NULL DEFAULT ''
+	wikipedia_url TEXT NOT NULL DEFAULT '',
+	customized INTEGER NOT NULL DEFAULT 0 -- 1 when edited via the admin panel
 );

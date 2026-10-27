@@ -22,6 +22,7 @@ type Flower struct {
 	ImageLicense   string     `json:"image_license"`    // e.g. "CC BY-SA 4.0"
 	ImageCreditURL string     `json:"image_credit_url"` // link to the file page
 	WikipediaURL   string     `json:"wikipedia_url"`    // link to Wikipedia
+	Customized     bool       `json:"-"`                // true when edited via the admin panel (excluded from catalog auto-upgrades)
 }
 
 // FSTRole is the Filler/Spiller/Thriller role

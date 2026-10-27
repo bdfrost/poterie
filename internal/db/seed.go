@@ -33,33 +33,100 @@ func LoadCatalog() (*Catalog, error) {
 	return &cat, nil
 }
 
-// Seed inserts flower data if the database is empty.
+// Seed inserts flower data on first run, then upgrades the catalog in place
+// when a newer catalog_version ships in a later release. Flowers the user
+// customized via the admin panel (customized=1) are never overwritten;
+// user-created flowers (names not in the embedded catalog) are untouched.
 func Seed(d *DB) error {
-	count, err := d.Count()
-	if err != nil {
-		return fmt.Errorf("count: %w", err)
-	}
-	if count > 0 {
-		return nil // already seeded
-	}
-
 	cat, err := LoadCatalog()
 	if err != nil {
 		return err
 	}
 
-	tx, err := d.Begin()
+	count, err := d.Count()
 	if err != nil {
-		return err
+		return fmt.Errorf("count: %w", err)
 	}
-	defer tx.Rollback()
 
-	for _, f := range cat.Flowers {
-		if err := insertFlowerTx(tx, &f); err != nil {
-			return fmt.Errorf("seed %s: %w", f.Name, err)
+	if count == 0 {
+		tx, err := d.Begin()
+		if err != nil {
+			return err
+		}
+		defer tx.Rollback()
+		for i := range cat.Flowers {
+			if err := insertFlowerTx(tx, &cat.Flowers[i]); err != nil {
+				return fmt.Errorf("seed %s: %w", cat.Flowers[i].Name, err)
+			}
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return d.SetMeta("catalog_version", fmt.Sprint(cat.Version))
+	}
+
+	// Existing DB: apply catalog upgrade if the embedded catalog is newer.
+	applied := 0
+	if v := d.GetMeta("catalog_version"); v != "" {
+		fmt.Sscanf(v, "%d", &applied)
+	}
+	if cat.Version <= applied {
+		return nil
+	}
+
+	updated, inserted, skipped := 0, 0, 0
+	for i := range cat.Flowers {
+		f := &cat.Flowers[i]
+		var existingID, customized int
+		err := d.QueryRow("SELECT id, customized FROM flowers WHERE name = ?", f.Name).Scan(&existingID, &customized)
+		switch {
+		case err == sql.ErrNoRows:
+			if err := d.insertFlower(f); err != nil {
+				return fmt.Errorf("upgrade insert %s: %w", f.Name, err)
+			}
+			inserted++
+		case err != nil:
+			return fmt.Errorf("upgrade lookup %s: %w", f.Name, err)
+		case customized != 0:
+			skipped++
+		default:
+			f.ID = existingID
+			if err := d.updateFlower(f); err != nil {
+				return fmt.Errorf("upgrade update %s: %w", f.Name, err)
+			}
+			updated++
 		}
 	}
-	return tx.Commit()
+	if err := d.SetMeta("catalog_version", fmt.Sprint(cat.Version)); err != nil {
+		return err
+	}
+	if updated+inserted+skipped > 0 {
+		fmt.Printf("poterie: catalog upgraded to v%d (%d updated, %d new, %d customized skipped)\n",
+			cat.Version, updated, inserted, skipped)
+	}
+	return nil
+}
+
+// insertFlower inserts a flower outside an explicit transaction.
+func (d *DB) insertFlower(f *models.Flower) error {
+	_, err := d.Exec(insertFlowerSQL,
+		f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, f.SoilsCSV(),
+		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
+		f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL)
+	return err
+}
+
+// updateFlower overwrites all catalog-managed fields by ID. customized is
+// deliberately NOT touched — this path only runs for customized=0 rows.
+func (d *DB) updateFlower(f *models.Flower) error {
+	_, err := d.Exec(`UPDATE flowers SET name=?, botanical_name=?, role=?, zone_min=?, zone_max=?,
+		sun=?, soils=?, color=?, bloom_season=?, height=?, spacing=?, description=?, image_url=?,
+		image_credit=?, image_license=?, image_credit_url=?, wikipedia_url=?
+		WHERE id=?`,
+		f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, f.SoilsCSV(),
+		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
+		f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL, f.ID)
+	return err
 }
 
 // SeedFromJSON allows seeding from an arbitrary JSON catalog
@@ -89,12 +156,8 @@ func SeedFromJSON(d *DB, data []byte) error {
 }
 
 // insertFlowerTx inserts a flower inside an existing transaction.
-// Keep column list in sync with flowerColumns and Upsert.
 func insertFlowerTx(tx *sql.Tx, f *models.Flower) error {
-	_, err := tx.Exec(`INSERT INTO flowers (name, botanical_name, role, zone_min, zone_max, sun, soils,
-		color, bloom_season, height, spacing, description, image_url,
-		image_credit, image_license, image_credit_url, wikipedia_url)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+	_, err := tx.Exec(insertFlowerSQL,
 		f.Name, f.BotanicalName, f.Role, f.ZoneMin, f.ZoneMax, f.Sun, f.SoilsCSV(),
 		f.Color, f.BloomSeason, f.Height, f.Spacing, f.Description, f.ImageURL,
 		f.ImageCredit, f.ImageLicense, f.ImageCreditURL, f.WikipediaURL)

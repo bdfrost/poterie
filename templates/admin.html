@@ -174,6 +174,7 @@
                         </td>
                         <td class="px-4 py-3 hidden md:table-cell">
                             <span class="bot-badge bot-badge-{{.Role}}">{{.Role}}</span>
+                            {{if .Customized}}<span class="bot-badge" title="Edited locally — catalog upgrades will not overwrite this flower">✏️ custom</span>{{end}}
                         </td>
                         <td class="px-4 py-3 bot-text-secondary hidden md:table-cell">{{.ZoneMin}}-{{.ZoneMax}}</td>
                         <td class="px-4 py-3 bot-text-secondary hidden md:table-cell">{{.Sun}}</td>
