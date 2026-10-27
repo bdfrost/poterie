@@ -19,32 +19,33 @@
     </g>
     {{end}}
 
-    <!-- Fillers surround thriller on sides and back (deduplicated — a
-         duplicated species renders once, labeled with its quantity) -->
-    {{range $i, $f := .FilledFillers}}
+    <!-- Fillers surround the thriller: one glyph per plant (a duplicated
+         species still draws each instance — the diagram shows the real
+         arrangement). Triangle: left, right, back-center. -->
+    {{range $i, $f := .Rec.Fillers}}
     {{$cx := 122}}{{$cy := 176}}
     {{if eq $i 1}}{{$cx = 278}}{{else if eq $i 2}}{{$cx = 200}}{{$cy = 90}}{{end}}
     <g transform="translate({{$cx}},{{$cy}})" class="fst-plant fst-plant-filler">
-        <g transform="translate(-17.3,-17.3) scale(0.72)" class="fst-glyph" style="color: {{$f.Flower.ColorHex}}">
-            {{template "partials/glyph-filler" dict "Hex" $f.Flower.ColorHex "Class" ""}}
+        <g transform="translate(-17.3,-17.3) scale(0.72)" class="fst-glyph" style="color: {{$f.ColorHex}}">
+            {{template "partials/glyph-filler" dict "Hex" $f.ColorHex "Class" ""}}
         </g>
-        <text y="24" text-anchor="middle" class="fst-label fst-label-sm">{{$f.Flower.Name}}{{if gt $f.Qty 1}} ×{{$f.Qty}}{{end}}</text>
+        <text y="24" text-anchor="middle" class="fst-label fst-label-sm">{{$f.Name}}</text>
     </g>
     {{end}}
 
     <!-- Spillers hang over front edge (bottom of pot), spread wide so their
          cascades don't fight each other -->
-    {{range $i, $s := .FilledSpillers}}
+    {{range $i, $s := .Rec.Spillers}}
     {{$sx := 110}}{{$sy := 302}}
     {{if eq $i 1}}{{$sx = 290}}{{end}}
     <!-- Cascade path hangs outside rim, going down toward viewer -->
     <path d="M{{$sx}},{{add $sy 26}} C{{$sx}},{{add $sy 48}} {{add $sx 12}},{{add $sy 62}} {{add $sx 8}},{{add $sy 76}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
     <path d="M{{add $sx 15}},{{add $sy 23}} C{{add $sx 20}},{{add $sy 43}} {{add $sx 30}},{{add $sy 53}} {{add $sx 22}},{{add $sy 66}}" class="fst-cascade" stroke-width="1.2" stroke-linecap="round"/>
     <g transform="translate({{$sx}},{{$sy}})" class="fst-plant fst-plant-spiller">
-        <g transform="translate(-14.9,-14.9) scale(0.62)" class="fst-glyph" style="color: {{$s.Flower.ColorHex}}">
-            {{template "partials/glyph-spiller" dict "Hex" $s.Flower.ColorHex "Class" ""}}
+        <g transform="translate(-14.9,-14.9) scale(0.62)" class="fst-glyph" style="color: {{$s.ColorHex}}">
+            {{template "partials/glyph-spiller" dict "Hex" $s.ColorHex "Class" ""}}
         </g>
-        <text y="21" text-anchor="middle" class="fst-label fst-label-sm">{{$s.Flower.Name}}{{if gt $s.Qty 1}} ×{{$s.Qty}}{{end}}</text>
+        <text y="21" text-anchor="middle" class="fst-label fst-label-sm">{{$s.Name}}</text>
     </g>
     {{end}}
 </svg>
@@ -78,27 +79,28 @@
     </g>
     {{end}}
 
-    <!-- Fillers on sides of thriller (deduplicated, labeled with quantity) -->
-    {{range $i, $f := .FilledFillers}}
+    <!-- Fillers flank the thriller: one glyph per plant (duplicated species
+         still draw each instance). Left, right, center-front. -->
+    {{range $i, $f := .Rec.Fillers}}
     {{$cx := 172}}{{$cy := 205}}
     {{if eq $i 1}}{{$cx = 428}}{{else if eq $i 2}}{{$cx = 300}}{{$cy = 165}}{{end}}
     <g transform="translate({{$cx}},{{$cy}})" class="fst-plant fst-plant-filler">
-        <g transform="translate(-17.3,-17.3) scale(0.72)" class="fst-glyph" style="color: {{$f.Flower.ColorHex}}">
-            {{template "partials/glyph-filler" dict "Hex" $f.Flower.ColorHex "Class" ""}}
+        <g transform="translate(-17.3,-17.3) scale(0.72)" class="fst-glyph" style="color: {{$f.ColorHex}}">
+            {{template "partials/glyph-filler" dict "Hex" $f.ColorHex "Class" ""}}
         </g>
-        <text y="24" text-anchor="middle" class="fst-label fst-label-sm">{{$f.Flower.Name}}{{if gt $f.Qty 1}} ×{{$f.Qty}}{{end}}</text>
+        <text y="24" text-anchor="middle" class="fst-label fst-label-sm">{{$f.Name}}</text>
     </g>
     {{end}}
 
     <!-- Spillers at front edge, cascading down toward viewer -->
-    {{range $i, $s := .FilledSpillers}}
+    {{range $i, $s := .Rec.Spillers}}
     {{$sx := 218}}{{$sy := 302}}
     {{if eq $i 1}}{{$sx = 382}}{{end}}
     <g transform="translate({{$sx}},{{$sy}})" class="fst-plant fst-plant-spiller">
-        <g transform="translate(-14.9,-14.9) scale(0.62)" class="fst-glyph" style="color: {{$s.Flower.ColorHex}}">
-            {{template "partials/glyph-spiller" dict "Hex" $s.Flower.ColorHex "Class" ""}}
+        <g transform="translate(-14.9,-14.9) scale(0.62)" class="fst-glyph" style="color: {{$s.ColorHex}}">
+            {{template "partials/glyph-spiller" dict "Hex" $s.ColorHex "Class" ""}}
         </g>
-        <text y="21" text-anchor="middle" class="fst-label fst-label-sm">{{$s.Flower.Name}}{{if gt $s.Qty 1}} ×{{$s.Qty}}{{end}}</text>
+        <text y="21" text-anchor="middle" class="fst-label fst-label-sm">{{$s.Name}}</text>
     </g>
     <!-- Cascades hang outside bed rim, going down -->
     <path d="M{{$sx}},{{add $sy 26}} C{{$sx}},{{add $sy 43}} {{add $sx 10}},{{add $sy 58}} {{add $sx 6}},{{add $sy 70}}" class="fst-cascade" stroke-width="2" stroke-linecap="round"/>
