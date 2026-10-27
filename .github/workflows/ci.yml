@@ -68,8 +68,13 @@ jobs:
 
       - name: Run container
         run: |
-          docker run -d --name poterie-smoke -p 8080:8080 poterie:smoke
+          # ADMIN_PASS is required — the app refuses to start with the default.
+          docker run -d --name poterie-smoke -p 8080:8080 \
+            -e ADMIN_PASS=ci-smoke-throwaway \
+            poterie:smoke
           sleep 3
+          docker ps -a --filter name=poterie-smoke
+          docker logs poterie-smoke
 
       - name: Health check
         run: curl -sf http://localhost:8080/api/health
