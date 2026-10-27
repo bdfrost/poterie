@@ -1,0 +1,35 @@
+# Poterie — self-hosted botanical garden planner
+#
+# Quick start:
+#   docker compose up -d
+#   open http://localhost:8080
+#
+# Before deploying anywhere real, set a strong ADMIN_PASS below (the app
+# refuses to start with the default "changeme").
+
+services:
+  poterie:
+    image: ghcr.io/bdfrost/poterie:latest
+    container_name: poterie
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      DB_PATH: /data/poterie.db
+      ADMIN_USER: admin
+      # REQUIRED: change this before exposing the app
+      ADMIN_PASS: change-me-to-a-strong-password
+      # Optional: pin a CSRF secret so sessions survive restarts
+      # CSRF_SECRET: random-32-byte-hex-string
+    volumes:
+      - poterie-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  poterie-data:
